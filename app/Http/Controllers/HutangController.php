@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Hutang;
+use App\Models\Karyawan;
+use Illuminate\Support\Facades\Response;
 
 class HutangController extends Controller
 {
@@ -37,6 +39,25 @@ class HutangController extends Controller
 
     }
 
+    public function update(Request $request)
+    {
+
+        $validatedData = $request->validate([
+            'id_karyawan' => 'required',
+            'nominal_hutang' => 'required',
+            'keterangan' => 'required'
+        ]);
+
+        $jabatan = Hutang::findOrFail($request->id); // Mengambil objek Jabatan berdasarkan ID
+
+        $jabatan->id_karyawan = $validatedData['id_karyawan'];
+        $jabatan->nominal_hutang = $validatedData['nominal_hutang'];
+        $jabatan->keterangan = $validatedData['keterangan'];
+
+        $jabatan->save(); // Menyimpan perubahan pada objek Jabatan
+        return redirect()->route('hutang.index')->with('success', 'Data Hutang berhasil diubah.');
+    }
+
 
 
     public function delete_hutang($id_hutang)
@@ -45,11 +66,17 @@ class HutangController extends Controller
         $data->delete();
         return redirect()->route('hutang.index')->with('success', 'Data Hutang berhasil di hapus!!');
     }
-    public function getJabatan($id)
+    public function getHutang($id)
     {
-        $hutang = Hutang::find($id);
+        $hutang = Hutang::with('karyawan')->findOrFail($id);
+        $karyawan = Karyawan::all();
 
-        return json_encode($hutang);
+        $resultKaryawan = [
+            'hutang' => $hutang,
+            'karyawan' => $karyawan
+        ];
+
+        return Response::json($resultKaryawan);
 
     }
 

@@ -74,6 +74,7 @@
   <script src="vendor/simple-datatables/simple-datatables.js"></script>
   <script src="vendor/tinymce/tinymce.min.js"></script>
   <script src="vendor/php-email-form/validate.js"></script>
+  
 
   
   <!-- Template Main JS File -->

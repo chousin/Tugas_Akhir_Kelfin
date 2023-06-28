@@ -59,7 +59,7 @@ Route::group(['middleware' => 'auth'], function ($route) {
     $route->get('/jabatan', [JabatanController::class, 'index'])->name('jabatan.index');
     $route->post('/jabatan-create', [JabatanController::class, 'store'])->name('jabatan.create');
     $route->get('/getJabatan/{id}', [JabatanController::class, 'getJabatan'])->name('jabatan.getJabatan');
-    $route->post('/jabatan/update', [JabatanController::class, 'update'])->name('jabatan.update');
+    $route->post('/jabatan-update/{id}', [JabatanController::class, 'update'])->name('jabatan.update');
     $route->get('/jabatan/{id}/delete', [JabatanController::class, 'delete_jabatan'])->name('jabatan.delete');
 
 
@@ -67,7 +67,7 @@ Route::group(['middleware' => 'auth'], function ($route) {
     $route->get('/hutang', [HutangController::class, 'index'])->name('hutang.index');
     $route->post('/hutang-create', [HutangController::class, 'store'])->name('hutang.create');
     $route->get('/getHutang/{id}', [HutangController::class, 'getHutang'])->name('hutang.getHutang');
-    $route->post('/hutang/update', [HutangController::class, 'update'])->name('hutang.update');
+    $route->post('/hutang/update/{id}', [HutangController::class, 'update'])->name('hutang.update');
     $route->get('/hutang/{id}/delete', [HutangController::class, 'delete_hutang'])->name('hutang.delete');
 
 
@@ -75,7 +75,7 @@ Route::group(['middleware' => 'auth'], function ($route) {
     $route->get('/transport', [TransportController::class, 'index'])->name('transport.index');
     $route->post('/transport-create', [TransportController::class, 'store'])->name('transport.create');
     $route->get('/getTransport/{id}', [TransportController::class, 'getTransport'])->name('transport.getTransport');
-    $route->post('/transport/update', [TransportController::class, 'update'])->name('transport.update');
+    $route->post('/transport/update/{id}', [TransportController::class, 'update'])->name('transport.update');
     $route->get('/transport/{id}/delete', [TransportController::class, 'delete_transport'])->name('transport.delete');
 
 
@@ -84,7 +84,7 @@ Route::group(['middleware' => 'auth'], function ($route) {
     $route->get('/rembes', [RembesController::class, 'index'])->name('rembes.index');
     $route->post('/rembes-create', [RembesController::class, 'store'])->name('rembes.create');
     $route->get('/getRembes/{id}', [RembesController::class, 'getRembes'])->name('rembes.getRembes');
-    $route->post('/rembes/update', [RembesController::class, 'update'])->name('rembes.update');
+    $route->post('/rembes/update/{id}', [RembesController::class, 'update'])->name('rembes.update');
     $route->get('/rembes/{id}/delete', [RembesController::class, 'delete_rembes'])->name('rembes.delete');
 
 

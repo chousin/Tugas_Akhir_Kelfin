@@ -84,26 +84,48 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
-    <script>
-      $('.btn-edit').click(function() {
-        var url = $(this).data('url');
-        $('#editJabatan #nama_karyawan').val('')
-        $('#editJabatan #jabatan').val('')
-        $('#editJabatan #gaji_pokok').val('')
-        $.ajax({
-          type: "get",
-          url: url,
-          dataType: "json",
-          success: function(res) {
-            $('#editKaryawan #nama_karyawan').val(res['nama_karyawan'])
-            $('#editKaryawan #jabatan').val(res['jabatan'])
-            $('#editKaryawan #gaji_pokok').val(res['gaji_pokok'])
+  <script>
+  $('.btn-edit').click(function() {
+    var url = $(this).data('url');
+    console.log(url);
+    $('#editJabatan #id_karyawan').val('')
+    $('#editJabatan #jabatan').val('')
+    $('#editJabatan #gaji_pokok').val('')
 
-          }
+    $.ajax({
+      type: "get",
+      url: url,
+      dataType: "json",
+      success: function(res) {
+
+        console.log(res.karyawan);
+        // Menghapus semua opsi sebelumnya
+        $('#editJabatan #id_karyawan').empty();
+
+        // Menambahkan opsi "Pilih Nama Karyawan" sebagai opsi pertama
+        $('#editJabatan #id_karyawan').append('<option value="">Pilih Nama Karyawan</option>');
+
+        // Loop melalui setiap karyawan dan tambahkan sebagai opsi dropdown
+        $.each(res.karyawan, function(index, karyawan) { 
+          // console.log(karyawan);
+          $('#editJabatan #id_karyawan').append('<option value="' + karyawan.id + '">' + karyawan.nama_karyawan + '</option>');
         });
+
         
-      });
-    </script>
+
+        // Mengatur nilai pada input lainnya
+        $('#editJabatan #id_karyawan').val(res.jabatan['id_karyawan']); // Berubah
+        $('#editJabatan #jabatan').val(res.jabatan['jabatan']); 
+        $('#editJabatan #gaji_pokok').val(res.jabatan['gaji_pokok']); 
+      }
+    });
+  });
+
+  
+
+</script>
+
+
 <!-- End Edit Data -->
   @endsection
 

@@ -82,24 +82,38 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
     <script>
-      $('.btn-edit').click(function() {
-        var url = $(this).data('url');
-        $('#editTransport #nama_karyawan').val('')
-        $('#editTransport #nominal').val('')
-        $('#editTransport #bukti_nota').val('')
-        
-        $.ajax({
-          type: "get",
-          url: url,
-          dataType: "json",
-          success: function(res) {
-            $('#editTransport #nama_karyawan').val(res['nama_karyawan'])
-            $('#editTransport #nominal').val(res['nominal'])
-            $('#editTransport #bukti_nota').val(res['bukti_nota'])
-          }
-        });
-        
-      });
+     $('.btn-edit').click(function() {
+    var url = $(this).data('url');
+    console.log(url);
+
+    $.ajax({
+        type: "get",
+        url: url,
+        dataType: "json",
+        success: function(res) {
+            console.log(res.rembes);
+
+            // Mengisi nilai pada input
+            $('#editRembes #id').val(res.rembes['id']);
+            $('#editRembes #id_karyawan').val(res.rembes['id_karyawan']);
+            $('#editRembes #nominal').val(res.rembes['nominal']);
+
+            // Menampilkan gambar bukti nota
+            if (res.rembes['bukti_nota']) {
+                var imageUrl = "{{ asset('images_bukti_nota') }}/" + res.rembes['bukti_nota'];
+                $('#editRembes #bukti_nota_preview').attr('src', imageUrl);
+                $('#editRembes #bukti_nota_preview').show();
+            } else {
+                $('#editRembes #bukti_nota_preview').hide();
+            }
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+});
+
+
     </script>
 <!-- End Edit Data -->
   @endsection

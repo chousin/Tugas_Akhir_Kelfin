@@ -83,23 +83,41 @@
     </script>
     <script>
       $('.btn-edit').click(function() {
-        var url = $(this).data('url');
-        $('#editHutang #nama_karyawan').val('')
-        $('#editHutang #nominal_hutang').val('')
-        $('#editHutang #keterangan').val('')
-        $.ajax({
-          type: "get",
-          url: url,
-          dataType: "json",
-          success: function(res) {
-            $('#editHutang #nama_karyawan').val(res['nama_karyawan'])
-            $('#editHutang #nominal_hutang').val(res['nominal_hutang'])
-            $('#editHutang #keterangan').val(res['keterangan'])
+    var url = $(this).data('url');
+    console.log(url);
+    $('#editHutang #id_karyawan').val('')
+    $('#editHutang #nominal_hutang').val('')
+    $('#editHutang #keterangan').val('')
 
-          }
+    $.ajax({
+      type: "get",
+      url: url,
+      dataType: "json",
+      success: function(res) {
+
+        console.log(res.karyawan);
+        // Menghapus semua opsi sebelumnya
+        $('#editHutang #id_karyawan').empty();
+
+        // Menambahkan opsi "Pilih Nama Karyawan" sebagai opsi pertama
+        $('#editHutang #id_karyawan').append('<option value="">Pilih Nama Karyawan</option>');
+
+        // Loop melalui setiap karyawan dan tambahkan sebagai opsi dropdown
+        $.each(res.karyawan, function(index, karyawan) { 
+          // console.log(karyawan);
+          $('#editHutang #id_karyawan').append('<option value="' + karyawan.id + '">' + karyawan.nama_karyawan + '</option>');
         });
+
         
-      });
+
+        // Mengatur nilai pada input lainnya
+        $('#editHutang #id_karyawan').val(res.hutang['id_karyawan']); // Berubah
+        $('#editHutang #nominal_hutang').val(res.hutang['nominal_hutang']); 
+        $('#editHutang #keterangan').val(res.hutang['keterangan']); 
+      }
+    });
+  });
+
     </script>
 <!-- End Edit Data -->
   @endsection

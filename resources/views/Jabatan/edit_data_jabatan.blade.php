@@ -1,3 +1,4 @@
+
 <div class="modal fade" id="editJabatan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -11,29 +12,21 @@
               <h5 class="card-title">Edit Data</h5>
 
               <!-- Vertical Form -->
-              <form class="row g-3" action="/jabatan-create" method="post">
+              <form class="row g-3" action="{{ route('jabatan.update', ['id' => $jabatan->id]) }}" method="post">
                 @csrf
                 
                 <div class="col-12">
                     <label class="form-label">Nama Karyawan</label>
                     <select name="id_karyawan" id="id_karyawan" class="form-control @error('id_karyawan') is-invalid @enderror">
-                      <option value="">Pilih Nama Karyawan</option>
-                      <?php
-                        // Ambil data karyawan dari tabel "employees" atau tabel relasi lainnya
-                        $employees = DB::table('karyawans')->get();
-
-                        // Loop melalui setiap karyawan dan tambahkan sebagai opsi dropdown
-                        foreach ($employees as $karyawan) {
-                          echo '<option value="' . $karyawan->id . '">' . $karyawan->nama_karyawan . '</option>';
-                        }
-                      ?>
+                        <option value="">Pilih Nama Karyawan</option>
                     </select>
-                    @error('nama_karyawan')
+                    @error('id_karyawan')
                     <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                      {{ $message }}
+                        {{ $message }}
                     </div>
                     @enderror
-                  </div>
+                </div>
+
                 
 
                 <div class="col-12">
@@ -55,7 +48,7 @@
                         @enderror
                     </div>
                 <div class="text-center">
-                  <button type="submit" class="btn btn-primary add_akun">Tambah Data</button>
+                  <button type="submit" class="btn btn-primary add_akun">Ubah Data</button>
                   <button type="reset" class="btn btn-secondary">Reset</button>
                 </div>
               </form><!-- Vertical Form -->
@@ -72,3 +65,4 @@
   </div>
 </div>
 <!-- End Tambah Data -->
+

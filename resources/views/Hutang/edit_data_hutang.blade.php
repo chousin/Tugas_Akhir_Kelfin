@@ -1,4 +1,4 @@
-<div class="modal fade" id="hutangTambah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editHutang" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -11,7 +11,7 @@
               <h5 class="card-title">Tambah Data</h5>
 
               <!-- Vertical Form -->
-              <form class="row g-3" action="/hutang-create" method="post">
+              <form class="row g-3" action="{{ route('hutang.update', ['id' => $hutang->id]) }}" method="post">
                 @csrf
                 
                 <div class="col-12">
@@ -55,7 +55,7 @@
                         @enderror
                     </div>
                 <div class="text-center">
-                  <button type="submit" class="btn btn-primary add_akun">Tambah Data</button>
+                  <button type="submit" class="btn btn-primary add_akun">Ubah Data</button>
                   <button type="reset" class="btn btn-secondary">Reset</button>
                 </div>
               </form><!-- Vertical Form -->

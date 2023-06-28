@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Rembes;
+use Illuminate\Support\Facades\Response;
+use App\Models\Karyawan;
 
 class RembesController extends Controller
 {
@@ -46,23 +48,28 @@ class RembesController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'id_karyawan' => 'required|',
-            'jabatan' => 'required',
-            'gaji_pokok' => 'required'
+            'id_karyawan' => 'required',
+            'nominal' => 'required',
+            'bukti_nota' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        $rembes = new Rembes();
+        $rembes = Rembes::findOrFail($request->id); // Mengambil objek Rembes berdasarkan ID
+
         $rembes->id_karyawan = $request->id_karyawan;
         $rembes->nominal = $request->nominal;
-        $rembes->bukti_nota = $request->bukti_nota;
 
+        if ($request->hasFile('bukti_nota')) {
+            $image = $request->file('bukti_nota');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images_bukti_nota'), $imageName);
+            $rembes->bukti_nota = $imageName;
+        }
 
-        Rembes::where('id', $request->id)->update($rembes);
+        $rembes->save(); // Menyimpan perubahan pada objek Rembes
 
         return redirect()->route('rembes.index')->with('success', 'Data Rembes berhasil diubah.');
-
-
     }
+
 
 
 
@@ -74,9 +81,14 @@ class RembesController extends Controller
     }
     public function getRembes($id)
     {
-        $rembes = Rembes::find($id);
+        $rembes = Rembes::with('karyawan')->findOrFail($id);
+        $karyawan = Karyawan::all();
 
-        return json_encode($rembes);
+        $resultKaryawan = [
+            'rembes' => $rembes,
+            'karyawan' => $karyawan
+        ];
 
+        return Response::json($resultKaryawan);
     }
 }

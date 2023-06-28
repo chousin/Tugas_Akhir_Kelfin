@@ -48,7 +48,7 @@
                         <td>
                         <button type="button" class="btn btn-primary btn-edit"
                                 data-url={{ route('transport.getTransport', ['id' => $transport->id]) }} data-toggle="modal"
-                                data-target="#editHutang">
+                                data-target="#editTransport">
                                 Edit
                             </button>
                             <a class="btn btn-danger btn-delete"
@@ -87,27 +87,38 @@
     </script>
     <script>
       $('.btn-edit').click(function() {
-        var url = $(this).data('url');
-        $('#editTransport #nama_karyawan').val('')
-        $('#editTransport #jenis_bensin_produk').val('')
-        $('#editTransport #liter_volume').val('')
-        $('#editTransport #harga_liter').val('')
-        $('#editTransport #bukti_struk').val('')
-        
-        $.ajax({
-          type: "get",
-          url: url,
-          dataType: "json",
-          success: function(res) {
-            $('#editTransport #nama_karyawan').val(res['nama_karyawan'])
-            $('#editTransport #jenis_bensin_produk').val(res['jenis_bensin_produk'])
-            $('#editTransport #liter_volume').val(res['liter_volume'])
-            $('#editTransport #harga_liter').val(res['harga_liter'])
-            $('#editTransport #bukti_struk').val(res['bukti_struk'])
-          }
-        });
-        
-      });
+    var url = $(this).data('url');
+    console.log(url);
+
+    $.ajax({
+        type: "get",
+        url: url,
+        dataType: "json",
+        success: function(res) {
+            console.log(res.transport);
+
+            // Mengisi nilai pada input
+            $('#editTransport #id').val(res.transport['id']);
+            $('#editTransport #id_karyawan').val(res.transport['id_karyawan']);
+            $('#editTransport #jenis_bensin_produk').val(res.transport['jenis_bensin_produk']);
+            $('#editTransport #liter_volume').val(res.transport['liter_volume']);
+            $('#editTransport #harga_liter').val(res.transport['harga_liter']);
+
+            // Menampilkan gambar bukti struk
+            if (res.transport['bukti_struk']) {
+                var imageUrl = "{{ asset('images_bukti_nota_bensin') }}/" + res.transport['bukti_struk'];
+                $('#editTransport #bukti_struk_preview').attr('src', imageUrl);
+                $('#editTransport #bukti_struk_preview').show();
+            } else {
+                $('#editTransport #bukti_struk_preview').hide();
+            }
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+});
+
     </script>
 <!-- End Edit Data -->
   @endsection
