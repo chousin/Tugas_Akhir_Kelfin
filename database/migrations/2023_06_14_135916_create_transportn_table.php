@@ -22,7 +22,7 @@ class CreateTransportnTable extends Migration
             $table->string('bukti_struk');
             $table->timestamps();
 
-            $table->foreign('id_karyawan')->references('id')->on('karyawans');
+            $table->foreign('id_karyawan')->references('id_karyawan')->on('karyawans');
         });
     }
 
