@@ -44,7 +44,6 @@ class KaryawanController extends Controller
     public function update(Request $request)
     {
         $validatedData = $request->validate([
-            'id' => 'required',
             'nama_karyawan' => 'required|max:100',
             'alamat' => 'required|max:225',
             'tgl_lahir' => 'required',
@@ -54,7 +53,7 @@ class KaryawanController extends Controller
             'no_rekening' => 'required|max:50'
         ]);
 
-        Karyawan::where('id', $request->id)->update($validatedData);
+        Karyawan::where('id_karyawan', $request->id)->update($validatedData);
 
         return redirect('/karyawan')->with('success', 'Edit data berhasil');
     }

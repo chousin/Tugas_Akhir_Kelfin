@@ -51,12 +51,12 @@
                         <td>{{$karyawan->no_rekening}}</td>
                         <td>
                         <button type="button" class="btn btn-primary btn-edit"
-                                data-url={{ route('karyawan.getKaryawan', ['id' => $karyawan->id]) }} data-toggle="modal"
+                                data-url={{  route('karyawan.getKaryawan', ['id' => $karyawan->id_karyawan]) }} data-toggle="modal"
                                 data-target="#editKaryawan">
                                 Edit
                             </button>
                             <a class="btn btn-danger btn-delete"
-                                href="{{ route('karyawan.delete', ['id' => $karyawan->id]) }}"
+                                href="{{ route('karyawan.delete', ['id' => $karyawan->id_karyawan]) }}"
                                 onclick="return confirm('Apa kamu yakin?')">Delete</a>
                         </td>
                       </tr>
