@@ -24,7 +24,7 @@
 
                         // Loop melalui setiap karyawan dan tambahkan sebagai opsi dropdown
                         foreach ($employees as $karyawan) {
-                          echo '<option value="' . $karyawan->id . '">' . $karyawan->nama_karyawan . '</option>';
+                          echo '<option value="' . $karyawan->id_karyawan . '">' . $karyawan->nama_karyawan . '</option>';
                         }
                       ?>
                     </select>

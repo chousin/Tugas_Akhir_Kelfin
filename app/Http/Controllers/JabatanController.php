@@ -26,7 +26,7 @@ class JabatanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_karyawan' => 'required|',
+            'id_karyawan' => 'required',
             'jabatan' => 'required',
             'gaji_pokok' => 'required'
         ]);

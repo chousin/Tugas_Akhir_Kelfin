@@ -12,7 +12,10 @@
               <h5 class="card-title">Edit Data</h5>
 
               <!-- Vertical Form -->
+              @if(isset($jabatan->id))
               <form class="row g-3" action="{{ route('jabatan.update', ['id' => $jabatan->id]) }}" method="post">
+                @endif
+
                 @csrf
                 
                 <div class="col-12">

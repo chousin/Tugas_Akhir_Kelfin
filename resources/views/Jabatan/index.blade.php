@@ -35,10 +35,11 @@
                     </thead>
                     
                     <tbody>
+                    @php $no = 1; @endphp
                     @foreach ($data as $jabatan)
                       
                     <tr class ="lead">
-                        <th scope="row">{{$jabatan->id}}</th>
+                        <th scope="row">{{$no++}}</th>
                         <td >{{$jabatan->karyawan->nama_karyawan}}</td>
                         <td>{{$jabatan->jabatan}}</td>
                         <td>{{$jabatan->gaji_pokok}}</td>
@@ -97,8 +98,6 @@
       url: url,
       dataType: "json",
       success: function(res) {
-
-        console.log(res.karyawan);
         // Menghapus semua opsi sebelumnya
         $('#editJabatan #id_karyawan').empty();
 
@@ -108,7 +107,7 @@
         // Loop melalui setiap karyawan dan tambahkan sebagai opsi dropdown
         $.each(res.karyawan, function(index, karyawan) { 
           // console.log(karyawan);
-          $('#editJabatan #id_karyawan').append('<option value="' + karyawan.id + '">' + karyawan.nama_karyawan + '</option>');
+          $('#editJabatan #id_karyawan').append('<option value="' + karyawan.id_karyawan + '">' + karyawan.nama_karyawan + '</option>');
         });
 
         
