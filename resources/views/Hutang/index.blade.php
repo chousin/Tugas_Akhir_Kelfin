@@ -35,9 +35,10 @@
                     </thead>
                     
                     <tbody>
+                    @php $no = 1; @endphp
                     @foreach ($data as $hutang)
                     <tr class ="lead">
-                        <th scope="row">{{$hutang->id}}</th>
+                        <th scope="row">{{$no++}}</th>
                         <td>{{$hutang->karyawan->nama_karyawan}}</td>
                         <td>{{$hutang->nominal_hutang}}</td>
                         <td>{{$hutang->keterangan}}</td>
