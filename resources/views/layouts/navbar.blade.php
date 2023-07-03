@@ -15,26 +15,26 @@
             <i class="bi bi-menu-button-wide"></i><span>Presensi</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="presensi" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-            <li>
+            <!-- <li>
                 <a href="components-alerts.html">
                 <i class="bi bi-circle"></i><span>Data Presensi</span>
                 </a>
-            </li>
-            <li>
+            </li> -->
+            <!-- <li>
                 <a href="components-accordion.html">
                 <i class="bi bi-circle"></i><span>Ajukan Izin</span>
                 </a>
-            </li>
+            </li> -->
             <li>
                 <a href="{{route('absen')}}">
                 <i class="bi bi-circle"></i><span>Presensi</span>
                 </a>
             </li>
-            <li>
+            <!-- <li>
                 <a href="components-breadcrumbs.html">
                 <i class="bi bi-circle"></i><span>Ajukan Presensi</span>
                 </a>
-            </li>
+            </li> -->
             <li>
                 <a href="{{route('jabatan.index')}}">
                 <i class="bi bi-circle"></i><span>Jabatan</span>
@@ -69,16 +69,16 @@
                 <i class="bi bi-circle"></i><span>Data Karyawan</span>
                 </a>
             </li>
-            <li>
+            <!-- <li>
                 <a href="forms-layouts.html">
                 <i class="bi bi-circle"></i><span>Golongan</span>
                 </a>
-            </li>
-            <li>
+            </li> -->
+            <!-- <li>
                 <a href="forms-editors.html">
                 <i class="bi bi-circle"></i><span>Tampil Karyawan</span>
                 </a>
-            </li>   
+            </li>    -->
             </ul>
         </li><!-- End Forms Nav -->
 
