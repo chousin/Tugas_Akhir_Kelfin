@@ -90,7 +90,7 @@ Route::group(['middleware' => 'auth'], function ($route) {
 
 
     // Route Presensi
-    Route::get('/example-absen', [AbsenController::class, 'index'])->name('absen');
+    Route::get('/absen', [AbsenController::class, 'index'])->name('absen');
     Route::post('/absen', [AbsenController::class, 'store']);
     Route::post('/absen-pulang', [AbsenController::class, 'pulang']);
 
