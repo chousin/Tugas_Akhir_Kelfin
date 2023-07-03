@@ -45,9 +45,9 @@
                                 data-target="#editAkun">
                                 Edit
                             </button>
-                            <a class="btn btn-danger btn-delete"
+                            <!-- <a class="btn btn-danger btn-delete"
                                 href="{{ route('akun.delete', ['id' => $akun->id]) }}"
-                                onclick="return confirm('Apa kamu yakin?')">Delete</a>
+                                onclick="return confirm('Apa kamu yakin?')">Delete</a> -->
                     </td>
                   </tr>
                 @endforeach  

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Karyawan;
+use App\Models\User;
 
 class KaryawanController extends Controller
 {
@@ -34,9 +35,20 @@ class KaryawanController extends Controller
 
         $validatedData['tgl_lahir'] = $request->tgl_lahir;
 
+        $payload = [
+            'name' => $request->nama_karyawan,
+            'email' => str_replace(' ', '', strtolower($request->nama_karyawan)).'@gmail.com',
+            'password' => bcrypt(str_replace('-', '', $request->tgl_lahir)),
+            'role' => 'pegawai',
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+
+        $user = User::create($payload);
+
+        $validatedData['id_user'] = $user->id;
+
         Karyawan::create($validatedData);
-
-
         return redirect('/karyawan')->with('success', 'Tambah data berhasil');
 
     }

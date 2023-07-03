@@ -12,6 +12,7 @@ class Karyawan extends Model
     protected $table = 'karyawans';
     protected $primaryKey = 'id_karyawan';
     protected $fillable = [
+        'id_user',
         'nama_karyawan',
         'alamat',
         'tgl_lahir',
@@ -41,6 +42,11 @@ class Karyawan extends Model
     public function Hutang()
     {
         return $this->hasMany(Hutang::class, 'id_karyawan');
+    }
+
+    public function presensi()
+    {
+        return $this->hasMany(Presensi::class, 'id_karyawan');
     }
 
 

@@ -134,11 +134,11 @@
         </a>
         <ul id="presensi" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-            <a href="components-alerts.html">
-            <i class="bi bi-circle"></i><span>Alerts</span>
+            <a href="{{route('absen')}}">
+            <i class="bi bi-circle"></i><span>Presensi</span>
             </a>
         </li>
-        <li>
+        <!-- <li>
             <a href="components-accordion.html">
             <i class="bi bi-circle"></i><span>Accordion</span>
             </a>
@@ -152,7 +152,7 @@
             <a href="components-breadcrumbs.html">
             <i class="bi bi-circle"></i><span>Breadcrumbs</span>
             </a>
-        </li>
+        </li> -->
         </ul>
     </li><!-- End Components Nav -->
 
