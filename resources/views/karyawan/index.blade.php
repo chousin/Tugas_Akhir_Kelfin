@@ -39,9 +39,10 @@
                     </thead>
                     
                     <tbody>
+                    @php $no = 1; @endphp
                     @foreach ($data as $karyawan)
                     <tr class ="lead">
-                        <th scope="row">{{$karyawan->id}}</th>
+                        <th scope="row">{{$no++}}</th>
                         <td >{{$karyawan->nama_karyawan}}</td>
                         <td>{{$karyawan->alamat}}</td>
                         <td>{{$karyawan->tgl_lahir}}</td>
