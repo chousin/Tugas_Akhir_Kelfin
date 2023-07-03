@@ -35,9 +35,10 @@
                     </thead>
                     
                     <tbody>
+                    @php $no = 1; @endphp
                     @foreach ($data as $rembes)
                     <tr class ="lead">
-                        <th scope="row">{{$rembes->id}}</th>
+                        <th scope="row">{{$no++}}</th>
                         <td >{{$rembes->karyawan->nama_karyawan}}</td>
                         <td>{{$rembes->nominal}}</td>
                         <td>{{$rembes->bukti_nota}}</td>
