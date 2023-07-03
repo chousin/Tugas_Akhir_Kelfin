@@ -105,7 +105,7 @@
         // Loop melalui setiap karyawan dan tambahkan sebagai opsi dropdown
         $.each(res.karyawan, function(index, karyawan) { 
           // console.log(karyawan);
-          $('#editHutang #id_karyawan').append('<option value="' + karyawan.id + '">' + karyawan.nama_karyawan + '</option>');
+          $('#editHutang #id_karyawan').append('<option value="' + karyawan.id_karyawan + '">' + karyawan.nama_karyawan + '</option>');
         });
 
         
