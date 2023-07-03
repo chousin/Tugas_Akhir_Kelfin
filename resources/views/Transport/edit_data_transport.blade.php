@@ -11,7 +11,9 @@
               <h5 class="card-title">Edit Data</h5>
 
               <!-- Vertical Form -->
+              @if(isset($transport->id))
               <form class="row g-3" action="{{ route('transport.update', ['id' => $transport->id]) }}" method="post" enctype="multipart/form-data">
+              @endif
                 @csrf
                 
                 <div class="col-12">
@@ -24,7 +26,7 @@
 
                         // Loop melalui setiap karyawan dan tambahkan sebagai opsi dropdown
                         foreach ($employees as $karyawan) {
-                          echo '<option value="' . $karyawan->id . '">' . $karyawan->nama_karyawan . '</option>';
+                          echo '<option value="' . $karyawan->id_karyawan . '">' . $karyawan->nama_karyawan . '</option>';
                         }
                       ?>
                     </select>

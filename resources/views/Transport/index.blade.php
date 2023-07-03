@@ -37,9 +37,10 @@
                     </thead>
                     
                     <tbody>
+                      @php $no = 1; @endphp
                     @foreach ($data as $transport)
                     <tr class ="lead">
-                        <th scope="row">{{$transport->id}}</th>
+                        <th scope="row">{{$no++}}</th>
                         <td >{{$transport->karyawan->nama_karyawan}}</td>
                         <td>{{$transport->jenis_bensin_produk}}</td>
                         <td>{{$transport->liter_volume}}</td>
