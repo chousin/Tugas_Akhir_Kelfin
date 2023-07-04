@@ -19,6 +19,7 @@ class Transport extends Model
         'jenis_bensin_produk',
         'liter_volume',
         'harga_liter',
+        'total',
         'bukti_struk',
         'created_at',
         'updated_at'

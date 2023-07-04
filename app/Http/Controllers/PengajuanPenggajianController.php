@@ -12,6 +12,14 @@ use App\Models\Jabatan;
 
 use App\Models\ListingKaryawan;
 
+use App\Models\Hutang;
+
+use App\Models\Rembes;
+
+use App\Models\Transport;
+
+use Carbon\Carbon;
+
 use Session;
 
 use Auth;
@@ -37,10 +45,16 @@ class PengajuanPenggajianController extends Controller
 
         $result_jabatan = [];
         foreach($jabatan as $get_jabatan){
+            $hutang = Hutang::where('created_at', '>=', Carbon::parse($request->periode_start.'00:00:00'))->where('created_at', '<=', Carbon::parse($request->periode_end.'23:59:00'))->where('id_karyawan', $get_jabatan->id_karyawan)->sum('nominal_hutang');
+            $rembes = Rembes::where('created_at', '>=', Carbon::parse($request->periode_start.'00:00:00'))->where('created_at', '<=', Carbon::parse($request->periode_end.'23:59:00'))->where('id_karyawan', $get_jabatan->id_karyawan)->sum('nominal');
+            $transport = Transport::where('created_at', '>=', Carbon::parse($request->periode_start.'00:00:00'))->where('created_at', '<=', Carbon::parse($request->periode_end.'23:59:00'))->where('id_karyawan', $get_jabatan->id_karyawan)->sum('total');
             $array_jabatan = [
                 'id_pengajuan_penggajian' => $pengajuan_penggajian->id,
                 'id_karyawan' => $get_jabatan->id_karyawan,
                 'gaji_pokok' => $get_jabatan->gaji_pokok,
+                'nominal_hutang' => $hutang,
+                'nominal_rembes' => $rembes,
+                'nominal_transport' => $transport,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ];

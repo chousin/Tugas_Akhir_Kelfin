@@ -12,6 +12,7 @@ use App\Http\Controllers\HutangController;
 use App\Http\Controllers\TransportController;
 use App\Http\Controllers\RembesController;
 use App\Http\Controllers\PengajuanPenggajianController;
+use App\Http\Controllers\DataPenggajianController;
 
 
 /*
@@ -98,5 +99,7 @@ Route::group(['middleware' => 'auth'], function ($route) {
     // Route Pengajuan Penggajian
     Route::get('/pengajuan-penggajian', [PengajuanPenggajianController::class, 'index']);
     Route::post('/pengajuan-penggajian', [PengajuanPenggajianController::class, 'store']);
+
+    Route::get('/data-penggajian', [DataPenggajianController::class, 'index']);
 
 });

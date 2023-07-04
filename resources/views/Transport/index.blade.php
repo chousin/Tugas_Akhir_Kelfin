@@ -31,6 +31,7 @@
                         <th scope="col">Jenis Bensin Produk</th>
                         <th scope="col">Liter Volume</th>
                         <th scope="col">Harga Liter</th>
+                        <th scope="col">Total</th>
                         <th scope="col">Bukti Struk</th>
                         <th scope="col">Action</th>
                       </tr>
@@ -45,6 +46,7 @@
                         <td>{{$transport->jenis_bensin_produk}}</td>
                         <td>{{$transport->liter_volume}}</td>
                         <td>{{$transport->harga_liter}}</td>
+                        <td>{{$transport->total}}</td>
                         <td>{{$transport->bukti_struk}}</td>
                         <td>
                         <button type="button" class="btn btn-primary btn-edit"

@@ -36,6 +36,7 @@ class TransportController extends Controller
         $transport->jenis_bensin_produk = $request->jenis_bensin_produk;
         $transport->liter_volume = $request->liter_volume;
         $transport->harga_liter = $request->harga_liter;
+        $transport->total = $request->harga_liter * $request->liter_volume;
 
 
         if ($request->hasFile('bukti_struk')) {
@@ -66,6 +67,7 @@ class TransportController extends Controller
         $transport->jenis_bensin_produk = $request->jenis_bensin_produk;
         $transport->liter_volume = $request->liter_volume;
         $transport->harga_liter = $request->harga_liter;
+        $transport->total = $request->harga_liter * $request->liter_volume;
 
         if ($request->hasFile('bukti_struk')) {
             $image = $request->file('bukti_struk');

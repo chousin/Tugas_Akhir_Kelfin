@@ -14,6 +14,9 @@ class ListingKaryawan extends Model
     protected $fillable = [
         'id_pengajuan_penggajian',
         'id_karyawan',
-        'gaji_pokok'
+        'gaji_pokok',
+        'nominal_hutang',
+        'nominal_rembes',
+        'nominal_transport'
     ];
 }

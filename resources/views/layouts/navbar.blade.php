@@ -93,8 +93,8 @@
                 </a>
             </li>
             <li>
-                <a href="tables-data.html">
-                <i class="bi bi-circle"></i><span>Rekap Penggajian</span>
+                <a href="{{ url('/data-penggajian') }}">
+                <i class="bi bi-circle"></i><span>Data Penggajian</span>
                 </a>
             </li>
             </ul>
