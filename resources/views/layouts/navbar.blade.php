@@ -158,7 +158,7 @@
 
     
 
-    <li class="nav-item">
+    <!-- <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#penggajian" data-bs-toggle="collapse" href="#">
         <i class="bi bi-layout-text-window-reverse"></i><span>Penggajian</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
@@ -174,7 +174,7 @@
             </a>
         </li>
         </ul>
-    </li><!-- End Tables Nav -->
+    </li>End Tables Nav -->
     </ul>
 </aside><!-- End Sidebar-->
 
