@@ -25,11 +25,11 @@
                 <i class="bi bi-circle"></i><span>Ajukan Izin</span>
                 </a>
             </li> -->
-            <li>
+            <!-- <li>
                 <a href="{{route('absen')}}">
                 <i class="bi bi-circle"></i><span>Presensi</span>
                 </a>
-            </li>
+            </li> -->
             <!-- <li>
                 <a href="components-breadcrumbs.html">
                 <i class="bi bi-circle"></i><span>Ajukan Presensi</span>
