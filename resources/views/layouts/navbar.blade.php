@@ -88,8 +88,8 @@
             </a>
             <ul id="penggajian" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
-                <a href="tables-general.html">
-                <i class="bi bi-circle"></i><span>Data Penggajian</span>
+                <a href="{{ url('/pengajuan-penggajian') }}">
+                <i class="bi bi-circle"></i><span>Pengajuan Penggajian</span>
                 </a>
             </li>
             <li>

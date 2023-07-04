@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use App\Http\Requests\PengajuanPenggajianRequest;
+
+use App\Models\PengajuanPenggajian;
+
+use App\Models\Jabatan;
+
+use App\Models\ListingKaryawan;
+
+use Session;
+
+use Auth;
+
+class PengajuanPenggajianController extends Controller
+{
+    public function index()
+    {
+        return view('pengajuan_penggajian.index', [
+            'title' => 'Pengajuan Penggajian',
+            'halaman' => 'Home',
+            'sub_hal' => 'Pengajuan Penggajian',
+        ]);
+    }
+
+    public function store(PengajuanPenggajianRequest $request)
+    {
+        $request['id_user'] = Auth::user()->id;
+        $request['status_pengajuan'] = 1;
+        $pengajuan_penggajian = PengajuanPenggajian::create($request->all());
+
+        $jabatan = Jabatan::all();
+
+        $result_jabatan = [];
+        foreach($jabatan as $get_jabatan){
+            $array_jabatan = [
+                'id_pengajuan_penggajian' => $pengajuan_penggajian->id,
+                'id_karyawan' => $get_jabatan->id_karyawan,
+                'gaji_pokok' => $get_jabatan->gaji_pokok,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+
+            array_push($result_jabatan, $array_jabatan);
+        }
+
+        ListingKaryawan::insert($result_jabatan);
+
+        Session::flash('flash_message', 'Pengajuan berhasil diajukan.');
+        return redirect('pengajuan-penggajian');
+    }
+}
