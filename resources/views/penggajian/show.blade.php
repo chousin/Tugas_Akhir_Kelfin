@@ -50,7 +50,7 @@
                                         <td class="left strong">Gaji Pokok</td>
                                         <td class="left">(Gaji Pokok * Jumlah Hari Kerja)</td>
 
-                                        <td class="right">Rp{{ number_format($karyawan->gaji_pokok) }}</td>
+                                        <td class="right">Rp{{ number_format($karyawan->gaji_pokok) }} ({{ $karyawan->jumlah_hari }})</td>
                                         <td class="right">
                                             @php
                                             $gaji_pokok = $karyawan->gaji_pokok;
