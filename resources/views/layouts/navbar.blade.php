@@ -15,11 +15,11 @@
             <i class="bi bi-menu-button-wide"></i><span>Presensi</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="presensi" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-            <!-- <li>
-                <a href="components-alerts.html">
+            <li>
+                <a href="{{ url('presensi') }}">
                 <i class="bi bi-circle"></i><span>Data Presensi</span>
                 </a>
-            </li> -->
+            </li>
             <!-- <li>
                 <a href="components-accordion.html">
                 <i class="bi bi-circle"></i><span>Ajukan Izin</span>

@@ -13,8 +13,7 @@ use App\Http\Controllers\TransportController;
 use App\Http\Controllers\RembesController;
 use App\Http\Controllers\PengajuanPenggajianController;
 use App\Http\Controllers\DataPenggajianController;
-
-
+use App\Http\Controllers\PresensiController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -103,4 +102,9 @@ Route::group(['middleware' => 'auth'], function ($route) {
     Route::get('/data-penggajian', [DataPenggajianController::class, 'index']);
     Route::get('/detail-penggajian/{id}', [DataPenggajianController::class, 'show']);
     Route::get('/detail-penggajian/{id}/approve', [DataPenggajianController::class, 'approve']);
+
+    // Route /presensi
+    Route::get('/presensi', [PresensiController::class, 'index']);
+    Route::get('/presensi/{id}', [PresensiController::class, 'show']);
+    Route::get('/presensi/{id}/lokasi', [PresensiController::class, 'lokasi']);
 });

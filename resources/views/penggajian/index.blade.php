@@ -42,8 +42,10 @@
                                     </td>
                                     <td>
                                         <a href="{{ url('/detail-penggajian/'.$penggajian->id) }}" class="btn btn-info">Detail</a>
-                                        @if($penggajian->status_pengajuan != 2)
-                                        <a href="{{ url('/detail-penggajian/'.$penggajian->id.'/approve') }}" class="btn btn-success">Setujui</a>
+                                        @if(Auth::user()->role == 'pimpinan')
+                                            @if($penggajian->status_pengajuan != 2)
+                                            <a href="{{ url('/detail-penggajian/'.$penggajian->id.'/approve') }}" class="btn btn-success">Setujui</a>
+                                            @endif
                                         @endif
                                     </td>
                                 </tr>
