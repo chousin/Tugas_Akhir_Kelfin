@@ -15,8 +15,10 @@ class ListingKaryawan extends Model
         'id_pengajuan_penggajian',
         'id_karyawan',
         'gaji_pokok',
+        'jumlah_hari',
         'nominal_hutang',
         'nominal_rembes',
-        'nominal_transport'
+        'nominal_transport',
+        'jumlah_lembur'
     ];
 }
