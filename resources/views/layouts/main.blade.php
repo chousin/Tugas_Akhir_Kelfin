@@ -30,8 +30,7 @@
   <!-- Template Main CSS File -->
   <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
-  <script src="{{ asset('js/geo.js') }}" type="text/javascript" charset="utf-8"></script>
-  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+  <script src="{{ asset('js/geo-min.js') }}" type="text/javascript" charset="utf-8"></script>
 
 </head>
 

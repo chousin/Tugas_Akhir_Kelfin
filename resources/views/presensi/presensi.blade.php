@@ -60,19 +60,21 @@
 	</div>
 </div>
 <script>
-function getLocation() {
-      if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-      } else { 
-            x.innerHTML = "Geolocation is not supported by this browser.";
-      }
+if(geo_position_js.init()){
+	geo_position_js.getCurrentPosition(success_callback,error_callback,{enableHighAccuracy:true});
+}else{
+	alert("Functionality not available");
 }
 
-getLocation();
-
-function showPosition(position) {
-      document.getElementById('latitude').value = position.coords.latitude;
-      document.getElementById('longitude').value = position.coords.longitude;
+function success_callback(p)
+{
+	document.getElementById('latitude').value = p.coords.latitude;
+    document.getElementById('longitude').value = p.coords.longitude;
 }
+
+function error_callback(p)
+{
+	alert('error='+p.message);
+}	
 </script>
 @endsection
