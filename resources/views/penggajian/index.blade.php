@@ -16,17 +16,30 @@
                                     <th>Tanggal Akhir Absen</th>
                                     <th>Keterangan</th>
                                     <th>Status Pengajuan</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @php $no = 1; @endphp
+                                @if(!empty($pengajuan_penggajian))
+                                @foreach($pengajuan_penggajian as $penggajian)
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>{{ $no++ }}</td>
+                                    <td>{{ $penggajian->created_at }}</td>
+                                    <td>{{ $penggajian->periode_start }}</td>
+                                    <td>{{ $penggajian->periode_end }}</td>
+                                    <td>{{ $penggajian->keterangan }}</td>
+                                    <td>
+                                        @if($penggajian->status_pengajuan == 1)
+                                        <span class="badge text-bg-warning">Sedang Direview</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <a href="{{ url('/detail-penggajian/'.$penggajian->id) }}" class="btn btn-info">Detail</a>
+                                    </td>
                                 </tr>
+                                @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>

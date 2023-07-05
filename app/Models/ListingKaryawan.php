@@ -21,4 +21,9 @@ class ListingKaryawan extends Model
         'nominal_transport',
         'jumlah_lembur'
     ];
+
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class, 'id_karyawan');
+    }
 }

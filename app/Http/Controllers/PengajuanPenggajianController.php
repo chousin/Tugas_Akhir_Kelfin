@@ -33,7 +33,7 @@ class PengajuanPenggajianController extends Controller
         return view('pengajuan_penggajian.index', [
             'title' => 'Pengajuan Penggajian',
             'halaman' => 'Home',
-            'sub_hal' => 'Pengajuan Penggajian',
+            'sub_hal' => 'Pengajuan Penggajian'
         ]);
     }
 

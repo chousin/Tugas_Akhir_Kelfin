@@ -101,5 +101,5 @@ Route::group(['middleware' => 'auth'], function ($route) {
     Route::post('/pengajuan-penggajian', [PengajuanPenggajianController::class, 'store']);
 
     Route::get('/data-penggajian', [DataPenggajianController::class, 'index']);
-
+    Route::get('/detail-penggajian/{id}', [DataPenggajianController::class, 'show']);
 });
