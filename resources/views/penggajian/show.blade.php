@@ -71,9 +71,9 @@
                                         <td class="right">
                                             @php
                                                 $gaji_pokok = $karyawan->gaji_pokok;
-                                                $jumlah_hari = $karyawan->jumlah_hari;
+                                                $jumlah_lembur = $karyawan->jumlah_lembur;
 
-                                                $total_lembur = $gaji_pokok / 8 * $jumlah_hari;
+                                                $total_lembur = $gaji_pokok / 8 * $jumlah_lembur;
 
                                                 echo 'Rp'.number_format($total_lembur);
                                             @endphp
