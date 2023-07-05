@@ -12,6 +12,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Tanggal</th>
+                                    <th>HRD(Pengajuan)</th>
                                     <th>Tanggal Mulai Absen</th>
                                     <th>Tanggal Akhir Absen</th>
                                     <th>Keterangan</th>
@@ -26,6 +27,7 @@
                                 <tr>
                                     <td>{{ $no++ }}</td>
                                     <td>{{ $penggajian->created_at }}</td>
+                                    <td>{{ $penggajian->user->name }}</td>
                                     <td>{{ $penggajian->periode_start }}</td>
                                     <td>{{ $penggajian->periode_end }}</td>
                                     <td>{{ $penggajian->keterangan }}</td>

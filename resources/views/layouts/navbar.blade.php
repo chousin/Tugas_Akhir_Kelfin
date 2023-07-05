@@ -192,7 +192,7 @@
         </a>
     </li><!-- End Dashboard Nav -->
 
-    <li class="nav-item">
+    <!-- <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#presensi" data-bs-toggle="collapse" href="#">
         <i class="bi bi-menu-button-wide"></i><span>Presensi</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
@@ -218,7 +218,7 @@
             </a>
         </li>
         </ul>
-    </li><!-- End Components Nav -->
+    </li>End Components Nav -->
 
     <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#penggajian" data-bs-toggle="collapse" href="#">
@@ -226,13 +226,8 @@
         </a>
         <ul id="penggajian" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-            <a href="tables-general.html">
-            <i class="bi bi-circle"></i><span>General Tables</span>
-            </a>
-        </li>
-        <li>
-            <a href="tables-data.html">
-            <i class="bi bi-circle"></i><span>Data Tables</span>
+            <a href="{{ url('/data-penggajian') }}">
+            <i class="bi bi-circle"></i><span>Data Penggajian</span>
             </a>
         </li>
         </ul>

@@ -18,4 +18,9 @@ class PengajuanPenggajian extends Model
         'keterangan',
         'status_pengajuan'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
+    }
 }
