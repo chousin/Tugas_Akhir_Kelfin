@@ -35,9 +35,16 @@
                                         @if($penggajian->status_pengajuan == 1)
                                         <span class="badge text-bg-warning">Sedang Direview</span>
                                         @endif
+
+                                        @if($penggajian->status_pengajuan == 2)
+                                        <span class="badge text-bg-success">Disetujui</span>
+                                        @endif
                                     </td>
                                     <td>
                                         <a href="{{ url('/detail-penggajian/'.$penggajian->id) }}" class="btn btn-info">Detail</a>
+                                        @if($penggajian->status_pengajuan != 2)
+                                        <a href="{{ url('/detail-penggajian/'.$penggajian->id.'/approve') }}" class="btn btn-success">Setujui</a>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach

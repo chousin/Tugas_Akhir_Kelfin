@@ -34,4 +34,16 @@ class DataPenggajianController extends Controller
             'pengajuan_penggajian' => $pengajuan_penggajian
         ]);
     }
+
+    public function approve($id)
+    {
+        $row = [
+            'status_pengajuan' => 2
+        ];
+
+        $pengajuan_penggajian = PengajuanPenggajian::findOrFail($id);
+        $pengajuan_penggajian->update($row);
+
+        return redirect('/data-penggajian');
+    }
 }

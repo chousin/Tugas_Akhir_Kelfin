@@ -15,6 +15,10 @@
                             @if($pengajuan_penggajian->status_pengajuan == 1)
                                 Sedang Direview
                             @endif
+
+                            @if($pengajuan_penggajian->status_pengajuan == 2)
+                                Disetujui
+                            @endif
                         </span>
 
                     </div>
