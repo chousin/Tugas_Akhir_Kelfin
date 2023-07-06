@@ -1,7 +1,14 @@
 @extends('layouts.main')
 
 @section('container')
-<div class="row">
+<div class="row" id="geolocation-success">
+	<div class="card">
+		<div class="card-body">
+			<p>Aktifkan lokasi perangkat anda terlebih dahulu!</p>
+		</div>
+	</div>
+</div>
+<div class="row" id="presensiform">
     <div class="col-3">
 		@include('_partial.flash_message')
 		@if(Session::get('sesi_absen') == '')
@@ -61,21 +68,28 @@
 	</div>
 </div>
 <script>
-if(geo_position_js.init()){
-	geo_position_js.getCurrentPosition(success_callback,error_callback,{enableHighAccuracy:true});
-}else{
-	alert("Functionality not available");
-}
+    if(geo_position_js.init()){
+      geo_position_js.getCurrentPosition(success_callback,error_callback,{enableHighAccuracy:true});
+    }else{
+      alert("Functionality not available");
+    }
 
-function success_callback(p)
-{
-	document.getElementById('latitude').value = p.coords.latitude;
-    document.getElementById('longitude').value = p.coords.longitude;
-}
+    function success_callback(p)
+    {	
+		var element1 = document.getElementById('geolocation-success');
+		element1.classList.add("d-none");
 
-function error_callback(p)
-{
-	alert('error='+p.message);
-}	
+     	document.getElementById('latitude').value = p.coords.latitude;
+        document.getElementById('longitude').value = p.coords.longitude;
+    }
+
+    function error_callback(p)
+    {
+		var element = document.getElementById('presensiform');
+		element.classList.add("d-none");
+
+		var element1 = document.getElementById('geolocation-success');
+		element1.classList.add("d-block");
+    }	
 </script>
 @endsection
