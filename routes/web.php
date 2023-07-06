@@ -14,6 +14,7 @@ use App\Http\Controllers\RembesController;
 use App\Http\Controllers\PengajuanPenggajianController;
 use App\Http\Controllers\DataPenggajianController;
 use App\Http\Controllers\PresensiController;
+use App\Http\Controllers\DataGajiKaryawan;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -103,8 +104,12 @@ Route::group(['middleware' => 'auth'], function ($route) {
     Route::get('/detail-penggajian/{id}', [DataPenggajianController::class, 'show']);
     Route::get('/detail-penggajian/{id}/approve', [DataPenggajianController::class, 'approve']);
 
-    // Route /presensi
+    // Route Presensi
     Route::get('/presensi', [PresensiController::class, 'index']);
     Route::get('/presensi/{id}', [PresensiController::class, 'show']);
     Route::get('/presensi/{id}/lokasi', [PresensiController::class, 'lokasi']);
+
+
+    // Data Gaji Karyawan
+    Route::get('/data-gaji-karyawan', [DataGajiKaryawan::class, 'index']);
 });
