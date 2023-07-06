@@ -103,6 +103,7 @@ Route::group(['middleware' => 'auth'], function ($route) {
     Route::get('/data-penggajian', [DataPenggajianController::class, 'index']);
     Route::get('/detail-penggajian/{id}', [DataPenggajianController::class, 'show']);
     Route::get('/detail-penggajian/{id}/approve', [DataPenggajianController::class, 'approve']);
+    Route::get('/detail-penggajian/{id}/cetak', [DataPenggajianController::class, 'cetak']);
 
     // Route Presensi
     Route::get('/presensi', [PresensiController::class, 'index']);

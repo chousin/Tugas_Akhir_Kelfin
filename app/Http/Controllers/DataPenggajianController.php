@@ -46,4 +46,14 @@ class DataPenggajianController extends Controller
 
         return redirect('/data-penggajian');
     }
+
+    public function cetak($id)
+    {
+        $pengajuan_penggajian = PengajuanPenggajian::findOrFail($id);
+        $listing_karyawan = ListingKaryawan::all()->where('id_pengajuan_penggajian', $id);
+        $jumlah_lemburs = ListingKaryawan::all()->sum('jumlah_lembur');
+        $jumlah_transports = ListingKaryawan::all()->sum('nominal_transport');
+
+        return view('penggajian.cetak', compact('listing_karyawan', 'jumlah_lemburs', 'jumlah_transports'));
+    }
 }
