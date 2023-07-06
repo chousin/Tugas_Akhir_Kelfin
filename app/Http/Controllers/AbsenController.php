@@ -11,6 +11,8 @@ use App\Models\Karyawan;
 
 use Session;
 
+use Carbon\Carbon;
+
 class AbsenController extends Controller
 {
     public function index()
@@ -29,20 +31,26 @@ class AbsenController extends Controller
     {
         $id_user = Auth::user()->id;
         $user = Karyawan::all()->where('id_user', $id_user)->first();
+        $presensi = Presensi::whereDate('created_at', Carbon::now())->where('id_karyawan', $user->id_karyawan)->get();
 
-        $rows = [
-            'id_karyawan' => $user->id_karyawan,
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude,
-            'tanggal_masuk' => date('Y-m-d H:i:s'),
-            'tanggal_pulang' => date('Y-m-d H:i:s'),
-            'jumlah_lembur' => 0,
-        ];
-
-        $presensi = Presensi::create($rows);
-
-        Session::put('sesi_absen', $presensi->id);
-        return redirect('/absen');
+        if($presensi->count() >= 1){
+            Session::flash('flash_message', 'Absen hanya bisa 1 kali dalam 1 hari.');
+            return redirect('/absen');
+        }else{
+            $rows = [
+                'id_karyawan' => $user->id_karyawan,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'tanggal_masuk' => date('Y-m-d H:i:s'),
+                'tanggal_pulang' => date('Y-m-d H:i:s'),
+                'jumlah_lembur' => 0,
+            ];
+    
+            $presensi = Presensi::create($rows);
+    
+            Session::put('sesi_absen', $presensi->id);
+            return redirect('/absen');
+        }
     }
 
     public function pulang(Request $request)
@@ -52,29 +60,34 @@ class AbsenController extends Controller
 
         $tanggal_pulang = date('Y-m-d H:i:s');
 
-        $tanggal_clockout = strtotime($tanggal_pulang);
-        $target_time = strtotime(date('Y-m-d') . '16:00:00');
-
-        $timeDiff = $tanggal_clockout - $target_time;
-
-        $hours = floor($timeDiff / 3600);
-
-        if($hours > 0){
-            $jumlah_lembur = $hours;
+        if($tanggal_pulang <= date('Y-m-d').' 16:00:00'){
+            Session::flash('flash_message', 'Tidak bisa melakukan absen pulang sebelum jam 16:00 WIB');
+            return redirect('/absen');
         }else{
-            $jumlah_lembur = 0;
+            $tanggal_clockout = strtotime($tanggal_pulang);
+            $target_time = strtotime(date('Y-m-d') . '16:00:00');
+    
+            $timeDiff = $tanggal_clockout - $target_time;
+    
+            $hours = floor($timeDiff / 3600);
+    
+            if($hours > 0){
+                $jumlah_lembur = $hours;
+            }else{
+                $jumlah_lembur = 0;
+            }
+    
+            $rows = [
+                'id_karyawan' => $user->id_karyawan,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'tanggal_pulang' => $tanggal_pulang,
+                'jumlah_lembur' => $jumlah_lembur
+            ];
+    
+            $presensi = Presensi::where('id', Session::get('sesi_absen'))->update($rows);
+            return redirect('/absen');
         }
-
-        $rows = [
-            'id_karyawan' => $user->id_karyawan,
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude,
-            'tanggal_pulang' => $tanggal_pulang,
-            'jumlah_lembur' => $jumlah_lembur
-        ];
-
-        $presensi = Presensi::where('id', Session::get('sesi_absen'))->update($rows);
-        return redirect('/absen');
     }
 
     public function reset()

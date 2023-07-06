@@ -3,6 +3,7 @@
 @section('container')
 <div class="row">
     <div class="col-3">
+		@include('_partial.flash_message')
 		@if(Session::get('sesi_absen') == '')
 		<form  method="POST" action="{{ url('/absen') }}">
 			@csrf
