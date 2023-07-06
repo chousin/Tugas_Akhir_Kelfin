@@ -1,20 +1,13 @@
 @extends('layouts.main')
 
 @section('container')
-<div class="row" id="geolocation-success">
-	<div class="card">
-		<div class="card-body">
-			<p>Aktifkan lokasi perangkat anda terlebih dahulu!</p>
-		</div>
-	</div>
-</div>
-<div class="row" id="presensiform">
+<div class="row">
     <div class="col-3">
 		@include('_partial.flash_message')
 		@if(Session::get('sesi_absen') == '')
 		<form  method="POST" action="{{ url('/absen') }}">
 			@csrf
-			<input type="hidden" name="latitude" id="latitude">
+			<input type="hidden" name="latitude" class="latitude" id="latitude">
 			<input type="hidden" name="longitude" id="longitude">
 			<input type="submit" value="ABSEN MASUK" class="btn btn-primary">
 		</form>
@@ -76,20 +69,13 @@
 
     function success_callback(p)
     {	
-		var element1 = document.getElementById('geolocation-success');
-		element1.classList.add("d-none");
-
      	document.getElementById('latitude').value = p.coords.latitude;
         document.getElementById('longitude').value = p.coords.longitude;
     }
 
     function error_callback(p)
     {
-		var element = document.getElementById('presensiform');
-		element.classList.add("d-none");
-
-		var element1 = document.getElementById('geolocation-success');
-		element1.classList.add("d-block");
-    }	
+		// alert('error='+p.message);
+    }
 </script>
 @endsection
