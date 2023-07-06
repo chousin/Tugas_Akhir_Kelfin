@@ -30,7 +30,7 @@ class PengajuanPenggajianController extends Controller
 {
     public function index()
     {
-        $pengajuan_penggajian = PengajuanPenggajian::all()->last();
+        $pengajuan_penggajian = PengajuanPenggajian::all()->where('status_pengajuan', 2)->last();
 
         return view('pengajuan_penggajian.index', [
             'title' => 'Pengajuan Penggajian',
