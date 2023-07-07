@@ -31,6 +31,7 @@
   <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
   <script src="{{ asset('js/geo-min.js') }}" type="text/javascript" charset="utf-8"></script>
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
 
 </head>
 
