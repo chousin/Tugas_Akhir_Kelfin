@@ -14,21 +14,26 @@ class CardController extends Controller
 {
     public function index()
     {
-        $karyawan = Karyawan::all()->where('id_user', Auth::user()->id)->first();
-        $presensi = Presensi::all()->where('id_karyawan', $karyawan->id_karyawan);
-
-        $result = [];
-        foreach($presensi as $get_presensi){
-            $result_array = [
-                'title' => 'ABSEN',
-                'start' => substr($get_presensi->tanggal_masuk, 0, 10),
-                'end' => substr($get_presensi->tanggal_pulang, 0 , 10)
-            ];
-
-            array_push($result, $result_array);
+        if(Auth::user()->role == 'pegawai'){
+            $karyawan = Karyawan::all()->where('id_user', Auth::user()->id)->first();
+            $presensi = Presensi::all()->where('id_karyawan', $karyawan->id_karyawan);
+    
+            $result = [];
+            foreach($presensi as $get_presensi){
+                $result_array = [
+                    'title' => 'ABSEN',
+                    'start' => substr($get_presensi->tanggal_masuk, 0, 10),
+                    'end' => substr($get_presensi->tanggal_pulang, 0 , 10)
+                ];
+    
+                array_push($result, $result_array);
+            }
+    
+            $data_absen = json_encode($result);
+        }else{
+            $data_absen = [];
         }
-
-        $data_absen = json_encode($result);
+        
 
         return view('components.card', [
             "title" => "Dashboard",
