@@ -28,7 +28,7 @@ class JabatanController extends Controller
         $request->validate([
             'id_karyawan' => 'required',
             'jabatan' => 'required',
-            'gaji_pokok' => 'required'
+            'gaji_pokok' => 'required|regex:/^\d{0,6}(\.\d{1,2})?$/'
         ]);
 
         $jabatan = new Jabatan();
