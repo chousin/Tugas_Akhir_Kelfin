@@ -11,7 +11,7 @@ class Rembes extends Model
 
     protected $table = 'rembes';
 
-    protected $primarykey = 'id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'id',

@@ -11,7 +11,7 @@ class Transport extends Model
 
     protected $table = 'transport';
 
-    protected $primarykey = 'id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'id',
