@@ -21,7 +21,7 @@
               
 
               <!-- Table with stripped rows -->
-              <table class="table datatable">
+              <table class="table">
                 <thead>
                   <tr>
                     <th scope="col">No</th>
@@ -33,18 +33,19 @@
                 </thead>
                 
                 <tbody>
+                  @php $no = 1; @endphp
                 @foreach ($data as $akun)
-                <tr>
-                    <th scope="row">{{$akun->id}}</th>
+                <tr class="lead">
+                    <th scope="row">{{$no++}}</th>
                     <td>{{$akun->name}}</td>
                     <td>{{$akun->email}}</td>
                     <td>{{$akun->role}}</td>
                     <td>
-                    <button type="button" class="btn btn-primary btn-edit"
-                                data-url={{ route('akun.getAkun', ['id' => $akun->id]) }} data-toggle="modal"
-                                data-target="#editAkun">
-                                Edit
-                            </button>
+                          <button type="button" class="btn btn-primary btn-edit"
+                              data-url="{{  route('akun.getAkun', ['id' => $akun->id]) }}" data-toggle="modal"
+                              data-target="#editAkun">
+                              Edit
+                          </button>
                             <!-- <a class="btn btn-danger btn-delete"
                                 href="{{ route('akun.delete', ['id' => $akun->id]) }}"
                                 onclick="return confirm('Apa kamu yakin?')">Delete</a> -->
@@ -65,11 +66,11 @@
     <!-- Button trigger modal -->
 
 <!-- Modal Tambah Data -->
-@include('akun.tambah_akun');
+@include('akun.tambah_akun')
 <!-- End Tambah Data -->
 
 <!-- Modal Edit Data -->
-@include('akun.edit_akun');
+@include('akun.edit_akun')
 <!-- End Edit Data -->
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
@@ -88,6 +89,7 @@
         $('#editAkun #name').val('')
         $('#editAkun #email').val('')
         $('#editAkun #role').val('')
+        console.log(url);
         $.ajax({
           type: "get",
           url: url,

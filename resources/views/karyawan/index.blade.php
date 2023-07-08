@@ -52,7 +52,7 @@
                         <td>{{$karyawan->no_rekening}}</td>
                         <td>
                         <button type="button" class="btn btn-primary btn-edit"
-                                data-url={{  route('karyawan.getKaryawan', ['id' => $karyawan->id_karyawan]) }} data-toggle="modal"
+                                data-url="{{  route('karyawan.getKaryawan', ['id' => $karyawan->id_karyawan]) }}" data-toggle="modal"
                                 data-target="#editKaryawan">
                                 Edit
                             </button>
