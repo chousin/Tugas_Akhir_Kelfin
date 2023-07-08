@@ -56,4 +56,15 @@ class DataPenggajianController extends Controller
 
         return view('penggajian.cetak', compact('listing_karyawan', 'jumlah_lemburs', 'jumlah_transports'));
     }
+
+    public function list()
+    {
+        $pengajuan_penggajian = PengajuanPenggajian::all()->where('status_pengajuan', 2);
+        return view('penggajian.approve', [
+            'title' => 'Data Penggajian Disetujui',
+            'halaman' => 'Home',
+            'sub_hal' => 'Data Penggajian disetujui',
+            'pengajuan_penggajian' => $pengajuan_penggajian
+        ]);
+    }
 }

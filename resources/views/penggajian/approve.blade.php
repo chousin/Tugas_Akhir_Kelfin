@@ -47,6 +47,12 @@
                                             <a href="{{ url('/detail-penggajian/'.$penggajian->id.'/approve') }}" class="btn btn-success">Setujui</a>
                                             @endif
                                         @endif
+
+                                        @if(Auth::user()->role == 'admin')
+                                            @if($penggajian->status_pengajuan != 1)
+                                            <a href="{{ url('/detail-penggajian/'.$penggajian->id.'/cetak') }}" target="_blank" class="btn btn-success">Cetak</a>
+                                            @endif
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach

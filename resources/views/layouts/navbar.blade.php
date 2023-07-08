@@ -97,6 +97,11 @@
                 <i class="bi bi-circle"></i><span>Data Penggajian</span>
                 </a>
             </li>
+            <li>
+                <a href="{{ url('/penggajian-approve') }}">
+                <i class="bi bi-circle"></i><span>Penggajian Approve</span>
+                </a>
+            </li>
             </ul>
         </li><!-- End Tables Nav -->
 
