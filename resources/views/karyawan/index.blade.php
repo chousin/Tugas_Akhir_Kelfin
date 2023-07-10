@@ -93,6 +93,7 @@
     <script>
       $('.btn-edit').click(function() {
         var url = $(this).data('url');
+        console.log(url);
         $('#editKaryawan #nama_karyawan').val('')
         $('#editKaryawan #alamat').val('')
         $('#editKaryawan #tgl_lahir').val('')
@@ -105,6 +106,7 @@
           url: url,
           dataType: "json",
           success: function(res) {
+            $('#editKaryawan #id_karyawan').val(res['id_karyawan'])
             $('#editKaryawan #nama_karyawan').val(res['nama_karyawan'])
             $('#editKaryawan #alamat').val(res['alamat'])
             $('#editKaryawan #tgl_lahir').val(res['tgl_lahir'])

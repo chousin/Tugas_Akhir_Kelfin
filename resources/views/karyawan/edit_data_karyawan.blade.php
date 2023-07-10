@@ -14,7 +14,7 @@
               <form class="row g-3" action="{{route('karyawan.update')}}" method="post">
                 @csrf
                 <div class="col-12">
-                <input type="hidden" name="id" value="{{ isset($karyawan->id_karyawan) ? $karyawan->id_karyawan : '' }}">
+                <input type="hidden" name="id" id="id_karyawan">
                   <label  class="form-label">Nama Karyawan</label>
                   <input type="text" name="nama_karyawan" id="nama_karyawan" class="form-control @error('nama_karyawan') is-invalid @enderror">
                   @error('nama_karyawan')
