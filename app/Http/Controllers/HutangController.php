@@ -41,7 +41,6 @@ class HutangController extends Controller
 
     public function update(Request $request)
     {
-
         $validatedData = $request->validate([
             'id_karyawan' => 'required',
             'nominal_hutang' => 'required',

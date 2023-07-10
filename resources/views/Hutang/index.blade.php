@@ -112,6 +112,7 @@
         
 
         // Mengatur nilai pada input lainnya
+        $('#editHutang #id_hutang').val(res.hutang['id']);
         $('#editHutang #id_karyawan').val(res.hutang['id_karyawan']); // Berubah
         $('#editHutang #nominal_hutang').val(res.hutang['nominal_hutang']); 
         $('#editHutang #keterangan').val(res.hutang['keterangan']); 
