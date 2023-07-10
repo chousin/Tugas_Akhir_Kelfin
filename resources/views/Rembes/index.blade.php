@@ -95,7 +95,7 @@
             console.log(res.rembes);
 
             // Mengisi nilai pada input
-            $('#editRembes #id').val(res.rembes['id']);
+            $('#editRembes #id_rembes').val(res.rembes['id']);
             $('#editRembes #id_karyawan').val(res.rembes['id_karyawan']);
             $('#editRembes #nominal').val(res.rembes['nominal']);
 

@@ -101,7 +101,7 @@
             console.log(res.transport);
 
             // Mengisi nilai pada input
-            $('#editTransport #id').val(res.transport['id']);
+            $('#editTransport #id_transport').val(res.transport['id']);
             $('#editTransport #id_karyawan').val(res.transport['id_karyawan']);
             $('#editTransport #jenis_bensin_produk').val(res.transport['jenis_bensin_produk']);
             $('#editTransport #liter_volume').val(res.transport['liter_volume']);

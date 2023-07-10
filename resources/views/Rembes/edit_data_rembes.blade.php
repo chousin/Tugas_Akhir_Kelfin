@@ -16,6 +16,7 @@
               @endif
                 @csrf
                 
+                <input type="hidden" id="id_rembes" name="id">
                 <div class="col-12">
                     <label class="form-label">Nama Karyawan</label>
                     <select name="id_karyawan" id="id_karyawan" class="form-control @error('id_karyawan') is-invalid @enderror">

@@ -113,6 +113,7 @@
         
 
         // Mengatur nilai pada input lainnya
+        $('#editJabatan #id_jabatan').val(res.jabatan['id']);
         $('#editJabatan #id_karyawan').val(res.jabatan['id_karyawan']); // Berubah
         $('#editJabatan #jabatan').val(res.jabatan['jabatan']); 
         $('#editJabatan #gaji_pokok').val(res.jabatan['gaji_pokok']); 
