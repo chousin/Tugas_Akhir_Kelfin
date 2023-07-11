@@ -15,6 +15,7 @@ use App\Http\Controllers\PengajuanPenggajianController;
 use App\Http\Controllers\DataPenggajianController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\DataGajiKaryawan;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -103,6 +104,7 @@ Route::group(['middleware' => 'auth'], function ($route) {
     Route::get('/data-penggajian', [DataPenggajianController::class, 'index']);
     Route::get('/detail-penggajian/{id}', [DataPenggajianController::class, 'show']);
     Route::get('/detail-penggajian/{id}/approve', [DataPenggajianController::class, 'approve']);
+    Route::get('/detail-penggajian/{id}/rekap', [DataPenggajianController::class, 'rekap']);
     Route::get('/detail-penggajian/{id}/cetak', [DataPenggajianController::class, 'cetak']);
     Route::get('/penggajian-approve', [DataPenggajianController::class, 'list']);
 

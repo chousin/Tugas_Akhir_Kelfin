@@ -37,7 +37,7 @@ class KaryawanController extends Controller
 
         $payload = [
             'name' => $request->nama_karyawan,
-            'email' => str_replace(' ', '', strtolower($request->nama_karyawan)).'@gmail.com',
+            'email' => str_replace(' ', '', strtolower($request->nama_karyawan)) . '@gmail.com',
             'password' => bcrypt(str_replace('-', '', $request->tgl_lahir)),
             'role' => 'pegawai',
             'created_at' => date('Y-m-d H:i:s'),
@@ -71,7 +71,7 @@ class KaryawanController extends Controller
 
         $payload = [
             'name' => $request->nama_karyawan,
-            'email' => str_replace(' ', '', strtolower($request->nama_karyawan)).'@gmail.com',
+            'email' => str_replace(' ', '', strtolower($request->nama_karyawan)) . '@gmail.com',
             'password' => bcrypt(str_replace('-', '', $request->tgl_lahir)),
             'role' => 'pegawai',
             'created_at' => date('Y-m-d H:i:s'),

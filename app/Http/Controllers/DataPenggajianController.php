@@ -8,6 +8,8 @@ use App\Models\PengajuanPenggajian;
 
 use App\Models\ListingKaryawan;
 
+use App\Models\Karyawan;
+
 class DataPenggajianController extends Controller
 {
     public function index()
@@ -55,6 +57,23 @@ class DataPenggajianController extends Controller
         $jumlah_transports = ListingKaryawan::all()->sum('nominal_transport');
 
         return view('penggajian.cetak', compact('listing_karyawan', 'jumlah_lemburs', 'jumlah_transports'));
+    }
+    public function rekap($id)
+    {
+        $pengajuan_penggajian = PengajuanPenggajian::findOrFail($id);
+        $listing_karyawan = ListingKaryawan::all()->where('id_pengajuan_penggajian', $id);
+        $jumlah_lemburs = ListingKaryawan::all()->sum('jumlah_lembur');
+        $jumlah_transports = ListingKaryawan::all()->sum('nominal_transport');
+
+        return view(
+            'penggajian.rekap',
+            [
+                'title' => 'Data Penggajian ',
+                'halaman' => 'Home',
+                'sub_hal' => 'Rekap Data Penggajian',
+            ],
+            compact('listing_karyawan', 'jumlah_lemburs', 'jumlah_transports')
+        );
     }
 
     public function list()
