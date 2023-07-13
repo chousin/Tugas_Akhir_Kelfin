@@ -27,6 +27,7 @@
                     <thead>
                       <tr >
                         <th scope="col">No</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Nama Pegawai</th>
                         <th scope="col">Jabatan</th>
                         <th scope="col">Gaji Pokok</th>
@@ -40,6 +41,13 @@
                       
                     <tr class ="lead">
                         <th scope="row">{{$no++}}</th>
+                        <td>
+                          @if($jabatan->status_karyawan == 0)
+                            Harian Lepas (HL)
+                          @else
+                            Kontrak
+                          @endif
+                        </td>
                         <td >{{$jabatan->karyawan->nama_karyawan}}</td>
                         <td>{{$jabatan->jabatan}}</td>
                         <td>{{$jabatan->gaji_pokok}}</td>
@@ -104,17 +112,27 @@
         // Menambahkan opsi "Pilih Nama Karyawan" sebagai opsi pertama
         $('#editJabatan #id_karyawan').append('<option value="">Pilih Nama Karyawan</option>');
 
+        $('#editJabatan #status_karyawan').empty();
+
+        $('#editJabatan #status_karyawan').append('<option value="">Pilih Status Karyawan</option>');
+
         // Loop melalui setiap karyawan dan tambahkan sebagai opsi dropdown
         $.each(res.karyawan, function(index, karyawan) { 
           // console.log(karyawan);
           $('#editJabatan #id_karyawan').append('<option value="' + karyawan.id_karyawan + '">' + karyawan.nama_karyawan + '</option>');
         });
 
+        $.each(res.status, function(index, status_karyawan) {
+          console.log(status_karyawan);
+          $('#editJabatan #status_karyawan').append('<option value="' + status_karyawan.id + '">' + status_karyawan.status_name + '</option>');
+        })
+
         
 
         // Mengatur nilai pada input lainnya
         $('#editJabatan #id_jabatan').val(res.jabatan['id']);
         $('#editJabatan #id_karyawan').val(res.jabatan['id_karyawan']); // Berubah
+        $('#editJabatan #status_karyawan').val(res.jabatan['status_karyawan']);
         $('#editJabatan #jabatan').val(res.jabatan['jabatan']); 
         $('#editJabatan #gaji_pokok').val(res.jabatan['gaji_pokok']); 
       }

@@ -15,6 +15,7 @@ class Jabatan extends Model
 
     protected $fillable = [
         'id_karyawan',
+        'status_karyawan',
         'jabatan',
         'gaji_pokok',
         'created_at',

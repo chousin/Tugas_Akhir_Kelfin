@@ -13,6 +13,15 @@
               <!-- Vertical Form -->
               <form class="row g-3" action="/jabatan-create" method="post">
                 @csrf
+
+                <div class="col-12">
+                  <label class="status_karyawan">Status Karyawan</label>
+                  <select name="status_karyawan" id="status_karyawan" class="form-control">
+                    <option value="">Pilih Status Karyawan</option>
+                    <option value="0">Harian Lepas</option>
+                    <option value="1">Kontrak</option>
+                  </select>
+                </div>
                 
                 <div class="col-12">
                     <label class="form-label">Nama Karyawan</label>

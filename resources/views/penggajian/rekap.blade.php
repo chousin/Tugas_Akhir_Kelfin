@@ -37,7 +37,13 @@
                             <td>{{ $get_listing_karyawan->karyawan->nama_karyawan }}</td>
                             <td>{{ $get_listing_karyawan->karyawan->no_rekening }}</td>
                             <td class="text-right">{{ number_format($get_listing_karyawan->gaji_pokok) }}</td>
-                            <td class="text-right">{{ $get_listing_karyawan->jumlah_hari }}</td>
+                            <td class="text-right">
+                                @if($get_listing_karyawan->status_karyawan == 0)
+                                {{ $get_listing_karyawan->jumlah_hari }}
+                                @else
+                                -
+                                @endif
+                            </td>
                             <td class="text-right">{{ $get_listing_karyawan->jumlah_lembur }}</td>
                             <td class="text-right">
                                 @php

@@ -55,11 +55,19 @@ class PengajuanPenggajianController extends Controller
             $transport = Transport::where('created_at', '>=', Carbon::parse($request->periode_start . '00:00:00'))->where('created_at', '<=', Carbon::parse($request->periode_end . '23:59:00'))->where('id_karyawan', $get_jabatan->id_karyawan)->sum('total');
             $presensi = Presensi::all()->where('id_karyawan', $get_jabatan->id_karyawan)->whereBetween('tanggal_masuk', [$request->periode_start . ' 00:00:00', $request->periode_end . ' 23:59:59']);
             $lembur = Presensi::all()->where('id_karyawan', $get_jabatan->id_karyawan)->whereBetween('tanggal_masuk', [$request->periode_start . ' 00:00:00', $request->periode_end . ' 23:59:59']);
+
+            if($get_jabatan->status_karyawan == 0){
+                $jumlah_hari = $presensi->count();
+            }else{
+                $jumlah_hari = 1;
+            }
+
             $array_jabatan = [
                 'id_pengajuan_penggajian' => $pengajuan_penggajian->id,
                 'id_karyawan' => $get_jabatan->id_karyawan,
+                'status_karyawan' => $get_jabatan->status_karyawan,
                 'gaji_pokok' => $get_jabatan->gaji_pokok,
-                'jumlah_hari' => $presensi->count(),
+                'jumlah_hari' => $jumlah_hari,
                 'nominal_hutang' => $hutang,
                 'nominal_rembes' => $rembes,
                 'nominal_transport' => $transport,

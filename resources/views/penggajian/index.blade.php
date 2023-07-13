@@ -42,7 +42,7 @@
                                     </td>
                                     <td>
                                         <a href="{{ url('/detail-penggajian/'.$penggajian->id) }}" class="btn btn-info fw-bold">Detail</a>
-                                        <a href="{{ url('/detail-penggajian/'.$penggajian->id. '/rekap') }}" class="btn btn-info fw-bold bg-danger text-white" style="margin-top:3%;">Rekap</a>
+                                        <a href="{{ url('/detail-penggajian/'.$penggajian->id. '/rekap') }}" class="btn btn-info fw-bold bg-danger text-white">Rekap</a>
                                         @if(Auth::user()->role == 'pimpinan')
                                             @if($penggajian->status_pengajuan != 2)
                                             <a href="{{ url('/detail-penggajian/'.$penggajian->id.'/approve') }}" class="btn btn-success">Setujui</a>

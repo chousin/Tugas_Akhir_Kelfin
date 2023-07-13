@@ -52,9 +52,15 @@
                                     <tr>
                                         <td class="center">1</td>
                                         <td class="left strong">Gaji Pokok</td>
-                                        <td class="left">(Gaji Pokok * Jumlah Hari Kerja)</td>
+                                        <td class="left">
+                                            @if($karyawan->status_karyawan == 0)
+                                            (Gaji Pokok * Jumlah Hari Kerja)
+                                            @else
+                                            UMR
+                                            @endif
+                                        </td>
 
-                                        <td class="right">Rp{{ number_format($karyawan->gaji_pokok) }} ({{ $karyawan->jumlah_hari }})</td>
+                                        <td class="right">Rp{{ number_format($karyawan->gaji_pokok) }} @if($karyawan->status_karyawan == 0 ) ({{ $karyawan->jumlah_hari }}) @endif</td>
                                         <td class="right">
                                             @php
                                             $gaji_pokok = $karyawan->gaji_pokok;
