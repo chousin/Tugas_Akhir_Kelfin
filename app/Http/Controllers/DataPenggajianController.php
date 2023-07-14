@@ -72,7 +72,7 @@ class DataPenggajianController extends Controller
                 'halaman' => 'Home',
                 'sub_hal' => 'Rekap Data Penggajian',
             ],
-            compact('listing_karyawan', 'jumlah_lemburs', 'jumlah_transports')
+            compact('listing_karyawan', 'jumlah_lemburs', 'jumlah_transports', 'pengajuan_penggajian')
         );
     }
 

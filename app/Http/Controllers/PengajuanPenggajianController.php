@@ -56,9 +56,9 @@ class PengajuanPenggajianController extends Controller
             $presensi = Presensi::all()->where('id_karyawan', $get_jabatan->id_karyawan)->whereBetween('tanggal_masuk', [$request->periode_start . ' 00:00:00', $request->periode_end . ' 23:59:59']);
             $lembur = Presensi::all()->where('id_karyawan', $get_jabatan->id_karyawan)->whereBetween('tanggal_masuk', [$request->periode_start . ' 00:00:00', $request->periode_end . ' 23:59:59']);
 
-            if($get_jabatan->status_karyawan == 0){
+            if ($get_jabatan->status_karyawan == 0) {
                 $jumlah_hari = $presensi->count();
-            }else{
+            } else {
                 $jumlah_hari = 1;
             }
 

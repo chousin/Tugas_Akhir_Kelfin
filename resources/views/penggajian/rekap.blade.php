@@ -4,7 +4,9 @@
 
 <div class="container-fluid">
         <div class="mt-5">
-            <h3>Periode 2023-07-03 s/d 2023-07-06</h3>
+            <h3>{{$pengajuan_penggajian->keterangan}}</h3>
+            <h3>Periode {{$pengajuan_penggajian->periode_start}} S/D {{$pengajuan_penggajian->periode_end}}</h3>
+            
 
             <div class="mt-3 table-responsive">
                 <table class="table table-bordered table-striped">
@@ -91,13 +93,13 @@
                             <td colspan="2"></td>
                             <td></td>
                             <td></td>
-                            <td class="text-right">{{ $jumlah_lemburs }}</td>
+                            <td class="text-right"></td>
                             <td></td>
                             <td></td>
                             
                             <td></td>
-                            <td class="text-right">{{ $jumlah_transports }}</td>
-                            <td colspan="2" class="text-center text-bold">TOTAL</td>
+                            <td class="text-right"></td>
+                            <td colspan="2" class="text-center fw-bold">TOTAL</td>
                             <td class="text-right" id="grand_total"></td>
                         </tr>
                     </tbody>

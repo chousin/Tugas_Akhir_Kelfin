@@ -53,6 +53,11 @@
                                             <a href="{{ url('/detail-penggajian/'.$penggajian->id.'/cetak') }}" target="_blank" class="btn btn-success">Cetak</a>
                                             @endif
                                         @endif
+                                        @if(Auth::user()->role == 'hrd')
+                                            @if($penggajian->status_pengajuan != 1)
+                                            <a href="{{ url('/detail-penggajian/'.$penggajian->id.'/cetak') }}" target="_blank" class="btn btn-success">Cetak</a>
+                                            @endif
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach

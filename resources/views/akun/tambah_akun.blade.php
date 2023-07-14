@@ -52,7 +52,8 @@
                       <option selected value="admin">Admin</option>
                       <option value="hrd">Hrd</option>
                       <option value="pegawai">Pegawai</option>
-                      <option value="pimpinan">Pimpinan</option>  
+                      <option value="pimpinan">Pimpinan</option>
+                      <option value="keuangan">Manajer Keuangan</option>  
                     </select>
 
                 </div>

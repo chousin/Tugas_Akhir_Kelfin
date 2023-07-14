@@ -50,7 +50,7 @@
                         </td>
                         <td >{{$jabatan->karyawan->nama_karyawan}}</td>
                         <td>{{$jabatan->jabatan}}</td>
-                        <td>{{$jabatan->gaji_pokok}}</td>
+                        <td>{{number_format($jabatan->gaji_pokok)}}</td>
                         <td>
                         <button type="button" class="btn btn-primary btn-edit"
                                 data-url={{ route('jabatan.getJabatan', ['id' => $jabatan->id]) }} data-toggle="modal"

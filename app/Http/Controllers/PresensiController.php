@@ -24,12 +24,16 @@ class PresensiController extends Controller
 
     public function show($id)
     {
+
         $presensi = Presensi::all()->where('id_karyawan', $id);
+        $JumlahAbsen = Presensi::where('id_karyawan', $id)->count();
+
         return view('presensi.show', [
             "title" => "Presensi",
             "halaman" => "Home",
             "sub_hal" => "Data Presensi",
-            "presensi" => $presensi
+            "presensi" => $presensi,
+            "JumlahAbsen" => $JumlahAbsen
         ]);
     }
 

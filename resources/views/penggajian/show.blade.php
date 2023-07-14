@@ -33,6 +33,17 @@
                                 <div>{{ $karyawan->karyawan->tgl_lahir }} | {{ $karyawan->karyawan->jenis_kelamin }}</div>
                                 <div>KTP: {{ $karyawan->karyawan->no_ktp }}</div>
                                 <div>Rekening : {{ $karyawan->karyawan->no_rekening }}</div>
+                                <div>
+                                    @if($karyawan->status_karyawan == 0)
+                                    Jumlah Kerja : {{ $karyawan->jumlah_hari }}
+                                    @endif
+                                    @if($karyawan->status_karyawan == 1)
+                                    Jumlah Kerja : {{ $karyawan->jumlah_hari }}
+                                    @endif
+                                    
+                                    
+                                </div>
+                                
                             </div>
                         </div>
 
@@ -60,7 +71,7 @@
                                             @endif
                                         </td>
 
-                                        <td class="right">Rp{{ number_format($karyawan->gaji_pokok) }} @if($karyawan->status_karyawan == 0 ) ({{ $karyawan->jumlah_hari }}) @endif</td>
+                                        <td class="right">Rp{{ number_format($karyawan->gaji_pokok) }}</td>
                                         <td class="right">
                                             @php
                                             $gaji_pokok = $karyawan->gaji_pokok;
@@ -73,7 +84,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="center">1</td>
+                                        <td class="center">2</td>
                                         <td class="left strong">Lembur</td>
                                         <td class="left">(Gaji Pokok : 8) x Jam </td>
 

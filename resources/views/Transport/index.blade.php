@@ -45,8 +45,8 @@
                         <td >{{$transport->karyawan->nama_karyawan}}</td>
                         <td>{{$transport->jenis_bensin_produk}}</td>
                         <td>{{$transport->liter_volume}}</td>
-                        <td>{{$transport->harga_liter}}</td>
-                        <td>{{$transport->total}}</td>
+                        <td>{{number_format($transport->harga_liter)}}</td>
+                        <td>{{number_format($transport->total)}}</td>
                         <td>{{$transport->bukti_struk}}</td>
                         <td>
                         <button type="button" class="btn btn-primary btn-edit"

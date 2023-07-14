@@ -1,6 +1,17 @@
 @extends('layouts.main')
 
 @section('container')
+@if(!empty($presensi))
+    @foreach($presensi as $get_presensi)
+        <h3>Absen {{$get_presensi->karyawan->nama_karyawan}}</h3>
+        <h3>Jumlah Absen Masuk : {{$JumlahAbsen}}</h3>
+        
+        @php
+        break;
+        @endphp
+
+    @endforeach
+@endif
 <section class="section">
     <div class="row">
         <div class="col-lg-12">
@@ -10,7 +21,6 @@
                         <table class="table caption-top">
                             <thead>
                                 <tr>
-                                    <th>Nama Karyawan</th>
                                     <th>Tanggal Masuk</th>
                                     <th>Tanggal Pulang</th>
                                     <th>Lembur</th>
@@ -21,7 +31,6 @@
                                 @if(!empty($presensi))
                                     @foreach($presensi as $get_presensi)
                                     <tr>
-                                        <td>{{ $get_presensi->karyawan->nama_karyawan }}</td>
                                         <td>{{ $get_presensi->tanggal_masuk }}</td>
                                         <td>
                                             @if($get_presensi->tanggal_pulang != $get_presensi->tanggal_masuk)

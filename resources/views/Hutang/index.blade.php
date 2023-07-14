@@ -40,7 +40,7 @@
                     <tr class ="lead">
                         <th scope="row">{{$no++}}</th>
                         <td>{{$hutang->karyawan->nama_karyawan}}</td>
-                        <td>{{$hutang->nominal_hutang}}</td>
+                        <td>{{number_format($hutang->nominal_hutang)}}</td>
                         <td>{{$hutang->keterangan}}</td>
                         <td>
                         <button type="button" class="btn btn-primary btn-edit"
