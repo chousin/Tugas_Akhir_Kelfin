@@ -48,22 +48,40 @@
                             </td>
                             <td class="text-right">{{ $get_listing_karyawan->jumlah_lembur }}</td>
                             <td class="text-right">
-                                @php
-                                    $gaji_pokok = $get_listing_karyawan->gaji_pokok;
-                                    $jumlah_lembur = $get_listing_karyawan->jumlah_lembur;
+                            @if($get_listing_karyawan->status_karyawan == 0)    
+                                            @php
+                                                
+                                                $gaji_pokok = $get_listing_karyawan->gaji_pokok;
+                                                $jumlah_lembur = $get_listing_karyawan->jumlah_lembur;
+                                                $jumlah_hari_kerja = $get_listing_karyawan->jumlah_hari;
+                                                $upah_sejam = (1 / 173 ) * $gaji_pokok;
 
-                                    $total_lembur = $gaji_pokok / 8 * $jumlah_lembur;
+                                                $total_lembur = (($upah_sejam * (1.5 + ($jumlah_lembur - 1))) + ($upah_sejam * $jumlah_lembur)) * $jumlah_lembur;
 
-                                    echo number_format($total_lembur);
-                                @endphp
+                                                echo 'Rp. '.number_format($total_lembur * $jumlah_hari_kerja);
+                                            @endphp
+                                            @endif
+                            @if($get_listing_karyawan->status_karyawan == 1)    
+                                            @php
+                                                
+                                                 $gaji_pokok = $get_listing_karyawan->gaji_pokok;
+                                                $upah_per_jam = $gaji_pokok * (1 / 173);
+                                                $uang_lembur_jam_pertama = 1.5 * $upah_per_jam;
+                                                $uang_lembur_jam_selanjutnya = 2 * $upah_per_jam;
+                                                $jumlah_lembur = $get_listing_karyawan->jumlah_lembur;
+
+                                                $total_upah_lembur = ($uang_lembur_jam_pertama + $uang_lembur_jam_selanjutnya * ($jumlah_lembur - 1)) * $jumlah_lembur;
+                                                echo 'Rp. '.number_format($total_upah_lembur)
+                                            @endphp
+                                            @endif
                             </td>
                             <td></td>
                             <td class="text-right">Rp. {{ number_format($get_listing_karyawan->nominal_transport) }}</td>
                             <td class="text-right">Rp. {{ number_format($get_listing_karyawan->nominal_rembes) }}</td>
                             <td class="text-right">Rp. {{ number_format($get_listing_karyawan->nominal_hutang) }}</td>
                             <td class="d-none total">
-                                
-                                @php 
+                            @if($get_listing_karyawan->status_karyawan == 0)
+                            @php 
                                     $gaji_pokok = $get_listing_karyawan->gaji_pokok;
                                     $jumlah_hari = $get_listing_karyawan->jumlah_hari;
 
@@ -71,10 +89,36 @@
 
                                     $sub_total = $total + $total_lembur + $get_listing_karyawan->nominal_rembes + $get_listing_karyawan->nominal_transport;
                                     echo $sub_total - $get_listing_karyawan->nominal_hutang
-                                @endphp
+                            @endphp
+                            @endif
+                            @if($get_listing_karyawan->status_karyawan == 1)
+                            @php 
+                                    $gaji_pokok = $get_listing_karyawan->gaji_pokok;
+                                    $jumlah_hari = $get_listing_karyawan->jumlah_hari;
+
+                                    $total = $gaji_pokok * $jumlah_hari;
+
+                                    $sub_total = $total + $total_upah_lembur + $get_listing_karyawan->nominal_rembes + $get_listing_karyawan->nominal_transport;
+                                    echo $sub_total - $get_listing_karyawan->nominal_hutang
+                            @endphp
+                            
+                             @endif
+                                
                             </td>
                             <td class="text-right">
-                                @php 
+                            @if($get_listing_karyawan->status_karyawan == 1)   
+                            @php 
+                                    $gaji_pokok = $get_listing_karyawan->gaji_pokok;
+                                    $jumlah_hari = $get_listing_karyawan->jumlah_hari;
+
+                                    $total = $gaji_pokok * $jumlah_hari;
+
+                                    $sub_total = $total + $total_upah_lembur + $get_listing_karyawan->nominal_rembes + $get_listing_karyawan->nominal_transport;
+                                    echo number_format($sub_total - $get_listing_karyawan->nominal_hutang)
+                                @endphp
+                                @endif
+                                @if($get_listing_karyawan->status_karyawan == 0)   
+                            @php 
                                     $gaji_pokok = $get_listing_karyawan->gaji_pokok;
                                     $jumlah_hari = $get_listing_karyawan->jumlah_hari;
 
@@ -83,6 +127,7 @@
                                     $sub_total = $total + $total_lembur + $get_listing_karyawan->nominal_rembes + $get_listing_karyawan->nominal_transport;
                                     echo number_format($sub_total - $get_listing_karyawan->nominal_hutang)
                                 @endphp
+                                @endif
                             </td>
                         </tr>
                         @endforeach

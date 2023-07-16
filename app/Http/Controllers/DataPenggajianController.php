@@ -23,8 +23,9 @@ class DataPenggajianController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function show($id, $status = null)
     {
+
         $pengajuan_penggajian = PengajuanPenggajian::findOrFail($id);
         $listing_karyawan = ListingKaryawan::all()->where('id_pengajuan_penggajian', $id);
 

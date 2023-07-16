@@ -296,13 +296,18 @@
     </div>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
+        
         var calendarEl = document.getElementById('calendar');
         var data_absen = document.getElementById('data-absen').value;
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
           initialView: 'dayGridMonth',
-          events: JSON.parse(data_absen)
+          events: JSON.parse(data_absen),
+          dateClick: function() {
+            alert('a day has been clicked!');
+            }
         });
+        
         calendar.render();
       });
     </script>

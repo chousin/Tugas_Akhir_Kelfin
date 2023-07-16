@@ -1,54 +1,105 @@
-@extends('layouts.main')
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Slip Gaji</title>
+    <style>
+        /* Style CSS untuk tampilan slip gaji */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
 
-@section('container')
+h1 {
+  text-align: center;
+}
 
+.card {
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 20px;
+}
 
+.card-header {
+  background-color: #e9e9e9;
+  border-radius: 5px 5px 0 0;
+  font-weight: bold;
+  padding: 10px;
+}
 
-<section class="section">
-    <div class="row">
-        <div class="col-lg-12">
-            @if(!empty($listing_karyawan))
-            @foreach($listing_karyawan as $karyawan)
-            <div class="container">
-                <div class="card">
-                    <div class="card-header">
-                    <a href="{{ route('cetak-pdf', ['status' => 'sudah-disetujui']) }}" class="btn btn-primary">Cetak PDF</a>
-                        Periode 
-                        <strong>{{ $pengajuan_penggajian->periode_start.' s/d '.$pengajuan_penggajian->periode_end }}</strong>
-                        <span class="float-right"> <strong>Status:</strong> 
-                            @if($pengajuan_penggajian->status_pengajuan == 1)
-                                Sedang Direview
-                            @endif
+.table {
+  width: 100%;
+}
 
-                            @if($pengajuan_penggajian->status_pengajuan == 2)
-                                Disetujui
-                            @endif
-                        </span>
+.table th,
+.table td {
+  padding: 8px;
+}
 
-                    </div>
-                    <div class="card-body">
-                        <div class="row mb-4">
-                            <div class="col-sm-6">
-                                <h6 class="mb-3">Penerima:</h6>
-                                <div>
-                                    <strong>{{ $karyawan->karyawan->nama_karyawan }}</strong>
-                                </div>
-                                <div>{{ $karyawan->karyawan->alamat }} | {{ $karyawan->karyawan->no_hp }}</div>
-                                <div>{{ $karyawan->karyawan->tgl_lahir }} | {{ $karyawan->karyawan->jenis_kelamin }}</div>
-                                <div>KTP: {{ $karyawan->karyawan->no_ktp }}</div>
-                                <div>Rekening : {{ $karyawan->karyawan->no_rekening }}</div>
-                                <div>
-                                    @if($karyawan->status_karyawan == 0)
-                                    Jumlah Kerja : {{ $karyawan->jumlah_hari }}
-                                    @endif
-                                    
-                                    
-                                </div>
-                                
-                            </div>
-                        </div>
+.table th {
+  background-color: #e9e9e9;
+  font-weight: bold;
+  text-align: left;
+}
 
-                        <div class="table-responsive-sm">
+.table td.center {
+  text-align: center;
+}
+
+.table td.left {
+  text-align: left;
+}
+
+.table td.right {
+  text-align: right;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}
+
+.table-clear {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.table-clear td {
+  padding: 5px;
+  text-align: right;
+}
+
+.table-clear td.left {
+  text-align: left;
+}
+
+.text-danger {
+  color: #ff0000;
+}
+
+    </style>
+</head>
+<body>
+
+        
+
+    @if(!empty($listing_karyawan))
+        @foreach($listing_karyawan as $karyawan)
+            <div class="card">
+            <h1>Slip Gaji</h1>
+            <strong>Periode : {{ $pengajuan_penggajian->periode_start.' s/d '.$pengajuan_penggajian->periode_end }}</strong>      
+                <div class="card-header">
+                    Nama Karyawan: {{ $karyawan->karyawan->nama_karyawan }} <br>
+                    No Rekening: {{ $karyawan->karyawan->no_rekening }}<br>
+                    
+                </div>
+                
+                   
+                <div class="card-body">
+                    
+                <div class="table-responsive-sm">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
@@ -56,7 +107,6 @@
                                         <th>Item</th>
                                         <th>Description</th>
 
-                                        <th class="right">Unit Cost</th>
                                         <th class="right">Total</th>
                                     </tr>
                                 </thead>
@@ -64,9 +114,8 @@
                                     <tr>
                                         <td class="center">1</td>
                                         <td class="left strong">Gaji Pokok</td>
-                                        <td class="left">(Gaji Pokok * Jumlah Hari Kerja)</td>
+                                        <td class="left"></td>
 
-                                        <td class="right">Rp{{ number_format($karyawan->gaji_pokok) }} ({{ $karyawan->jumlah_hari }})</td>
                                         <td class="right">
                                             @php
                                             $gaji_pokok = $karyawan->gaji_pokok;
@@ -81,9 +130,8 @@
                                     <tr>
                                         <td class="center">1</td>
                                         <td class="left strong">Lembur</td>
-                                        <td class="left">(Gaji Pokok : 8) x Jam </td>
+                                        <td class="left">{{ $karyawan->jumlah_lembur }} jam </td>
 
-                                        <td class="right">{{ $karyawan->jumlah_lembur }} Jam</td>
                                         <td class="right">
                                         @if($karyawan->status_karyawan == 0)    
                                             @php
@@ -118,28 +166,28 @@
                                         <td class="left strong">Hutang/Kasbon</td>
                                         <td class="left"></td>
 
-                                        <td class="right">Rp{{ number_format($karyawan->nominal_hutang) }}</td>
-                                        <td class="right">Rp{{ number_format($karyawan->nominal_hutang) }}</td>
+                                        <td class="right">Rp. {{ number_format($karyawan->nominal_hutang) }}</td>
                                     </tr>
                                     <tr>
                                         <td class="center">3</td>
                                         <td class="left strong">Rembes</td>
                                         <td class="left"></td>
 
-                                        <td class="right">Rp{{ number_format($karyawan->nominal_rembes) }}</td>
-                                        <td class="right">Rp{{ number_format($karyawan->nominal_rembes) }}</td>
+                                        
+                                        <td class="right">Rp. {{ number_format($karyawan->nominal_rembes) }}</td>
                                     </tr>
                                     <tr>
                                         <td class="center">4</td>
                                         <td class="left strong">Transport</td>
-                                        <td class="left">(jumlah motor ke project x bensin)</td>
+                                        <td class="left"></td>
 
-                                        <td class="right">Rp{{ number_format($karyawan->nominal_transport) }}</td>
-                                        <td class="right">Rp{{ number_format($karyawan->nominal_transport) }}</td>
+                                        
+                                        <td class="right">Rp. {{ number_format($karyawan->nominal_transport) }}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
+
                         <div class="row">
                             <div class="col-lg-4 col-sm-5">
 
@@ -162,7 +210,7 @@
                                                 @if($karyawan->status_karyawan == 1)
                                                 @php
                                                     $sub_total = $total + $total_upah_lembur + $karyawan->nominal_rembes + $karyawan->nominal_transport;
-                                                    echo 'Rp'.number_format($sub_total);
+                                                    echo 'Rp. '.number_format($sub_total);
                                                 @endphp
                                                 @endif
                                             </td>
@@ -178,19 +226,20 @@
                                                 <strong>Total Diterima</strong>
                                             </td>
                                             <td class="right">
-                                                <strong>Rp{{ number_format($sub_total - $karyawan->nominal_hutang) }}</strong>
+                                                <strong>Rp. {{ number_format($sub_total - $karyawan->nominal_hutang) }}</strong>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                    </div>
+
                 </div>
             </div>
-            @endforeach
-            @endif
-        </div>
-    </div>
-</section>
-@endsection
+        @endforeach
+    @endif
+
+    <!-- ... -->
+
+</body>
+</html>

@@ -116,4 +116,6 @@ Route::group(['middleware' => 'auth'], function ($route) {
 
     // Data Gaji Karyawan
     Route::get('/data-gaji-karyawan', [DataGajiKaryawan::class, 'index']);
+    Route::get('/cetak-pdf/{status?}', [DataGajiKaryawan::class, 'cetakPDF'])->name('cetak-pdf');
+
 });

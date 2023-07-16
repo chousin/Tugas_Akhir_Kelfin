@@ -37,9 +37,6 @@
                                     @if($karyawan->status_karyawan == 0)
                                     Jumlah Kerja : {{ $karyawan->jumlah_hari }}
                                     @endif
-                                    @if($karyawan->status_karyawan == 1)
-                                    Jumlah Kerja : {{ $karyawan->jumlah_hari }}
-                                    @endif
                                     
                                     
                                 </div>
@@ -55,7 +52,7 @@
                                         <th>Item</th>
                                         <th>Description</th>
 
-                                        <th class="right">Unit Cost</th>
+                                        <th class="right"></th>
                                         <th class="right">Total</th>
                                     </tr>
                                 </thead>
@@ -71,7 +68,7 @@
                                             @endif
                                         </td>
 
-                                        <td class="right">Rp{{ number_format($karyawan->gaji_pokok) }}</td>
+                                        <td class="right"></td>
                                         <td class="right">
                                             @php
                                             $gaji_pokok = $karyawan->gaji_pokok;
@@ -79,25 +76,44 @@
 
                                             $total = $gaji_pokok * $jumlah_hari;
 
-                                            echo 'Rp'.number_format($total);
+                                            echo 'Rp. '.number_format($total);
                                             @endphp
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="center">2</td>
                                         <td class="left strong">Lembur</td>
-                                        <td class="left">(Gaji Pokok : 8) x Jam </td>
+                                        <td class="left">{{$karyawan->jumlah_lembur}} Jam </td>
 
-                                        <td class="right">{{ $karyawan->jumlah_lembur }} Jam</td>
+                                        <td class="right"></td>
                                         <td class="right">
+                                            @if($karyawan->status_karyawan == 0)    
                                             @php
+                                                
                                                 $gaji_pokok = $karyawan->gaji_pokok;
                                                 $jumlah_lembur = $karyawan->jumlah_lembur;
+                                                $jumlah_hari_kerja = $karyawan->jumlah_hari;
+                                                $upah_sejam = (1 / 173 ) * $gaji_pokok;
 
-                                                $total_lembur = $gaji_pokok / 8 * $jumlah_lembur;
+                                                $total_lembur = (($upah_sejam * (1.5 + ($jumlah_lembur - 1))) + ($upah_sejam * $jumlah_lembur)) * $jumlah_lembur;
 
-                                                echo 'Rp'.number_format($total_lembur);
+                                                echo 'Rp. '.number_format($total_lembur * $jumlah_hari_kerja);
                                             @endphp
+                                            @endif
+                                            @if($karyawan->status_karyawan == 1)    
+                                            @php
+                                                
+                                                 $gaji_pokok = $karyawan->gaji_pokok;
+                                                $upah_per_jam = $gaji_pokok * (1 / 173);
+                                                $uang_lembur_jam_pertama = 1.5 * $upah_per_jam;
+                                                $uang_lembur_jam_selanjutnya = 2 * $upah_per_jam;
+                                                $jumlah_lembur = $karyawan->jumlah_lembur;
+
+                                                $total_upah_lembur = ($uang_lembur_jam_pertama + $uang_lembur_jam_selanjutnya * ($jumlah_lembur - 1)) * $jumlah_lembur;
+                                                echo 'Rp. '.number_format($total_upah_lembur)
+                                            @endphp
+                                            @endif
+                                            
                                         </td>
                                     </tr>
                                     <tr>
@@ -105,24 +121,24 @@
                                         <td class="left strong">Hutang/Kasbon</td>
                                         <td class="left"></td>
 
-                                        <td class="right">Rp{{ number_format($karyawan->nominal_hutang) }}</td>
-                                        <td class="right">Rp{{ number_format($karyawan->nominal_hutang) }}</td>
+                                        <td class="right"></td>
+                                        <td class="right">Rp. {{ number_format($karyawan->nominal_hutang) }}</td>
                                     </tr>
                                     <tr>
                                         <td class="center">3</td>
                                         <td class="left strong">Rembes</td>
                                         <td class="left"></td>
 
-                                        <td class="right">Rp{{ number_format($karyawan->nominal_rembes) }}</td>
-                                        <td class="right">Rp{{ number_format($karyawan->nominal_rembes) }}</td>
+                                        <td class="right"></td>
+                                        <td class="right">Rp. {{ number_format($karyawan->nominal_rembes) }}</td>
                                     </tr>
                                     <tr>
                                         <td class="center">4</td>
                                         <td class="left strong">Transport</td>
                                         <td class="left">(jumlah motor ke project x bensin)</td>
 
-                                        <td class="right">Rp{{ number_format($karyawan->nominal_transport) }}</td>
-                                        <td class="right">Rp{{ number_format($karyawan->nominal_transport) }}</td>
+                                        <td class="right"></td>
+                                        <td class="right">Rp. {{ number_format($karyawan->nominal_transport) }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -140,10 +156,18 @@
                                                 <strong>Subtotal</strong>
                                             </td>
                                             <td class="right">
+                                                @if($karyawan->status_karyawan == 0)
                                                 @php
                                                     $sub_total = $total + $total_lembur + $karyawan->nominal_rembes + $karyawan->nominal_transport;
                                                     echo 'Rp'.number_format($sub_total);
                                                 @endphp
+                                                @endif
+                                                @if($karyawan->status_karyawan == 1)
+                                                @php
+                                                    $sub_total = $total + $total_upah_lembur + $karyawan->nominal_rembes + $karyawan->nominal_transport;
+                                                    echo 'Rp'.number_format($sub_total);
+                                                @endphp
+                                                @endif
                                             </td>
                                         </tr>
                                         <tr>

@@ -10,10 +10,12 @@
     "require": {
         "php": "^7.3|^8.0",
         "doctrine/dbal": "^3.6",
+        "dompdf/dompdf": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "phpmailer/phpmailer": "^6.8"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
