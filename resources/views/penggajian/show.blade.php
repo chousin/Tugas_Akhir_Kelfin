@@ -1,79 +1,154 @@
 @extends('layouts.main')
-
+          
 @section('container')
 <section class="section">
-    <div class="row">
+      iv class="row">
         <div class="col-lg-12">
             @if(!empty($listing_karyawan))
-            @foreach($listing_karyawan as $karyawan)
+            @foreach($listing_kaawan as $karyawan)
            
                 <div class="container">
-                <div class="card">
+                <div class="card
                     <div class="card-header">
                     
-
+  
                         Periode 
                         <strong>{{ $pengajuan_penggajian->periode_start.' s/d '.$pengajuan_penggajian->periode_end }}</strong>
-                        <span class="float-right"> <strong>Status:</strong> 
+                        <span class="flo-right"> <strong>Status:</strong> 
                             @if($pengajuan_penggajian->status_pengajuan == 1)
                                 Sedang Direview
-                            @endif
+                            @endi
 
                             @if($pengajuan_penggajian->status_pengajuan == 2)
-                                Disetujui
+                                Disetui
                             @endif
                         </span>
-
+  
                     </div>
                     <div class="card-body">
-                        <div class="row mb-4">
+                          <div class="row mb-4">
                             <div class="col-sm-6">
                                 <h6 class="mb-3">Penerima:</h6>
-                                <div>
+                                  <div>
                                     <strong>{{ $karyawan->karyawan->nama_karyawan }}</strong>
                                 </div>
-                                <div>{{ $karyawan->karyawan->alamat }} | {{ $karyawan->karyawan->no_hp }}</div>
+                                <div>{{ $karyan->karyawan->alamat }} | {{ $karyawan->karyawan->no_hp }}</div>
                                 <div>{{ $karyawan->karyawan->tgl_lahir }} | {{ $karyawan->karyawan->jenis_kelamin }}</div>
+                                <div>Status :
+                                             @p
+                                                $status_pernikahan = $karyawan->karyawan->status_pernikahan;
+
+                                                i($status_pernikahan == 'tk') {
+                                                    $status = 'Belum Kawin';
+                                                } elseif ($status_pernikahan == 'k') {
+                                                    $status = 'Kawin';
+                                                } else {
+                                                    $status = 'Tidak Diketahui';
+                    
+
+                            }
+
+                 
+                               echo $status;
+                 
+                           @endphp 
+                              
+     
+          </div>
                                 <div>KTP: {{ $karyawan->karyawan->no_ktp }}</div>
-                                <div>Rekening : {{ $karyawan->karyawan->no_rekening }}</div>
+                              
+      
+    
+
+  <div>Rekening : {{ $karyawan->karyawan->no_rekening }}</div>
                                 <div>
-                                    @if($karyawan->status_karyawan == 0)
-                                    Jumlah Kerja : {{ $karyawan->jumlah_hari }}
+                                     @if($karyawa
+    n
+->status_karyawan == 0)
+                                     Jum
+    a
+h  Kerja : {{ $karyawan->jumlah_hari }}
+    
+
                                     @endif
                                     @if($karyawan->status_karyawan == 1)
-                                    Jumlah Kerja : {{$totalAbsen = $absensi_pegawai[$karyawan->id_karyawan]}}
-                                    @endif
                                     
+     
+ Jumlah Kerja
+     
+: {{$totalAbsen = $absensi_pegawai[$karyawan->id_karyawan]}}
                                     
+     
+@endif
                                     
-                                </div>
-                                
+                                     
+     
+    
+
+
+                                    
+                                 </d
+    i
+v>
+                                 
+    
+ 
+    
+
                             </div>
                         </div>
+  
+    
 
-                        <div class="table-responsive-sm">
+    
+
+                         <div class=
+    "
+table-responsive-sm">
                             <table class="table table-striped">
-                                <thead>
+                                 <th
+     e
+    
+
+ad>
                                     <tr>
-                                        <th class="center">#</th>
-                                        <th>Item</th>
+                                    
+     
+    <th class="center">#</th>
+                                    
+     
+     <th>Item</th>
+    
+
                                         <th>Description</th>
 
-                                        <th class="right"></th>
+                                    
+     
+    <th class="right"></th>
                                         <th class="right">Total</th>
                                     </tr>
-                                </thead>
+                                 </t
+    h
+ead>
                                 <tbody>
                                     <tr>
-                                        <td class="center">1</td>
+                                    
+     
+    <td class="center">1</td>
                                         <td class="left strong">Gaji Pokok</td>
                                         <td class="left">
-                                            @if($karyawan->status_karyawan == 0)
+                                    
+     
+        @if($karyawan->status_karyawan == 0)
                                             (Gaji Pokok * Jumlah Hari Kerja)
                                             @else
-                                            UMR
+                                    
+     
+        UMR
                                             @endif
                                         </td>
+ 
+    
 
                                         <td class="right"></td>
                                         <td class="right">
@@ -190,6 +265,48 @@
                                             @endphp
                                             </td>
                                         </tr>
+                                        <tr>
+                                            @if($karyawan->status_karyawan == 1)
+                                                <td class="left strong fw-bold">Potongan PPh 21</td>
+                                                <td class="right text-danger">
+                                                @php
+                                                // Perhitungan potongan pajak PPh 21
+                                                $gajiPokok = $karyawan->gaji_pokok;
+                                                $jumlahHariKerja = $karyawan->jumlah_hari;
+
+                                                // Periksa status pernikahan
+                                                $statusPernikahan = $karyawan->karyawan->status_pernikahan;
+                                                $tarifPPh = 0.05; // Default tarif PPh 21: 5%
+
+                                                if ($gajiPokok < 4500000) {
+                                                    $tarifPPh = 0; // Tidak kena pajak jika gaji pokok di bawah 4500000
+                                                } elseif ($statusPernikahan === 'k') {
+                                                    $tarifPPh = 0.1; // Tarif PPh 21 untuk karyawan kawin: 10%
+                                                }
+
+                                                // Perhitungan upah lembur
+                                                $upahPerJam = $gajiPokok * (1 / 173);
+                                                $uangLemburJamPertama = 1.5 * $upahPerJam;
+                                                $uangLemburJamSelanjutnya = 2 * $upahPerJam;
+                                                $jumlahLembur = $karyawan->jumlah_lembur;
+
+                                                if ($jumlahLembur > 0) {
+                                                    $totalUpahLembur = ($uangLemburJamPertama + ($uangLemburJamSelanjutnya * ($jumlahLembur - 1))) * $jumlahLembur;
+                                                } else {
+                                                    $totalUpahLembur = 0;
+                                                }
+
+                                                // Total gaji kotor, termasuk hasil lembur
+                                                $gajiKotor = ($gajiPokok * $jumlahHariKerja) + $totalUpahLembur;
+
+                                                $potonganPPh = $gajiKotor * $tarifPPh;
+
+                                                echo 'Rp. ' . number_format($potonganPPh, 0, ',', '.');
+                                                @endphp
+
+                                                </td>
+                                            </tr>
+                                            @endif
                                         
                                         
                                             <td class="left">
@@ -206,7 +323,7 @@
                                                 @endif
                                                 @if($karyawan->status_karyawan == 1)
                                                 
-                                                 Rp.{{number_format($sub_total  - $karyawan->nominal_hutang )}}
+                                                 Rp.{{number_format($sub_total  - $karyawan->nominal_hutang - $potonganPPh )}}
                                                 
                                                 @endif
                                                 </strong>

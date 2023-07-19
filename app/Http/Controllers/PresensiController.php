@@ -37,6 +37,8 @@ class PresensiController extends Controller
         ]);
     }
 
+
+
     public function lokasi($id)
     {
         $presensi = Presensi::all()->where('id', $id)->first();
