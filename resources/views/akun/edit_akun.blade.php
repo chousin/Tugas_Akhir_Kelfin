@@ -21,7 +21,7 @@
               <form class="row g-3" action="{{route('akun.update')}}" method="post">
                 @csrf 
                 <div class="col-12">
-                  <input type="hidden" name="id" value="{{ $akun->id }}">
+                  <input type="hidden" name="id" id="id">
                   <label  class="form-label">Nama</label>
                   <input type="text" name="name" id="name"   class="form-control @error('name') is-invalid @enderror"
                    id="name" value="">

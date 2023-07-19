@@ -95,6 +95,7 @@
           url: url,
           dataType: "json",
           success: function(res) {
+            $('#editAkun #id').val(res['id'])
             $('#editAkun #name').val(res['name'])
             $('#editAkun #email').val(res['email'])
             $('#editAkun #role').val(res['role'])
