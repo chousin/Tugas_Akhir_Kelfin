@@ -1,154 +1,94 @@
 @extends('layouts.main')
-          
+
 @section('container')
 <section class="section">
-      iv class="row">
+    <div class="row">
         <div class="col-lg-12">
             @if(!empty($listing_karyawan))
-            @foreach($listing_kaawan as $karyawan)
+            @foreach($listing_karyawan as $karyawan)
            
                 <div class="container">
-                <div class="card
+                <div class="card">
                     <div class="card-header">
                     
-  
+
                         Periode 
                         <strong>{{ $pengajuan_penggajian->periode_start.' s/d '.$pengajuan_penggajian->periode_end }}</strong>
-                        <span class="flo-right"> <strong>Status:</strong> 
+                        <span class="float-right"> <strong>Status:</strong> 
                             @if($pengajuan_penggajian->status_pengajuan == 1)
                                 Sedang Direview
-                            @endi
+                            @endif
 
                             @if($pengajuan_penggajian->status_pengajuan == 2)
-                                Disetui
+                                Disetujui
                             @endif
                         </span>
-  
+
                     </div>
                     <div class="card-body">
-                          <div class="row mb-4">
+                        <div class="row mb-4">
                             <div class="col-sm-6">
                                 <h6 class="mb-3">Penerima:</h6>
-                                  <div>
+                                <div>
                                     <strong>{{ $karyawan->karyawan->nama_karyawan }}</strong>
                                 </div>
-                                <div>{{ $karyan->karyawan->alamat }} | {{ $karyawan->karyawan->no_hp }}</div>
+                                <div>{{ $karyawan->karyawan->alamat }} | {{ $karyawan->karyawan->no_hp }}</div>
                                 <div>{{ $karyawan->karyawan->tgl_lahir }} | {{ $karyawan->karyawan->jenis_kelamin }}</div>
                                 <div>Status :
-                                             @p
+                                             @php
                                                 $status_pernikahan = $karyawan->karyawan->status_pernikahan;
 
-                                                i($status_pernikahan == 'tk') {
+                                                if ($status_pernikahan == 'tk') {
                                                     $status = 'Belum Kawin';
                                                 } elseif ($status_pernikahan == 'k') {
                                                     $status = 'Kawin';
                                                 } else {
                                                     $status = 'Tidak Diketahui';
-                    
+                                                }
 
-                            }
-
-                 
-                               echo $status;
-                 
-                           @endphp 
-                              
-     
-          </div>
+                                                echo $status;
+                                            @endphp 
+                                        </div>
                                 <div>KTP: {{ $karyawan->karyawan->no_ktp }}</div>
-                              
-      
-    
-
-  <div>Rekening : {{ $karyawan->karyawan->no_rekening }}</div>
+                                <div>Rekening : {{ $karyawan->karyawan->no_rekening }}</div>
                                 <div>
-                                     @if($karyawa
-    n
-->status_karyawan == 0)
-                                     Jum
-    a
-h  Kerja : {{ $karyawan->jumlah_hari }}
-    
-
+                                    @if($karyawan->status_karyawan == 0)
+                                    Jumlah Kerja : {{ $karyawan->jumlah_hari }}
                                     @endif
                                     @if($karyawan->status_karyawan == 1)
+                                    Jumlah Kerja : {{$totalAbsen = $absensi_pegawai[$karyawan->id_karyawan]}}
+                                    @endif
                                     
-     
- Jumlah Kerja
-     
-: {{$totalAbsen = $absensi_pegawai[$karyawan->id_karyawan]}}
                                     
-     
-@endif
                                     
-                                     
-     
-    
-
-
-                                    
-                                 </d
-    i
-v>
-                                 
-    
- 
-    
-
+                                </div>
+                                
                             </div>
                         </div>
-  
-    
 
-    
-
-                         <div class=
-    "
-table-responsive-sm">
+                        <div class="table-responsive-sm">
                             <table class="table table-striped">
-                                 <th
-     e
-    
-
-ad>
+                                <thead>
                                     <tr>
-                                    
-     
-    <th class="center">#</th>
-                                    
-     
-     <th>Item</th>
-    
-
+                                        <th class="center">#</th>
+                                        <th>Item</th>
                                         <th>Description</th>
 
-                                    
-     
-    <th class="right"></th>
+                                        <th class="right"></th>
                                         <th class="right">Total</th>
                                     </tr>
-                                 </t
-    h
-ead>
+                                </thead>
                                 <tbody>
                                     <tr>
-                                    
-     
-    <td class="center">1</td>
+                                        <td class="center">1</td>
                                         <td class="left strong">Gaji Pokok</td>
                                         <td class="left">
-                                    
-     
-        @if($karyawan->status_karyawan == 0)
+                                            @if($karyawan->status_karyawan == 0)
                                             (Gaji Pokok * Jumlah Hari Kerja)
                                             @else
-                                    
-     
-        UMR
+                                            UMR
                                             @endif
                                         </td>
- 
-    
 
                                         <td class="right"></td>
                                         <td class="right">
