@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\AkunModel;
 use Auth;
 
+use Illuminate\Validation\Rule;
+
 class AkunController extends Controller
 {
     public function index()
@@ -45,22 +47,22 @@ class AkunController extends Controller
 
     public function update(Request $request)
     {
-
-
-        //$user = Auth::user();
-
-        //$user->update($request->all());
-        //Flash::message("your account has been updated!");
-
-        //return Redirect::to('/akun');
-
         $validatedData = $request->validate([
+            'id' => 'required|exists:users,id',
             'name' => 'required|max:225',
-            'email' => 'required|email:dns|unique:users',
+            'email' => [
+                'required',
+                'email:dns',
+                Rule::unique('users')->ignore($request->id),
+            ],
             'role' => 'required|max:255',
         ]);
 
-        AkunModel::where('id', $request->id)->update($validatedData);
+        User::where('id', $request->id)->update([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'role' => $validatedData['role'],
+        ]);
 
         return redirect('/akun')->with('success', 'Edit data berhasil');
     }

@@ -15,6 +15,8 @@ use App\Http\Controllers\PengajuanPenggajianController;
 use App\Http\Controllers\DataPenggajianController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\DataGajiKaryawan;
+use App\Http\Controllers\UpdatePasswordController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +47,11 @@ Route::group(['middleware' => 'auth'], function ($route) {
     $route->post('/akun', [AkunController::class, 'store']);
     $route->post('/akun/update', [AkunController::class, 'update'])->name('akun.update');
     $route->get('/getAkun/{id}', [AkunController::class, 'getAkun'])->name('akun.getAkun');
+
+
+    $route->get('/change-password', [UpdatePasswordController::class, 'edit'])->name('password.edit');
+    $route->post('/change-password', [UpdatePasswordController::class, 'update'])->name('password.update');
+
 
     //Route Karyawan
 
@@ -117,5 +124,10 @@ Route::group(['middleware' => 'auth'], function ($route) {
     // Data Gaji Karyawan
     Route::get('/data-gaji-karyawan', [DataGajiKaryawan::class, 'index']);
     Route::get('/cetak-pdf/{status?}', [DataGajiKaryawan::class, 'cetakPDF'])->name('cetak-pdf');
+
+    Route::get('/penggajian/{id}/cetak-pdf', [DataPenggajianController::class, 'cetakPDF'])->name('penggajian.cetak-pdf');
+    Route::get('/penggajian/{id}/cetak-detail-pdf', [DataPenggajianController::class, 'cetak_detailPDF'])->name('penggajian.cetak-detail-pdf');
+
+
 
 });

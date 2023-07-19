@@ -38,9 +38,13 @@
                                 <div>KTP: {{ $karyawan->karyawan->no_ktp }}</div>
                                 <div>Rekening : {{ $karyawan->karyawan->no_rekening }}</div>
                                 <div>
-                                    @if($karyawan->status_karyawan == 0)
+                                @if($karyawan->status_karyawan == 0)
                                     Jumlah Kerja : {{ $karyawan->jumlah_hari }}
                                     @endif
+                                    @if($karyawan->status_karyawan == 1)
+                                    Jumlah Kerja : {{$totalAbsen = $absensi_pegawai[$karyawan->id_karyawan]}}
+                                    @endif
+                                    
                                     
                                     
                                 </div>
@@ -56,7 +60,7 @@
                                         <th>Item</th>
                                         <th>Description</th>
 
-                                        <th class="right">Unit Cost</th>
+                                       
                                         <th class="right">Total</th>
                                     </tr>
                                 </thead>
@@ -66,7 +70,7 @@
                                         <td class="left strong">Gaji Pokok</td>
                                         <td class="left">(Gaji Pokok * Jumlah Hari Kerja)</td>
 
-                                        <td class="right">Rp{{ number_format($karyawan->gaji_pokok) }} ({{ $karyawan->jumlah_hari }})</td>
+                                        
                                         <td class="right">
                                             @php
                                             $gaji_pokok = $karyawan->gaji_pokok;
@@ -81,9 +85,9 @@
                                     <tr>
                                         <td class="center">1</td>
                                         <td class="left strong">Lembur</td>
-                                        <td class="left">(Gaji Pokok : 8) x Jam </td>
+                                        <td class="left">{{ $karyawan->jumlah_lembur }} Jam</td>
 
-                                        <td class="right">{{ $karyawan->jumlah_lembur }} Jam</td>
+                                        
                                         <td class="right">
                                         @if($karyawan->status_karyawan == 0)    
                                             @php
@@ -119,7 +123,7 @@
                                         <td class="left"></td>
 
                                         <td class="right">Rp{{ number_format($karyawan->nominal_hutang) }}</td>
-                                        <td class="right">Rp{{ number_format($karyawan->nominal_hutang) }}</td>
+                                       
                                     </tr>
                                     <tr>
                                         <td class="center">3</td>
@@ -127,7 +131,7 @@
                                         <td class="left"></td>
 
                                         <td class="right">Rp{{ number_format($karyawan->nominal_rembes) }}</td>
-                                        <td class="right">Rp{{ number_format($karyawan->nominal_rembes) }}</td>
+                                        
                                     </tr>
                                     <tr>
                                         <td class="center">4</td>
@@ -135,7 +139,7 @@
                                         <td class="left">(jumlah motor ke project x bensin)</td>
 
                                         <td class="right">Rp{{ number_format($karyawan->nominal_transport) }}</td>
-                                        <td class="right">Rp{{ number_format($karyawan->nominal_transport) }}</td>
+                                      
                                     </tr>
                                 </tbody>
                             </table>
@@ -174,11 +178,41 @@
                                             <td class="right text-danger">-Rp{{ number_format($karyawan->nominal_hutang) }}</td>
                                         </tr>
                                         <tr>
+                                        <td class="left">
+                                                <strong>Potongan Tidak Kerja</strong>
+                                            </td>
+                                            <td class="right text-danger">
+                                                <strong>
+                                                @if($karyawan->status_karyawan == 0)
+                                            @php
+                                            echo '-Rp' . number_format($karyawan->nominal_hutang);
+                                            @endphp
+                                            @endif
+
+                                            @if($karyawan->status_karyawan == 1)
+                                            @php
+                                            $totalAbsen = $absensi_pegawai[$karyawan->id_karyawan];
+                                            $total_hari_kerja = 26;
+                                            $gaji_pokok = $karyawan->gaji_pokok;
+                                            if($totalAbsen <= $total_hari_kerja){
+                                                $potongan = $gaji_pokok / $total_hari_kerja;
+                                                $jumlah_hari_kerja = $total_hari_kerja - $totalAbsen;
+                                                $total_potongan = $jumlah_hari_kerja * $potongan;
+                                                echo '- Rp' . number_format($total_potongan);
+                                            }else{
+                                                echo 'Rp.'.number_format($sub_total - $karyawan->nominal_hutang);
+                                            }
+                                            @endphp
+                                             @endif
+                                            </strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <td class="left">
                                                 <strong>Total Diterima</strong>
                                             </td>
                                             <td class="right">
-                                                <strong>Rp{{ number_format($sub_total - $karyawan->nominal_hutang) }}</strong>
+                                                <strong>Rp{{ number_format($sub_total - $karyawan->nominal_hutang - $total_potongan) }}</strong>
                                             </td>
                                         </tr>
                                     </tbody>

@@ -6,9 +6,12 @@
         <div class="col-lg-12">
             @if(!empty($listing_karyawan))
             @foreach($listing_karyawan as $karyawan)
-            <div class="container">
+           
+                <div class="container">
                 <div class="card">
                     <div class="card-header">
+                    
+
                         Periode 
                         <strong>{{ $pengajuan_penggajian->periode_start.' s/d '.$pengajuan_penggajian->periode_end }}</strong>
                         <span class="float-right"> <strong>Status:</strong> 
@@ -37,6 +40,10 @@
                                     @if($karyawan->status_karyawan == 0)
                                     Jumlah Kerja : {{ $karyawan->jumlah_hari }}
                                     @endif
+                                    @if($karyawan->status_karyawan == 1)
+                                    Jumlah Kerja : {{$totalAbsen = $absensi_pegawai[$karyawan->id_karyawan]}}
+                                    @endif
+                                    
                                     
                                     
                                 </div>
@@ -90,27 +97,29 @@
                                             @if($karyawan->status_karyawan == 0)    
                                             @php
                                                 
-                                                $gaji_pokok = $karyawan->gaji_pokok;
-                                                $jumlah_lembur = $karyawan->jumlah_lembur;
-                                                $jumlah_hari_kerja = $karyawan->jumlah_hari;
-                                                $upah_sejam = (1 / 173 ) * $gaji_pokok;
+                                            $gaji_pokok = $karyawan->gaji_pokok;
+                                            $jumlah_lembur = $karyawan->jumlah_lembur;
+                                            $total_lembur = ($gaji_pokok / 8) * $jumlah_lembur;
 
-                                                $total_lembur = (($upah_sejam * (1.5 + ($jumlah_lembur - 1))) + ($upah_sejam * $jumlah_lembur)) * $jumlah_lembur;
-
-                                                echo 'Rp. '.number_format($total_lembur * $jumlah_hari_kerja);
+                                            echo 'Rp. ' . number_format($total_lembur, 0, ',', '.');
                                             @endphp
                                             @endif
+
                                             @if($karyawan->status_karyawan == 1)    
                                             @php
-                                                
-                                                 $gaji_pokok = $karyawan->gaji_pokok;
-                                                $upah_per_jam = $gaji_pokok * (1 / 173);
-                                                $uang_lembur_jam_pertama = 1.5 * $upah_per_jam;
-                                                $uang_lembur_jam_selanjutnya = 2 * $upah_per_jam;
-                                                $jumlah_lembur = $karyawan->jumlah_lembur;
+                                            $gaji_pokok = $karyawan->gaji_pokok;
+                                            $upah_per_jam = $gaji_pokok * (1 / 173);
+                                            $uang_lembur_jam_pertama = 1.5 * $upah_per_jam;
+                                            $uang_lembur_jam_selanjutnya = 2 * $upah_per_jam;
+                                            $jumlah_lembur = $karyawan->jumlah_lembur;
 
-                                                $total_upah_lembur = ($uang_lembur_jam_pertama + $uang_lembur_jam_selanjutnya * ($jumlah_lembur - 1)) * $jumlah_lembur;
-                                                echo 'Rp. '.number_format($total_upah_lembur)
+                                            if ($jumlah_lembur > 0) {
+                                                $total_upah_lembur = ($uang_lembur_jam_pertama + ($uang_lembur_jam_selanjutnya * ($jumlah_lembur - 1))) * $jumlah_lembur;
+                                            } else {
+                                                $total_upah_lembur = 0;
+                                            }
+
+                                            echo 'Rp. ' . number_format($total_upah_lembur, 0, ',', '.');
                                             @endphp
                                             @endif
                                             
@@ -174,14 +183,33 @@
                                             <td class="left">
                                                 <strong>Potongan(Hutang)</strong>
                                             </td>
-                                            <td class="right text-danger">-Rp{{ number_format($karyawan->nominal_hutang) }}</td>
+                                            
+                                            <td class="right text-danger">
+                                            @php
+                                            echo '-Rp' . number_format($karyawan->nominal_hutang);
+                                            @endphp
+                                            </td>
                                         </tr>
-                                        <tr>
+                                        
+                                        
                                             <td class="left">
                                                 <strong>Total Diterima</strong>
                                             </td>
                                             <td class="right">
-                                                <strong>Rp{{ number_format($sub_total - $karyawan->nominal_hutang) }}</strong>
+                                                <strong>
+                                                @if($karyawan->status_karyawan == 0)
+                                                @php
+                                                
+                                                echo 'Rp.'.number_format($sub_total - $karyawan->nominal_hutang);
+                                                
+                                                @endphp
+                                                @endif
+                                                @if($karyawan->status_karyawan == 1)
+                                                
+                                                 Rp.{{number_format($sub_total  - $karyawan->nominal_hutang )}}
+                                                
+                                                @endif
+                                                </strong>
                                             </td>
                                         </tr>
                                     </tbody>

@@ -69,16 +69,18 @@ class KaryawanController extends Controller
 
         Karyawan::where('id_karyawan', $request->id)->update($validatedData);
 
-        $payload = [
-            'name' => $request->nama_karyawan,
-            'email' => str_replace(' ', '', strtolower($request->nama_karyawan)) . '@gmail.com',
-            'password' => bcrypt(str_replace('-', '', $request->tgl_lahir)),
-            'role' => 'pegawai',
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
-        ];
+        /*
+                $payload = [
+                    'name' => $request->nama_karyawan,
+                    'email' => str_replace(' ', '', strtolower($request->nama_karyawan)) . '@gmail.com',
+                    'password' => bcrypt(str_replace('-', '', $request->tgl_lahir)),
+                    'role' => 'pegawai',
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ];
 
-        User::where('id', $karyawan->id_user)->update($payload);
+                User::where('id', $karyawan->id_user)->update($payload);
+            */
 
         return redirect('/karyawan')->with('success', 'Edit data berhasil');
     }

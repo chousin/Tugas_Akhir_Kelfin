@@ -1,34 +1,78 @@
-@extends('layouts.main')
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Rekap Penggajian</title>
 
-@section('container')
+    <style>
+        /* Style CSS untuk tampilan rekap penggajian */
+body {
+  font-family: Arial, sans-serif;
+}
 
-            
-<div class="card">
-    <div class="container-fluid">
-        <div class="mt-5">
-        
+h1, h2, h3 {
+  text-align: center;
+}
 
-            <div class="mt-3 table-responsive-sm">
-            
-            <a href="{{ route('penggajian.cetak-pdf', ['id' => $pengajuan_penggajian->id]) }}" target="_blank" class="btn btn-primary">Cetak PDF</a>
-                
-            
-            <h3 class="font-monospace  fw-bolder">{{$pengajuan_penggajian->keterangan}}</h3>
-           
+.float-right {
+  float: right;
+}
 
-            <h3 class="font-monospace  fw-bolder">Periode {{$pengajuan_penggajian->periode_start}} S/D {{$pengajuan_penggajian->periode_end}}</h3>
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
 
-            <span class="float-right"> <strong>Status:</strong> 
-                            @if($pengajuan_penggajian->status_pengajuan == 1)
-                                Sedang Direview
-                            @endif
+.table th,
+.table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
 
-                            @if($pengajuan_penggajian->status_pengajuan == 2)
-                                Disetujui
-                            @endif
-                            
-                        </span>
+.table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+  text-align: center;
+}
 
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.caption-top {
+  caption-side: top;
+}
+
+.ms-1 {
+  margin-left: 1rem;
+}
+
+.d-none {
+  display: none;
+}
+
+.float-right {
+  float: right;
+}
+
+.fw-bold {
+  font-weight: bold;
+}
+
+    </style>
+</head>
+<body>
+    <h1>Data Penggajian</h1>
+    <h2>Halaman: Home</h2>
+    <h3>Sub Halaman: Rekap Data Penggajian</h3>
                 <table class="table caption-top bg-white px-2 ms-1">
                     <thead class="bg-white">
                         <tr>
@@ -41,7 +85,6 @@
                             <th colspan="2" class="text-center">Transport</th>
                             <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Rembes</th>
                             <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Potong Hutang</th>
-                            
                             <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Total</th>
                         </tr>
                         <tr>
@@ -166,15 +209,41 @@
                             <td></td>
                             <td class="text-right"></td>
                             <td colspan="2" class="text-center fw-bold">TOTAL</td>
-                            <td class="text-right" id="grand_total"></td>
+                            <td class="text-right" id="grand_total">
+                            @php
+                                $total = 0;
+                                foreach ($listing_karyawan as $get_listing_karyawan) {
+                                    $gaji_pokok = $get_listing_karyawan->gaji_pokok;
+                                    $jumlah_hari = $get_listing_karyawan->jumlah_hari;
+                                    $total_lembur = 0;
+                                    $total_upah_lembur = 0;
+
+                                    if ($get_listing_karyawan->status_karyawan == 0) {
+                                        $upah_sejam = (1 / 173) * $gaji_pokok;
+                                        $jumlah_lembur = $get_listing_karyawan->jumlah_lembur;
+                                        $jumlah_hari_kerja = $get_listing_karyawan->jumlah_hari;
+
+                                        $total_lembur = (($upah_sejam * (1.5 + ($jumlah_lembur - 1))) + ($upah_sejam * $jumlah_lembur)) * $jumlah_lembur;
+                                        $total += $gaji_pokok * $jumlah_hari_kerja + $total_lembur + $get_listing_karyawan->nominal_rembes + $get_listing_karyawan->nominal_transport - $get_listing_karyawan->nominal_hutang;
+                                    } elseif ($get_listing_karyawan->status_karyawan == 1) {
+                                        $upah_per_jam = $gaji_pokok * (1 / 173);
+                                        $uang_lembur_jam_pertama = 1.5 * $upah_per_jam;
+                                        $uang_lembur_jam_selanjutnya = 2 * $upah_per_jam;
+                                        $jumlah_lembur = $get_listing_karyawan->jumlah_lembur;
+
+                                        $total_upah_lembur = ($uang_lembur_jam_pertama + $uang_lembur_jam_selanjutnya * ($jumlah_lembur - 1)) * $jumlah_lembur;
+                                        $total += $gaji_pokok * $jumlah_hari + $total_upah_lembur + $get_listing_karyawan->nominal_rembes + $get_listing_karyawan->nominal_transport - $get_listing_karyawan->nominal_hutang;
+                                    }
+                                }
+                                echo number_format($total);
+                            @endphp
+
+                            </td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
-    </div>
-    </div>
-    <!-- Vendor JS Files -->
+            </body>
+            <!-- Vendor JS Files -->
     <script src="{{ asset('vendor/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('vendor/chart.js/chart.umd.js') }}"></script>
@@ -199,4 +268,4 @@
 
         var element_grand_total = document.getElementById('grand_total').innerHTML = formatted;
     </script>
-@endsection
+</html>

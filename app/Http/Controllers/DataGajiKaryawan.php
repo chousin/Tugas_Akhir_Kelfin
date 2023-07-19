@@ -12,6 +12,8 @@ use App\Models\PengajuanPenggajian;
 
 use App\Models\Karyawan;
 
+use App\Models\Presensi;
+
 use Dompdf\Dompdf;
 
 use Dompdf\Options;
@@ -32,6 +34,10 @@ class DataGajiKaryawan extends Controller
 
                 array_push($result_array, $custom_result);
             }
+            foreach ($listing_karyawan as $karyawan) {
+                $jumlahAbsen = Presensi::where('id_karyawan', $karyawan->id_karyawan)->count();
+                $absensi_pegawai[$karyawan->id_karyawan] = $jumlahAbsen;
+            }
         }
 
         return view('gaji.index', [
@@ -39,6 +45,7 @@ class DataGajiKaryawan extends Controller
             "halaman" => "Home",
             "sub_hal" => "Data Karyawan",
             "listing_karyawan" => $result_array,
+            'absensi_pegawai' => $absensi_pegawai,
             "pengajuan_penggajian" => $pengajuan_penggajian->first()
         ]);
     }
@@ -59,9 +66,16 @@ class DataGajiKaryawan extends Controller
                 $custom_result = $get_listing_karyawan;
                 $result_array[] = $custom_result;
             }
+            foreach ($listing_karyawan as $karyawan) {
+                $jumlahAbsen = Presensi::where('id_karyawan', $karyawan->id_karyawan)->count();
+                $absensi_pegawai[$karyawan->id_karyawan] = $jumlahAbsen;
+            }
+
+
+
         }
 
-        $html = view('gaji.pdf', compact('pengajuan_penggajian', 'listing_karyawan', 'pengajuan_penggajians'))->render();
+        $html = view('gaji.pdf', compact('pengajuan_penggajian', 'listing_karyawan', 'pengajuan_penggajians', 'absensi_pegawai'))->render();
         $options = new Options();
         $options->setIsHtml5ParserEnabled(true);
         $options->setIsRemoteEnabled(true);

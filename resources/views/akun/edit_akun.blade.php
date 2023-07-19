@@ -19,7 +19,7 @@
 
               <!-- Vertical Form -->
               <form class="row g-3" action="{{route('akun.update')}}" method="post">
-                @csrf
+                @csrf 
                 <div class="col-12">
                   <input type="hidden" name="id" value="{{ $akun->id }}">
                   <label  class="form-label">Nama</label>

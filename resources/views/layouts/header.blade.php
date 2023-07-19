@@ -35,9 +35,9 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="{{ route('password.edit', Auth::user()->username)}}">
                 <i class="bi bi-person"></i>
-                <span>My Profile</span>
+                <span>Ubah Password</span>
               </a>
             </li>
             <li>
