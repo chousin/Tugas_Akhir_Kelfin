@@ -41,9 +41,7 @@
                                 @if($karyawan->status_karyawan == 0)
                                     Jumlah Kerja : {{ $karyawan->jumlah_hari }}
                                     @endif
-                                    @if($karyawan->status_karyawan == 1)
-                                    Jumlah Kerja : {{$totalAbsen = $absensi_pegawai[$karyawan->id_karyawan]}}
-                                    @endif
+                                    
                                     
                                     
                                     
@@ -71,6 +69,7 @@
                                         <td class="left">(Gaji Pokok * Jumlah Hari Kerja)</td>
 
                                         
+                                        @if($karyawan->status_karyawan == 0)
                                         <td class="right">
                                             @php
                                             $gaji_pokok = $karyawan->gaji_pokok;
@@ -81,6 +80,17 @@
                                             echo 'Rp'.number_format($total);
                                             @endphp
                                         </td>
+                                        @endif
+                                        @if($karyawan->status_karyawan == 1)
+                                        <td class="right">
+                                            @php
+                                            $gaji_pokok = $karyawan->gaji_pokok;
+
+                                            $total = $gaji_pokok;
+                                            echo 'Rp'.number_format($total);
+                                            @endphp
+                                        </td>
+                                        @endif
                                     </tr>
                                     <tr>
                                         <td class="center">1</td>
@@ -178,41 +188,54 @@
                                             <td class="right text-danger">-Rp{{ number_format($karyawan->nominal_hutang) }}</td>
                                         </tr>
                                         <tr>
-                                        <td class="left">
-                                                <strong>Potongan Tidak Kerja</strong>
-                                            </td>
-                                            <td class="right text-danger">
-                                                <strong>
-                                                @if($karyawan->status_karyawan == 0)
-                                            @php
-                                            echo '-Rp' . number_format($karyawan->nominal_hutang);
-                                            @endphp
-                                            @endif
-
                                             @if($karyawan->status_karyawan == 1)
-                                            @php
-                                            $totalAbsen = $absensi_pegawai[$karyawan->id_karyawan];
-                                            $total_hari_kerja = 26;
-                                            $gaji_pokok = $karyawan->gaji_pokok;
-                                            if($totalAbsen <= $total_hari_kerja){
-                                                $potongan = $gaji_pokok / $total_hari_kerja;
-                                                $jumlah_hari_kerja = $total_hari_kerja - $totalAbsen;
-                                                $total_potongan = $jumlah_hari_kerja * $potongan;
-                                                echo '- Rp' . number_format($total_potongan);
-                                            }else{
-                                                echo 'Rp.'.number_format($sub_total - $karyawan->nominal_hutang);
-                                            }
-                                            @endphp
-                                             @endif
-                                            </strong>
-                                            </td>
-                                        </tr>
+                                                <td class="left strong fw-bold">Potongan PPh 21</td>
+                                                <td class="right text-danger">
+                                                @php
+                                                // Perhitungan potongan pajak PPh 21
+                                                $gajiPokok = $karyawan->gaji_pokok;
+                                                $jumlahHariKerja = $karyawan->jumlah_hari;
+
+                                                // Periksa status pernikahan
+                                                $statusPernikahan = $karyawan->karyawan->status_pernikahan;
+                                                $tarifPPh = 0.05; // Default tarif PPh 21: 5%
+
+                                                if ($gajiPokok <= 4500000) {
+                                                    $tarifPPh = 0; // Tidak kena pajak jika gaji pokok di bawah 4500000
+                                                } elseif ($statusPernikahan === 'k') {
+                                                    $tarifPPh = 0.1; // Tarif PPh 21 untuk karyawan kawin: 10%
+                                                }
+
+                                                // Perhitungan upah lembur
+                                                $upahPerJam = $gajiPokok * (1 / 173);
+                                                $uangLemburJamPertama = 1.5 * $upahPerJam;
+                                                $uangLemburJamSelanjutnya = 2 * $upahPerJam;
+                                                $jumlahLembur = $karyawan->jumlah_lembur;
+
+                                                if ($jumlahLembur > 0) {
+                                                    $totalUpahLembur = ($uangLemburJamPertama + ($uangLemburJamSelanjutnya * ($jumlahLembur - 1))) * $jumlahLembur;
+                                                } else {
+                                                    $totalUpahLembur = 0;
+                                                }
+
+                                                // Total gaji kotor, termasuk hasil lembur
+                                                $gajiKotor = ($gajiPokok * $jumlahHariKerja) + $totalUpahLembur;
+
+                                                $potonganPPh = $gajiKotor * $tarifPPh;
+
+                                                echo 'Rp. ' . number_format($potonganPPh, 0, ',', '.');
+                                                @endphp
+
+                                                </td>
+                                            </tr>
+                                            @endif
+                                        
                                         <tr>
                                             <td class="left">
                                                 <strong>Total Diterima</strong>
                                             </td>
                                             <td class="right">
-                                                <strong>Rp{{ number_format($sub_total - $karyawan->nominal_hutang - $total_potongan) }}</strong>
+                                                <strong>Rp{{ number_format($sub_total - $karyawan->nominal_hutang - $potonganPPh    ) }}</strong>
                                             </td>
                                         </tr>
                                     </tbody>

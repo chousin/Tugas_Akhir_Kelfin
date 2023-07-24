@@ -55,9 +55,6 @@
                                     @if($karyawan->status_karyawan == 0)
                                     Jumlah Kerja : {{ $karyawan->jumlah_hari }}
                                     @endif
-                                    @if($karyawan->status_karyawan == 1)
-                                    Jumlah Kerja : {{$totalAbsen = $absensi_pegawai[$karyawan->id_karyawan]}}
-                                    @endif
                                     
                                     
                                     
@@ -91,6 +88,7 @@
                                         </td>
 
                                         <td class="right"></td>
+                                        @if($karyawan->status_karyawan == 0)
                                         <td class="right">
                                             @php
                                             $gaji_pokok = $karyawan->gaji_pokok;
@@ -101,6 +99,16 @@
                                             echo 'Rp. '.number_format($total);
                                             @endphp
                                         </td>
+                                        @endif
+                                        @if($karyawan->status_karyawan == 1)
+                                        <td class="right">
+                                            @php
+                                            $gaji_pokok = $karyawan->gaji_pokok;
+
+                                            echo 'Rp. '.number_format($gaji_pokok);
+                                            @endphp
+                                        </td>
+                                        @endif
                                     </tr>
                                     <tr>
                                         <td class="center">2</td>
@@ -129,7 +137,7 @@
                                             $jumlah_lembur = $karyawan->jumlah_lembur;
 
                                             if ($jumlah_lembur > 0) {
-                                                $total_upah_lembur = ($uang_lembur_jam_pertama + ($uang_lembur_jam_selanjutnya * ($jumlah_lembur - 1))) * $jumlah_lembur;
+                                                $total_upah_lembur = $uang_lembur_jam_pertama + ($uang_lembur_jam_selanjutnya * ($jumlah_lembur - 1));
                                             } else {
                                                 $total_upah_lembur = 0;
                                             }
@@ -188,7 +196,7 @@
                                                 @endif
                                                 @if($karyawan->status_karyawan == 1)
                                                 @php
-                                                    $sub_total = $total + $total_upah_lembur + $karyawan->nominal_rembes + $karyawan->nominal_transport;
+                                                    $sub_total = $gaji_pokok + $total_upah_lembur + $karyawan->nominal_rembes + $karyawan->nominal_transport;
                                                     echo 'Rp'.number_format($sub_total);
                                                 @endphp
                                                 @endif
@@ -218,7 +226,7 @@
                                                 $statusPernikahan = $karyawan->karyawan->status_pernikahan;
                                                 $tarifPPh = 0.05; // Default tarif PPh 21: 5%
 
-                                                if ($gajiPokok < 4500000) {
+                                                if ($gajiPokok <= 4500000) {
                                                     $tarifPPh = 0; // Tidak kena pajak jika gaji pokok di bawah 4500000
                                                 } elseif ($statusPernikahan === 'k') {
                                                     $tarifPPh = 0.1; // Tarif PPh 21 untuk karyawan kawin: 10%
@@ -231,7 +239,7 @@
                                                 $jumlahLembur = $karyawan->jumlah_lembur;
 
                                                 if ($jumlahLembur > 0) {
-                                                    $totalUpahLembur = ($uangLemburJamPertama + ($uangLemburJamSelanjutnya * ($jumlahLembur - 1))) * $jumlahLembur;
+                                                    $totalUpahLembur = $uangLemburJamPertama + ($uangLemburJamSelanjutnya * ($jumlahLembur - 1));
                                                 } else {
                                                     $totalUpahLembur = 0;
                                                 }

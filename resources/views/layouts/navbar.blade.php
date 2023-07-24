@@ -426,6 +426,12 @@
             <a href="{{ url('/data-penggajian') }}">
             <i class="bi bi-circle"></i><span>Data Penggajian</span>
             </a>
+            <li>
+                <a href="{{ url('/pengajuan-penggajian') }}">
+                <i class="bi bi-circle"></i><span>Pengajuan Penggajian</span>
+                </a>
+            </li>
+
         </li>
         
             <li>

@@ -31,6 +31,7 @@
                         <th scope="col">Alamat</th>
                         <th scope="col">Tanggal Lahir</th>
                         <th scope="col">Jenis Kelamin</th>
+                        <th scope="col">Status</th>
                         <th scope="col">No Hp</th>
                         <th scope="col">No Ktp</th>
                         <th scope="col">No Rekening</th>
@@ -47,6 +48,21 @@
                         <td>{{$karyawan->alamat}}</td>
                         <td>{{$karyawan->tgl_lahir}}</td>
                         <td>{{$karyawan->jenis_kelamin}}</td>
+                        <td>
+                        @php
+                        $status_pernikahan = $karyawan->status_pernikahan;
+
+                          if ($status_pernikahan == 'tk') {
+                              $status = 'Belum Kawin';
+                          } elseif ($status_pernikahan == 'k') {
+                              $status = 'Kawin';
+                          } else {
+                              $status = 'Tidak Diketahui';
+                          }
+
+                          echo $status;
+                          @endphp
+                        </td>
                         <td>{{$karyawan->no_hp}}</td>
                         <td>{{$karyawan->no_ktp}}</td>
                         <td>{{$karyawan->no_rekening}}</td>
@@ -99,6 +115,7 @@
         $('#editKaryawan #tgl_lahir').val('')
         $('input[name="jenis_kelamin"]').prop('checked', false);
         $('#editKaryawan #no_hp').val('')
+        $('#editKaryawan #status_pernikahan').val('')
         $('#editKaryawan #no_ktp').val('')
         $('#editKaryawan #no_rekening').val('')
         $.ajax({

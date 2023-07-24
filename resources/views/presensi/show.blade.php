@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('container')
-<form action="" method="get">
+<!--<form action="" method="get">
     <label for="bulan">Pilih Bulan:</label>
     <select name="bulan" id="bulan">
         <option value="1">Januari</option>
@@ -17,10 +17,11 @@
         <option value="11">November</option>
         <option value="12">Februari</option>
         
-        <!-- Tambahkan pilihan bulan lainnya sesuai dengan kebutuhan -->
+        
     </select>
     <button type="submit">Tampilkan</button>
 </form>
+ Tambahkan pilihan bulan lainnya sesuai dengan kebutuhan -->
 @if(!empty($presensi))
     @foreach($presensi as $get_presensi)
         <h3>Absen {{$get_presensi->karyawan->nama_karyawan}}</h3>

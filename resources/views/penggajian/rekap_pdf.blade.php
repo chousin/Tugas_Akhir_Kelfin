@@ -73,6 +73,7 @@ h1, h2, h3 {
     <h1>Data Penggajian</h1>
     <h2>Halaman: Home</h2>
     <h3>Sub Halaman: Rekap Data Penggajian</h3>
+            <div class ="table-responsive">
                 <table class="table caption-top bg-white px-2 ms-1">
                     <thead class="bg-white">
                         <tr>
@@ -85,6 +86,7 @@ h1, h2, h3 {
                             <th colspan="2" class="text-center">Transport</th>
                             <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Rembes</th>
                             <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Potong Hutang</th>
+                            <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Pph</th>
                             <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Total</th>
                         </tr>
                         <tr>
@@ -143,6 +145,43 @@ h1, h2, h3 {
                             <td class="text-right">Rp. {{ number_format($get_listing_karyawan->nominal_transport) }}</td>
                             <td class="text-right">Rp. {{ number_format($get_listing_karyawan->nominal_rembes) }}</td>
                             <td class="text-right">Rp. {{ number_format($get_listing_karyawan->nominal_hutang) }}</td>
+                            <td class="text-right ">
+                            @php
+                                                // Perhitungan potongan pajak PPh 21
+                                                $gajiPokok = $get_listing_karyawan->gaji_pokok;
+                                                $jumlahHariKerja = $get_listing_karyawan->jumlah_hari;
+
+                                                // Periksa status pernikahan
+                                                $statusPernikahan = $get_listing_karyawan->karyawan->status_pernikahan;
+                                                $tarifPPh = 0.05; // Default tarif PPh 21: 5%
+
+                                                if ($gajiPokok <= 4500000) {
+                                                    $tarifPPh = 0; // Tidak kena pajak jika gaji pokok di bawah 4500000
+                                                } elseif ($statusPernikahan === 'k') {
+                                                    $tarifPPh = 0.1; // Tarif PPh 21 untuk karyawan kawin: 10%
+                                                }
+
+                                                // Perhitungan upah lembur
+                                                $upahPerJam = $gajiPokok * (1 / 173);
+                                                $uangLemburJamPertama = 1.5 * $upahPerJam;
+                                                $uangLemburJamSelanjutnya = 2 * $upahPerJam;
+                                                $jumlahLembur = $get_listing_karyawan->jumlah_lembur;
+
+                                                if ($jumlahLembur > 0) {
+                                                    $totalUpahLembur = ($uangLemburJamPertama + ($uangLemburJamSelanjutnya * ($jumlahLembur - 1))) * $jumlahLembur;
+                                                } else {
+                                                    $totalUpahLembur = 0;
+                                                }
+
+                                                // Total gaji kotor, termasuk hasil lembur
+                                                $gajiKotor = ($gajiPokok * $jumlahHariKerja) + $totalUpahLembur;
+
+                                                $potonganPPh = $gajiKotor * $tarifPPh;
+
+                                                echo 'Rp. ' . number_format($potonganPPh, 0, ',', '.');
+                                                @endphp
+
+                            </td>
                             <td class="d-none total">
                             @if($get_listing_karyawan->status_karyawan == 0)
                             @php 
@@ -152,7 +191,7 @@ h1, h2, h3 {
                                     $total = $gaji_pokok * $jumlah_hari;
 
                                     $sub_total = $total + $total_lembur + $get_listing_karyawan->nominal_rembes + $get_listing_karyawan->nominal_transport;
-                                    echo $sub_total - $get_listing_karyawan->nominal_hutang
+                                    echo $sub_total - $get_listing_karyawan->nominal_hutang 
                             @endphp
                             @endif
                             @if($get_listing_karyawan->status_karyawan == 1)
@@ -163,7 +202,7 @@ h1, h2, h3 {
                                     $total = $gaji_pokok * $jumlah_hari;
 
                                     $sub_total = $total + $total_upah_lembur + $get_listing_karyawan->nominal_rembes + $get_listing_karyawan->nominal_transport;
-                                    echo $sub_total - $get_listing_karyawan->nominal_hutang
+                                    echo $sub_total - $get_listing_karyawan->nominal_hutang 
                             @endphp
                             
                              @endif
@@ -175,10 +214,10 @@ h1, h2, h3 {
                                     $gaji_pokok = $get_listing_karyawan->gaji_pokok;
                                     $jumlah_hari = $get_listing_karyawan->jumlah_hari;
 
-                                    $total = $gaji_pokok * $jumlah_hari;
+                                    $total = $gaji_pokok;
 
                                     $sub_total = $total + $total_upah_lembur + $get_listing_karyawan->nominal_rembes + $get_listing_karyawan->nominal_transport;
-                                    echo number_format($sub_total - $get_listing_karyawan->nominal_hutang)
+                                    echo number_format($sub_total - $get_listing_karyawan->nominal_hutang - $potonganPPh)
                                 @endphp
                                 @endif
                                 @if($get_listing_karyawan->status_karyawan == 0)   
@@ -189,7 +228,7 @@ h1, h2, h3 {
                                     $total = $gaji_pokok * $jumlah_hari;
 
                                     $sub_total = $total + $total_lembur + $get_listing_karyawan->nominal_rembes + $get_listing_karyawan->nominal_transport;
-                                    echo number_format($sub_total - $get_listing_karyawan->nominal_hutang)
+                                    echo number_format($sub_total - $get_listing_karyawan->nominal_hutang - $potonganPPh)
                                 @endphp
                                 @endif
                             </td>
@@ -206,6 +245,7 @@ h1, h2, h3 {
                             <td></td>
                             <td></td>
                             
+                            <td></td>
                             <td></td>
                             <td class="text-right"></td>
                             <td colspan="2" class="text-center fw-bold">TOTAL</td>
@@ -230,7 +270,8 @@ h1, h2, h3 {
                                         $uang_lembur_jam_pertama = 1.5 * $upah_per_jam;
                                         $uang_lembur_jam_selanjutnya = 2 * $upah_per_jam;
                                         $jumlah_lembur = $get_listing_karyawan->jumlah_lembur;
-
+                                        
+                                        
                                         $total_upah_lembur = ($uang_lembur_jam_pertama + $uang_lembur_jam_selanjutnya * ($jumlah_lembur - 1)) * $jumlah_lembur;
                                         $total += $gaji_pokok * $jumlah_hari + $total_upah_lembur + $get_listing_karyawan->nominal_rembes + $get_listing_karyawan->nominal_transport - $get_listing_karyawan->nominal_hutang;
                                     }
@@ -242,6 +283,7 @@ h1, h2, h3 {
                         </tr>
                     </tbody>
                 </table>
+              </div>
             </body>
             <!-- Vendor JS Files -->
     <script src="{{ asset('vendor/apexcharts/apexcharts.min.js') }}"></script>
