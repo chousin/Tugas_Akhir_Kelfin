@@ -4,14 +4,7 @@
 <div class="row">
     <div class="col-3">
 		@include('_partial.flash_message')
-		@if(Session::get('sesi_absen') == '')
-		<form  method="POST" action="{{ url('/absen') }}">
-			@csrf
-			<input type="hidden" name="latitude" class="latitude" id="latitude">
-			<input type="hidden" name="longitude" id="longitude">
-			<input type="submit" value="ABSEN MASUK" class="btn btn-primary">
-		</form>
-		@else
+		@if(Auth::user()->id_presensi > 0)
 			@if($presensi->tanggal_pulang != $presensi->tanggal_masuk)
 				<form method="POST" action="{{ url('/reset-absen') }}">
 					@csrf
@@ -25,6 +18,13 @@
 					<input type="submit" value="ABSEN PULANG" class="btn btn-success">
 				</form>
 			@endif
+		@else
+			<form  method="POST" action="{{ url('/absen') }}">
+				@csrf
+				<input type="hidden" name="latitude" class="latitude" id="latitude">
+				<input type="hidden" name="longitude" id="longitude">
+				<input type="submit" value="ABSEN MASUK" class="btn btn-primary">
+			</form>
 		@endif
 	</div>
 	<div class="col">
