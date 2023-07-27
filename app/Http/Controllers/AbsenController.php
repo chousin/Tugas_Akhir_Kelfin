@@ -87,9 +87,9 @@ class AbsenController extends Controller
 
             $calculate_jam = $hours - $maksimal_jam;
 
-            if($calculate_jam > 0){
+            if ($calculate_jam > 0) {
                 $jumlah_lembur = $calculate_jam;
-            }else{
+            } else {
                 $jumlah_lembur = 0;
             }
 

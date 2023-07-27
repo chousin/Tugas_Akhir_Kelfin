@@ -8,6 +8,10 @@ use App\Models\Karyawan;
 
 use App\Models\Presensi;
 
+use Auth;
+
+use Session;
+
 class PresensiController extends Controller
 {
     public function index()
@@ -36,6 +40,38 @@ class PresensiController extends Controller
             "JumlahAbsen" => $JumlahAbsen
         ]);
     }
+    public function pulang_presensi($id, $karyawan)
+    {
+        $presensi = Presensi::find($id);
+
+        $tanggal_pulang = date('Y-m-d H:i:s');
+        $tanggal_masuk_in = strtotime($presensi->tanggal_masuk);
+        $tanggal_pulang_out = strtotime($tanggal_pulang);
+        $maksimal_jam = 8;
+
+        $timeDiff = $tanggal_pulang_out - $tanggal_masuk_in;
+
+        $hours = floor($timeDiff / 3600);
+
+        $calculate_jam = $hours - $maksimal_jam;
+
+        if ($calculate_jam > 0) {
+            $jumlah_lembur = $calculate_jam;
+        } else {
+            $jumlah_lembur = 0;
+        }
+
+        $rows = [
+            'id_karyawan' => $presensi->id_karyawan,
+            'tanggal_pulang' => $tanggal_pulang,
+            'jumlah_lembur' => $jumlah_lembur
+        ];
+
+        $presensi = Presensi::where('id', $id)->update($rows);
+        return redirect('/presensi/' . $karyawan);
+    }
+
+
 
 
 

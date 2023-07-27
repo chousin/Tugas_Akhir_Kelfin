@@ -1,83 +1,119 @@
 <!DOCTYPE html>
-<html>
+<htm  
 <head>
     <meta charset="UTF-8">
-    <title>Rekap Penggajian</title>
+      itle>Rekap Penggajian</title>
 
     <style>
-        /* Style CSS untuk tampilan rekap penggajian */
+        /* Style CSS untuk tampilan rekap penggaji */
 body {
   font-family: Arial, sans-serif;
-}
+}  
 
 h1, h2, h3 {
-  text-align: center;
+  te  -align: center;
 }
 
-.float-right {
+.flo  -right {
   float: right;
 }
-
+  
 .table {
   width: 100%;
-  border-collapse: collapse;
+  bo  er-collapse: collapse;
 }
 
-.table th,
+.tab   th,
 .table td {
   padding: 8px;
-  border: 1px solid #ddd;
+  bo  er: 1px solid #ddd;
 }
 
-.table th {
+.tab   th {
   background-color: #f5f5f5;
   font-weight: bold;
-  text-align: center;
+  te  -align: center;
 }
 
-.text-center {
+.tex  center {
   text-align: center;
 }
-
+  
 .text-right {
   text-align: right;
-}
+}  
 
 .bg-white {
-  background-color: #fff;
+  ba  ground-color: #fff;
 }
 
-.caption-top {
+.cap  on-top {
   caption-side: top;
 }
-
+  
 .ms-1 {
   margin-left: 1rem;
-}
+}  
+  
+
+  
+
+ 
+  
 
 .d-none {
-  display: none;
-}
+  displ ay: none;
+   
+  
 
-.float-right {
+
+}
+ 
+  
+
+.f loat-right {
+  
+ 
+  
+
   float: right;
 }
+  
+  
 
-.fw-bold {
+  
+
+.f w-bold {
+  
+
   font-weight: bold;
-}
+} 
+   
+  
 
-    </style>
-</head>
+
+
+     </style>
+  
+
+</ head>
+  
+
 <body>
     <h1>Data Penggajian</h1>
-    <h2>Halaman: Home</h2>
+     <h2>Halaman: Home</h2>
+  
+
     <h3>Sub Halaman: Rekap Data Penggajian</h3>
             <div class ="table-responsive">
-                <table class="table caption-top bg-white px-2 ms-1">
+                 <table class="table caption-top
+   
+bg-white px-2 ms-1">
                     <thead class="bg-white">
                         <tr>
-                            <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">No</th>
+                             <th rowspan="2" cla
+  s
+s="text-center" style="vertical-align : middle;text-align:center;">No</th>
                             <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Nama</th>
                             <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">No rekening</th>
                             <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Pokok</th>

@@ -102,6 +102,7 @@ Route::group(['middleware' => 'auth'], function ($route) {
     Route::get('/absen', [AbsenController::class, 'index'])->name('absen');
     Route::post('/absen', [AbsenController::class, 'store']);
     Route::post('/absen-pulang', [AbsenController::class, 'pulang']);
+
     Route::post('/reset-absen', [AbsenController::class, 'reset']);
 
     // Route Pengajuan Penggajian
@@ -119,6 +120,7 @@ Route::group(['middleware' => 'auth'], function ($route) {
     Route::get('/presensi', [PresensiController::class, 'index']);
     Route::get('/presensi/{id}', [PresensiController::class, 'show']);
     Route::get('/presensi/{id}/lokasi', [PresensiController::class, 'lokasi']);
+    Route::get('/pulang-presensi/{id}/{karyawan}', [PresensiController::class, 'pulang_presensi']);
 
 
     // Data Gaji Karyawan

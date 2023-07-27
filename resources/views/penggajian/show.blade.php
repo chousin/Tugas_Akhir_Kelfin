@@ -40,9 +40,18 @@
 
                                                 if ($status_pernikahan == 'tk') {
                                                     $status = 'Belum Kawin';
-                                                } elseif ($status_pernikahan == 'k') {
+                                                } elseif ($status_pernikahan == 'k0') {
                                                     $status = 'Kawin';
-                                                } else {
+                                                }elseif ($status_pernikahan == 'k1') {
+                                                    $status = 'Kawin';
+                                                    $tanggungan = "memiliki anak 1";
+                                                }elseif ($status_pernikahan == 'k2') {
+                                                    $status = 'Kawin';
+                                                    $tanggungan = "memiliki anak 1";
+                                                }elseif ($status_pernikahan == 'k3') {
+                                                    $status = 'Kawin';
+                                                    $tanggungan = "memiliki anak 1";
+                                                }else {
                                                     $status = 'Tidak Diketahui';
                                                 }
 
@@ -219,37 +228,57 @@
                                                 <td class="right text-danger">
                                                 @php
                                                 // Perhitungan potongan pajak PPh 21
-                                                $gajiPokok = $karyawan->gaji_pokok;
-                                                $jumlahHariKerja = $karyawan->jumlah_hari;
+                                                    $gajiPokok = $karyawan->gaji_pokok;
+                                                    $jumlahHariKerja = $karyawan->jumlah_hari;
 
-                                                // Periksa status pernikahan
-                                                $statusPernikahan = $karyawan->karyawan->status_pernikahan;
-                                                $tarifPPh = 0.05; // Default tarif PPh 21: 5%
+                                                    // Penghasilan Tidak Kena Pajak (PTKP)
+                                                    $ptkp = 54000000;
+                                                    $statusPernikahan = $karyawan->karyawan->status_pernikahan; 
 
-                                                if ($gajiPokok <= 4500000) {
-                                                    $tarifPPh = 0; // Tidak kena pajak jika gaji pokok di bawah 4500000
-                                                } elseif ($statusPernikahan === 'k') {
-                                                    $tarifPPh = 0.1; // Tarif PPh 21 untuk karyawan kawin: 10%
-                                                }
+                                                    if ($statusPernikahan == 'tk') {
+                                                        // Tidak kawin, jadi tidak ada tambahan PTKP
+                                                    } elseif ($statusPernikahan == 'k0') {
+                                                        // Kawin tetapi tidak memiliki anak, jadi menambahkan PTKP untuk kawin saja
+                                                        $ptkp += 4500000;
+                                                    } elseif ($statusPernikahan == 'k1') {
+                                                        // Kawin dan memiliki 1 anak
+                                                        $ptkp += 4500000; // untuk kawin
+                                                        $ptkp += 4500000 * 1; // untuk 1 anak
+                                                    } elseif ($statusPernikahan == 'k2') {
+                                                        // Kawin dan memiliki 1 anak
+                                                        $ptkp += 4500000; // untuk kawin
+                                                        $ptkp += 4500000 * 2; // untuk 2 anak
+                                                    }elseif ($statusPernikahan == 'k3') {
+                                                        // Kawin dan memiliki 3 anak atau lebih
+                                                        $ptkp += 4500000; // untuk kawin
+                                                        $ptkp += 4500000 * min(3, substr($statusPernikahan, 1, 1)); // untuk anak, maksimal 3 tanggungan
+                                                    }
 
-                                                // Perhitungan upah lembur
-                                                $upahPerJam = $gajiPokok * (1 / 173);
-                                                $uangLemburJamPertama = 1.5 * $upahPerJam;
-                                                $uangLemburJamSelanjutnya = 2 * $upahPerJam;
-                                                $jumlahLembur = $karyawan->jumlah_lembur;
+                                                    $gajiSetahun = $sub_total * 12;
 
-                                                if ($jumlahLembur > 0) {
-                                                    $totalUpahLembur = $uangLemburJamPertama + ($uangLemburJamSelanjutnya * ($jumlahLembur - 1));
-                                                } else {
-                                                    $totalUpahLembur = 0;
-                                                }
+                                                    $penghasilanKenaPajak = $gajiSetahun > $ptkp ? $gajiSetahun - $ptkp : 0;
 
-                                                // Total gaji kotor, termasuk hasil lembur
-                                                $gajiKotor = ($gajiPokok * $jumlahHariKerja) + $totalUpahLembur;
+                                                    // Perhitungan Pajak Penghasilan
+                                                    $brackets = [
+                                                        [50000000, 0.05], // Rp 0 sampai 50,000,000 pajak 5%
+                                                        [250000000 - 50000000, 0.15], // Rp 50,000,001 sampai 250,000,000 pajak 15%
+                                                        [500000000 - 250000000, 0.25], // Rp 250,000,001 sampai 500,000,000 pajak 25%
+                                                        [PHP_INT_MAX, 0.3] // Rp 500,000,001 ke atas pajak 30%
+                                                    ];
 
-                                                $potonganPPh = $gajiKotor * $tarifPPh;
+                                                    $potonganPPh = 0;
+                                                    foreach ($brackets as $bracket) {
+                                                        if ($penghasilanKenaPajak > 0) {
+                                                            $taxable = min($penghasilanKenaPajak, $bracket[0]);
+                                                            $potonganPPh += $taxable * $bracket[1] / 12;
+                                                            $penghasilanKenaPajak -= $taxable;
+                                                        } else {
+                                                            break;
+                                                        }
+                                                    }
 
-                                                echo 'Rp. ' . number_format($potonganPPh, 0, ',', '.');
+                                                    echo 'Rp. ' . number_format($potonganPPh, 0, ',', '.');
+
                                                 @endphp
 
                                                 </td>

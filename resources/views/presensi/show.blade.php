@@ -57,7 +57,7 @@
                                             @if($get_presensi->tanggal_pulang != $get_presensi->tanggal_masuk)
                                                 {{ $get_presensi->tanggal_pulang }}
                                             @else
-                                                <span class="badge text-bg-warning">Belum Absen Pulang</span>
+                                                <a href="{{ url('/pulang-presensi/'.$get_presensi->id.'/'.$get_presensi->id_karyawan) }}" class="btn btn-warning">Absen Pulang</a>
                                             @endif
                                         </td>
                                         <td>{{ $get_presensi->jumlah_lembur }}</td>
