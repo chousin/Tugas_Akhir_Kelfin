@@ -21,7 +21,8 @@ class Karyawan extends Model
         'no_rekening',
         'no_ktp',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'status_pernikahan'
     ];
 
     public function jabatan()
@@ -51,7 +52,7 @@ class Karyawan extends Model
 
     public function listing_karyawan()
     {
-        return $this->hasMany(ListingKaryawan::class, 'id_karyawan'); 
+        return $this->hasMany(ListingKaryawan::class, 'id_karyawan');
     }
 
 

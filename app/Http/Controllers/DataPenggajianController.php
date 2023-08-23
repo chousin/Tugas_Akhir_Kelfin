@@ -8,6 +8,9 @@ use App\Models\PengajuanPenggajian;
 
 use App\Models\ListingKaryawan;
 
+use App\Models\Hutang;
+
+
 use App\Models\Karyawan;
 
 use App\Models\Presensi;
@@ -38,11 +41,17 @@ class DataPenggajianController extends Controller
         $pengajuan_penggajian = PengajuanPenggajian::findOrFail($id);
         $listing_karyawan = ListingKaryawan::all()->where('id_pengajuan_penggajian', $id);
         $absensi_pegawai = [];
+        $hutangPerKaryawan = [];
 
         foreach ($listing_karyawan as $karyawan) {
             $jumlahAbsen = Presensi::where('id_karyawan', $karyawan->id_karyawan)->count();
+            $hutangPerKaryawan[$karyawan->id_karyawan] = Hutang::where('id_karyawan', $karyawan->id_karyawan)->sum('nominal_hutang');
+
             $absensi_pegawai[$karyawan->id_karyawan] = $jumlahAbsen;
         }
+
+
+
 
 
 
@@ -52,7 +61,8 @@ class DataPenggajianController extends Controller
             'sub_hal' => 'Detail Penggajian',
             'listing_karyawan' => $listing_karyawan,
             'pengajuan_penggajian' => $pengajuan_penggajian,
-            'absensi_pegawai' => $absensi_pegawai
+            'absensi_pegawai' => $absensi_pegawai,
+            'hutangPerKaryawan' => $hutangPerKaryawan
         ]);
     }
 
@@ -69,6 +79,8 @@ class DataPenggajianController extends Controller
             'pengajuan_penggajian' => $pengajuan_penggajian,
             'karyawan' => $karyawan,
         ];
+
+        // return view('penggajian.detail_pdf', compact('data'));
 
         $html = view('penggajian.detail_pdf', $data)->render();
 
@@ -115,10 +127,12 @@ class DataPenggajianController extends Controller
         $listing_karyawan = ListingKaryawan::all()->where('id_pengajuan_penggajian', $id);
         $jumlah_lemburs = ListingKaryawan::all()->sum('jumlah_lembur');
         $jumlah_transports = ListingKaryawan::all()->sum('nominal_transport');
+        $hutangPerKaryawan = [];
 
         foreach ($listing_karyawan as $karyawan) {
             $jumlahAbsen = Presensi::where('id_karyawan', $karyawan->id_karyawan)->count();
             $absensi_pegawai[$karyawan->id_karyawan] = $jumlahAbsen;
+            $hutangPerKaryawan[$karyawan->id_karyawan] = Hutang::where('id_karyawan', $karyawan->id_karyawan)->sum('nominal_hutang');
         }
 
 
@@ -129,7 +143,8 @@ class DataPenggajianController extends Controller
                 'title' => 'Data Penggajian ',
                 'halaman' => 'Home',
                 'sub_hal' => 'Rekap Data Penggajian',
-                'absensi_pegawai' => $absensi_pegawai
+                'absensi_pegawai' => $absensi_pegawai,
+                'hutangPerKaryawan' => $hutangPerKaryawan
             ],
             compact('listing_karyawan', 'jumlah_lemburs', 'jumlah_transports', 'pengajuan_penggajian')
         );
@@ -142,6 +157,14 @@ class DataPenggajianController extends Controller
         $jumlah_lemburs = $listing_karyawan->sum('jumlah_lembur');
         $jumlah_transports = $listing_karyawan->sum('nominal_transport');
 
+
+        $hutangPerKaryawan = [];
+
+        foreach ($listing_karyawan as $karyawan) {
+            $hutangPerKaryawan[$karyawan->id_karyawan] = Hutang::where('id_karyawan', $karyawan->id_karyawan)->sum('nominal_hutang');
+        }
+
+
         $data = [
             'title' => 'Data Penggajian',
             'halaman' => 'Home',
@@ -150,7 +173,10 @@ class DataPenggajianController extends Controller
             'jumlah_lemburs' => $jumlah_lemburs,
             'jumlah_transports' => $jumlah_transports,
             'pengajuan_penggajian' => $pengajuan_penggajian,
+            'hutangPerKaryawan' => $hutangPerKaryawan
         ];
+
+        // return view('penggajian.rekap_pdf', $data);
 
         $html = view('penggajian.rekap_pdf', $data)->render();
         $options = new Options();

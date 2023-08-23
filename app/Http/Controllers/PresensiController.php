@@ -37,7 +37,8 @@ class PresensiController extends Controller
             "halaman" => "Home",
             "sub_hal" => "Data Presensi",
             "presensi" => $presensi,
-            "JumlahAbsen" => $JumlahAbsen
+            "JumlahAbsen" => $JumlahAbsen,
+            "id_karyawan" => $id
         ]);
     }
     public function pulang_presensi($id, $karyawan)
@@ -70,6 +71,24 @@ class PresensiController extends Controller
         $presensi = Presensi::where('id', $id)->update($rows);
         return redirect('/presensi/' . $karyawan);
     }
+
+    // Di dalam file PresensiController.php
+
+    public function batalkanAbsen($id, $id_karyawan)
+    {
+        $presensi = Presensi::find($id);
+
+        if (!$presensi) {
+            return redirect()->back()->with('error', 'Data presensi tidak ditemukan.');
+        }
+
+        $presensi->delete(); // Anda bisa menggunakan soft delete jika diperlukan
+
+        return redirect()->route('presensi.show', ['id' => $id_karyawan])->with('success', 'Absen berhasil dibatalkan.');
+
+
+    }
+
 
 
 

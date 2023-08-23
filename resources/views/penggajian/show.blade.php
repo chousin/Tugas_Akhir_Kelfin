@@ -3,9 +3,10 @@
 @section('container')
 <section class="section">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12 ">
             @if(!empty($listing_karyawan))
             @foreach($listing_karyawan as $karyawan)
+            
            
                 <div class="container">
                 <div class="card">
@@ -43,14 +44,14 @@
                                                 } elseif ($status_pernikahan == 'k0') {
                                                     $status = 'Kawin';
                                                 }elseif ($status_pernikahan == 'k1') {
-                                                    $status = 'Kawin';
-                                                    $tanggungan = "memiliki anak 1";
+                                                    $status = 'Kawin ';
+                                                    $status = "memiliki anak 1";
                                                 }elseif ($status_pernikahan == 'k2') {
                                                     $status = 'Kawin';
-                                                    $tanggungan = "memiliki anak 1";
+                                                    $status = "memiliki anak 2";
                                                 }elseif ($status_pernikahan == 'k3') {
                                                     $status = 'Kawin';
-                                                    $tanggungan = "memiliki anak 1";
+                                                    $status = "memiliki anak 3";
                                                 }else {
                                                     $status = 'Tidak Diketahui';
                                                 }
@@ -80,7 +81,7 @@
                                         <th>Item</th>
                                         <th>Description</th>
 
-                                        <th class="right"></th>
+                                        
                                         <th class="right">Total</th>
                                     </tr>
                                 </thead>
@@ -96,7 +97,7 @@
                                             @endif
                                         </td>
 
-                                        <td class="right"></td>
+                                        
                                         @if($karyawan->status_karyawan == 0)
                                         <td class="right">
                                             @php
@@ -110,7 +111,7 @@
                                         </td>
                                         @endif
                                         @if($karyawan->status_karyawan == 1)
-                                        <td class="right">
+                                        <td class="text-right">
                                             @php
                                             $gaji_pokok = $karyawan->gaji_pokok;
 
@@ -124,8 +125,8 @@
                                         <td class="left strong">Lembur</td>
                                         <td class="left">{{$karyawan->jumlah_lembur}} Jam </td>
 
-                                        <td class="right"></td>
-                                        <td class="right">
+                                        
+                                        <td class="text-right">
                                             @if($karyawan->status_karyawan == 0)    
                                             @php
                                                 
@@ -158,45 +159,31 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="center">2</td>
-                                        <td class="left strong">Hutang/Kasbon</td>
-                                        <td class="left"></td>
-
-                                        <td class="right"></td>
-                                        <td class="right">Rp. {{ number_format($karyawan->nominal_hutang) }}</td>
-                                    </tr>
-                                    <tr>
                                         <td class="center">3</td>
                                         <td class="left strong">Rembes</td>
                                         <td class="left"></td>
 
-                                        <td class="right"></td>
-                                        <td class="right">Rp. {{ number_format($karyawan->nominal_rembes) }}</td>
+                                        
+                                        <td class="text-right">Rp. {{ number_format($karyawan->nominal_rembes) }}</td>
                                     </tr>
                                     <tr>
                                         <td class="center">4</td>
                                         <td class="left strong">Transport</td>
                                         <td class="left">(jumlah motor ke project x bensin)</td>
 
-                                        <td class="right"></td>
-                                        <td class="right">Rp. {{ number_format($karyawan->nominal_transport) }}</td>
+                                        
+                                        <td class="text-right">Rp. {{ number_format($karyawan->nominal_transport) }}</td>
                                     </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-4 col-sm-5">
-
-                            </div>
-
-                            <div class="col-lg-4 col-sm-5 ml-auto">
-                                <table class="table table-clear">
-                                    <tbody>
-                                        <tr>
-                                            <td class="left">
-                                                <strong>Subtotal</strong>
+                                    <tr>
+                                        <td class="center"></td>
+                                        <td class="left strong"></td>
+                                        <td class="left">
+                                                <strong>Sub Total</strong>
                                             </td>
-                                            <td class="right">
+
+                                        
+                                        <td class="text-right">
+                                                <strong>
                                                 @if($karyawan->status_karyawan == 0)
                                                 @php
                                                     $sub_total = $total + $total_lembur + $karyawan->nominal_rembes + $karyawan->nominal_transport;
@@ -209,23 +196,99 @@
                                                     echo 'Rp'.number_format($sub_total);
                                                 @endphp
                                                 @endif
+                                                </strong>
                                             </td>
-                                        </tr>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-sm-5">
+
+                            </div>
+                            @if($karyawan->status_karyawan == 1)
+                            <div class="col-lg-4 col-sm-5 ml-auto">
+                                <table class="table table-clear">
+                                    <tbody>   
                                         <tr>
                                             <td class="left">
                                                 <strong>Potongan(Hutang)</strong>
                                             </td>
-                                            
                                             <td class="right text-danger">
                                             @php
-                                            echo '-Rp' . number_format($karyawan->nominal_hutang);
+                                            echo  '-Rp' . number_format($hutangPerKaryawan[$karyawan->id_karyawan]);
                                             @endphp
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td class="left">
+                                                <strong>biaya Jabatan (5%)</strong>
+                                            </td>
+                                            <td class="right text-danger">
+                                            @php
+                                            $jabatan = 0.05;
+                                            $gajiPokok = $karyawan->gaji_pokok;
+                                            $biaya_jabatan = $gajiPokok * $jabatan;
+                                                    
+                                            echo  '-Rp' . number_format($biaya_jabatan);
+                                            @endphp
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left">
+                                                <strong>Total</strong>
+                                            </td>
+                                            
+                                            <td class="text-right">
+                                            <strong>
+                                                @php
+                                                $total_gaji = $sub_total - $biaya_jabatan - $hutangPerKaryawan[$karyawan->id_karyawan];
+                                                echo  'Rp' . number_format($total_gaji);
+                                                @endphp
+                                            </strong>
+                                            </td>
+                                            
+                                        </tr>
+                                    </tbody> 
+                                </div>
+                            </div>
+                            @endif
+                            @if($karyawan->status_karyawan == 0)
+                            <div class="col-lg-4 col-sm-5 ml-auto">
+                                <table class="table table-clear">
+                                    <tbody>   
+                                        <tr>
+                                            <td class="left">
+                                                <strong>Potongan(Hutang)</strong>
+                                            </td>
+                                            <td class="right text-danger">
+                                            @php
+                                            echo  '-Rp' . number_format($hutangPerKaryawan[$karyawan->id_karyawan]);
+                                            @endphp
+                                            </td>
+                                        </tr>
+                                        
+                                    </tbody> 
+                                </div>
+                            </div>
+                            @endif
+                            
+                            <div class="col-lg-4 col-sm-5 ml-auto">
+                                <table class="table border">
+                                    <tbody>
+                                        <tr>
+                                            <td class="left">
+                                                <strong></strong>
+                                            </td>
+                                            <td class="right">
+                                                
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr>
                                             @if($karyawan->status_karyawan == 1)
                                                 <td class="left strong fw-bold">Potongan PPh 21</td>
-                                                <td class="right text-danger">
+                                                <td class="text-right text-danger">
                                                 @php
                                                 // Perhitungan potongan pajak PPh 21
                                                     $gajiPokok = $karyawan->gaji_pokok;
@@ -254,30 +317,34 @@
                                                         $ptkp += 4500000 * min(3, substr($statusPernikahan, 1, 1)); // untuk anak, maksimal 3 tanggungan
                                                     }
 
-                                                    $gajiSetahun = $sub_total * 12;
+                                                    $gaji_total_bulan = $total_gaji;
+                                                    $gajiSetahun = $gaji_total_bulan * 12;
 
                                                     $penghasilanKenaPajak = $gajiSetahun > $ptkp ? $gajiSetahun - $ptkp : 0;
 
                                                     // Perhitungan Pajak Penghasilan
-                                                    $brackets = [
-                                                        [50000000, 0.05], // Rp 0 sampai 50,000,000 pajak 5%
-                                                        [250000000 - 50000000, 0.15], // Rp 50,000,001 sampai 250,000,000 pajak 15%
-                                                        [500000000 - 250000000, 0.25], // Rp 250,000,001 sampai 500,000,000 pajak 25%
-                                                        [PHP_INT_MAX, 0.3] // Rp 500,000,001 ke atas pajak 30%
-                                                    ];
+                                                    
+
+                                                    $batas1 = 60000000;
+                                                    $batas2 = 250000000;
+                                                    $batas3 = 500000000;
 
                                                     $potonganPPh = 0;
-                                                    foreach ($brackets as $bracket) {
-                                                        if ($penghasilanKenaPajak > 0) {
-                                                            $taxable = min($penghasilanKenaPajak, $bracket[0]);
-                                                            $potonganPPh += $taxable * $bracket[1] / 12;
-                                                            $penghasilanKenaPajak -= $taxable;
-                                                        } else {
-                                                            break;
-                                                        }
+
+                                                    if ($penghasilanKenaPajak <= $batas1) {
+                                                        $potonganPPh = 0.05 * $penghasilanKenaPajak;
+                                                    } else if ($penghasilanKenaPajak <= $batas2) {
+                                                        $potonganPPh = (0.05 * $batas1) + (0.15 * ($penghasilanKenaPajak - $batas1));
+                                                    } else if ($penghasilanKenaPajak <= $batas3) {
+                                                        $potonganPPh = (0.05 * $batas1) + (0.15 * ($batas2 - $batas1)) + (0.25 * ($penghasilanKenaPajak - $batas2));
+                                                    } else {
+                                                        $potonganPPh = (0.05 * $batas1) + (0.15 * ($batas2 - $batas1)) + (0.25 * ($batas3 - $batas2)) + (0.30 * ($penghasilanKenaPajak - $batas3));
                                                     }
 
-                                                    echo 'Rp. ' . number_format($potonganPPh, 0, ',', '.');
+                                                    $potonganPPhBulanan = $potonganPPh / 12;
+
+                                                    
+                                                    echo  'Rp. ' . number_format($potonganPPhBulanan, 0, ',', '.');
 
                                                 @endphp
 
@@ -289,18 +356,19 @@
                                             <td class="left">
                                                 <strong>Total Diterima</strong>
                                             </td>
-                                            <td class="right">
+                                            <td class="text-right">
                                                 <strong>
                                                 @if($karyawan->status_karyawan == 0)
                                                 @php
+                                                $total_hutang = $hutangPerKaryawan[$karyawan->id_karyawan];
                                                 
-                                                echo 'Rp.'.number_format($sub_total - $karyawan->nominal_hutang);
+                                                echo 'Rp.'.number_format($sub_total - $total_hutang);
                                                 
                                                 @endphp
                                                 @endif
                                                 @if($karyawan->status_karyawan == 1)
                                                 
-                                                 Rp.{{number_format($sub_total  - $karyawan->nominal_hutang - $potonganPPh )}}
+                                                 Rp.{{number_format($total_gaji   - $potonganPPhBulanan )}}
                                                 
                                                 @endif
                                                 </strong>

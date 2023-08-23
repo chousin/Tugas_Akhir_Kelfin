@@ -118,9 +118,10 @@ Route::group(['middleware' => 'auth'], function ($route) {
 
     // Route Presensi
     Route::get('/presensi', [PresensiController::class, 'index']);
-    Route::get('/presensi/{id}', [PresensiController::class, 'show']);
+    Route::get('/presensi/{id}', [PresensiController::class, 'show'])->name('presensi.show');
     Route::get('/presensi/{id}/lokasi', [PresensiController::class, 'lokasi']);
     Route::get('/pulang-presensi/{id}/{karyawan}', [PresensiController::class, 'pulang_presensi']);
+    Route::get('/presensi/{id}/batalkan/{id_karyawan}', [PresensiController::class, 'batalkanAbsen'])->name('presensi.batalkan');
 
 
     // Data Gaji Karyawan

@@ -49,19 +49,28 @@
                         <td>{{$karyawan->tgl_lahir}}</td>
                         <td>{{$karyawan->jenis_kelamin}}</td>
                         <td>
-                        @php
-                        $status_pernikahan = $karyawan->status_pernikahan;
+                      @php
+                                                $status_pernikahan = $karyawan->status_pernikahan;
 
-                          if ($status_pernikahan == 'tk') {
-                              $status = 'Belum Kawin';
-                          } elseif ($status_pernikahan == 'k') {
-                              $status = 'Kawin';
-                          } else {
-                              $status = 'Tidak Diketahui';
-                          }
+                                                if ($status_pernikahan == 'tk') {
+                                                    $status = 'Belum Kawin';
+                                                } elseif ($status_pernikahan == 'k0') {
+                                                    $status = 'Kawin';
+                                                }elseif ($status_pernikahan == 'k1') {
+                                                    $status = 'Kawin ';
+                                                    $status = "memiliki anak 1";
+                                                }elseif ($status_pernikahan == 'k2') {
+                                                    $status = 'Kawin';
+                                                    $status = "memiliki anak 2";
+                                                }elseif ($status_pernikahan == 'k3') {
+                                                    $status = 'Kawin';
+                                                    $status = "memiliki anak 3 atau lebih";
+                                                }else {
+                                                    $status = 'Tidak Diketahui';
+                                                }
 
-                          echo $status;
-                          @endphp
+                                                echo $status;
+                                            @endphp 
                         </td>
                         <td>{{$karyawan->no_hp}}</td>
                         <td>{{$karyawan->no_ktp}}</td>
@@ -107,36 +116,41 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
     <script>
-      $('.btn-edit').click(function() {
+    $('.btn-edit').click(function() {
         var url = $(this).data('url');
         console.log(url);
-        $('#editKaryawan #nama_karyawan').val('')
-        $('#editKaryawan #alamat').val('')
-        $('#editKaryawan #tgl_lahir').val('')
-        $('input[name="jenis_kelamin"]').prop('checked', false);
-        $('#editKaryawan #no_hp').val('')
-        $('#editKaryawan #status_pernikahan').val('')
-        $('#editKaryawan #no_ktp').val('')
-        $('#editKaryawan #no_rekening').val('')
-        $.ajax({
-          type: "get",
-          url: url,
-          dataType: "json",
-          success: function(res) {
-            $('#editKaryawan #id_karyawan').val(res['id_karyawan'])
-            $('#editKaryawan #nama_karyawan').val(res['nama_karyawan'])
-            $('#editKaryawan #alamat').val(res['alamat'])
-            $('#editKaryawan #tgl_lahir').val(res['tgl_lahir'])
-            $('#editKaryawan input[name="jenis_kelamin"][value="' + res['jenis_kelamin'] + '"]').prop('checked', true);
-            $('#editKaryawan #no_hp').val(res['no_hp'])
-            $('#editKaryawan #no_ktp').val(res['no_ktp'])
-            $('#editKaryawan #no_rekening').val(res['no_rekening'])
-
-          }
-        });
         
-      });
-    </script>
+        // Reset fields
+        $('#editKaryawan #nama_karyawan').val('');
+        $('#editKaryawan #alamat').val('');
+        $('#editKaryawan #tgl_lahir').val('');
+        $('input[name="jenis_kelamin"]').prop('checked', false);
+        $('#editKaryawan #no_hp').val('');
+        $('#editKaryawan #status_pernikahan').val('');
+        $('#editKaryawan #no_ktp').val('');
+        $('#editKaryawan #no_rekening').val('');
+
+        $.ajax({
+            type: "get",
+            url: url,
+            dataType: "json",
+            success: function(res) {
+                $('#editKaryawan #id_karyawan').val(res['id_karyawan']);
+                $('#editKaryawan #nama_karyawan').val(res['nama_karyawan']);
+                $('#editKaryawan #alamat').val(res['alamat']);
+                $('#editKaryawan #tgl_lahir').val(res['tgl_lahir']);
+                $('#editKaryawan input[name="jenis_kelamin"][value="' + res['jenis_kelamin'] + '"]').prop('checked', true);
+                $('#editKaryawan #no_hp').val(res['no_hp']);
+                $('#editKaryawan #no_ktp').val(res['no_ktp']);
+                $('#editKaryawan #no_rekening').val(res['no_rekening']);
+
+                // Mengatur option berdasarkan respons dari AJAX
+                $('#editKaryawan #status_pernikahan option[value="' + res['status_pernikahan'] + '"]').prop('selected', true);
+            }
+        });
+    });
+</script>
+
 <!-- End Edit Data -->
   @endsection
 

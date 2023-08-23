@@ -29,7 +29,7 @@ class KaryawanController extends Controller
             'tgl_lahir' => 'required',
             'jenis_kelamin' => 'required',
             'status_pernikahan' => 'required',
-            'no_hp' => 'required|min:12|max:15',
+            'no_hp' => 'required|min:10|max:15',
             'no_ktp' => 'required|min:16|max:16',
             'no_rekening' => 'required|max:50'
         ]);
@@ -63,6 +63,7 @@ class KaryawanController extends Controller
             'alamat' => 'required|max:225',
             'tgl_lahir' => 'required',
             'jenis_kelamin' => 'required',
+            'status_pernikahan' => 'required',
             'no_hp' => 'required|min:10|max:15',
             'no_ktp' => 'required|min:10|max:16',
             'no_rekening' => 'required|max:50'

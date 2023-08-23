@@ -79,7 +79,23 @@
                   </div>
                   @enderror
                 </div>
-                
+                <div class="col-12">
+                    <label class="form-label">Status Pernikahan</label>
+                    <select id="status_pernikahan" name="status_pernikahan" class="form-control @error('status_pernikahan') is-invalid @enderror">
+                        <option value="tk">Belum Kawin</option>
+                        <option value="k0">Kawin</option>
+                        <option value="k1">Kawin, Punya anak 1</option>
+                        <option value="k2">Kawin , punya anak 2</option>
+                        <option value="k3">Kawin , punya anak 3</option>
+                        <option value="k3">Kawin , punya anak lebih dari 3</option>
+                        
+                    </select>
+                    @error('status_pernikahan')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
                 <div class="col-12">
                   <label  class="form-label">No Rekening</label>
                   <input type="text" name="no_rekening"  id="no_rekening" class="form-control @error('no_rekening') is-invalid @enderror" id="name">

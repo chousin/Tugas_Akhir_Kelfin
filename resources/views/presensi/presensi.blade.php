@@ -53,9 +53,37 @@
 				</td>
 			</tr>
 			<tr>
-				<th width="250">Jumlah Lembur</th>
+				<th width="250">Lembur</th>
 				<td width="5">:</td>
-				<td>{{ isset($presensi) ? $presensi->jumlah_lembur : '0' }} Jam</td>
+				<td>
+				<?php
+					if(isset($presensi)) {
+						$awal = new DateTime($presensi->tanggal_masuk);
+						$akhir = new DateTime($presensi->tanggal_pulang);
+
+						$selisih = $akhir->diff($awal);
+
+						// Hitung total selisih dalam jam
+						$totalSelisihJam = $selisih->h + ($selisih->days * 24);
+
+						$lembur = 0;
+
+						// Jika total selisih lebih dari 8 jam
+						if ($totalSelisihJam > 8) {
+							$lembur = $totalSelisihJam - 8;
+						}
+
+						$selisihJam = $totalSelisihJam;
+						$selisihMenit = $selisih->i;
+						$selisihDetik = $selisih->s;
+
+						echo "$lembur jam, $selisihMenit menit, $selisihDetik detik";
+					} else {
+						echo "Presensi tidak ditemukan";
+					}
+				?>
+
+				</td>
 			</tr>
 		</table>
 	</div>

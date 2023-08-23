@@ -40,10 +40,11 @@
                             <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Hari</th>
                             <th colspan="2" class="text-center">Lembur</th>
                             <th colspan="2" class="text-center">Transport</th>
-                            <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Rembes</th>
-                            <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Potong Hutang</th>
-                            <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Pph</th>
-                            <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Total</th>
+                            <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Reimburse (IDR)</th>
+                            <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Potong Hutang (IDR)</th>
+                            <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">biaya jabatan 5% (IDR)</th>
+                            <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Pph (IDR)</th>
+                            <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Total (IDR)</th>
                         </tr>
                         <tr>
                             <th width="5">Jam</th>
@@ -78,7 +79,7 @@
                                                 $jumlah_lembur = $get_listing_karyawan->jumlah_lembur;
                                                 $total_lembur = ($gaji_pokok / 8) * $jumlah_lembur;
 
-                                                echo 'Rp. '.number_format($total_lembur);
+                                                echo number_format($total_lembur);
                                             @endphp
                                             @endif
                             @if($get_listing_karyawan->status_karyawan == 1)    
@@ -91,53 +92,94 @@
                                                 $jumlah_lembur = $get_listing_karyawan->jumlah_lembur;
 
                                                 $total_upah_lembur = $uang_lembur_jam_pertama + $uang_lembur_jam_selanjutnya * ($jumlah_lembur - 1);
-                                                echo 'Rp. '.number_format($total_upah_lembur)
+                                                echo number_format($total_upah_lembur)
                                             @endphp
                                             @endif
                             </td>
                             <td></td>
-                            <td class="text-right">Rp. {{ number_format($get_listing_karyawan->nominal_transport) }}</td>
-                            <td class="text-right">Rp. {{ number_format($get_listing_karyawan->nominal_rembes) }}</td>
-                            <td class="text-right">Rp. {{ number_format($get_listing_karyawan->nominal_hutang) }}</td>
+                            <td class="text-right">{{ number_format($get_listing_karyawan->nominal_transport) }}</td>
+                            <td class="text-right">{{ number_format($get_listing_karyawan->nominal_rembes) }}</td>
+                            <td class="text-right">{{ number_format($hutangPerKaryawan[$get_listing_karyawan->id_karyawan]) }}</td>  
+                            @if($get_listing_karyawan->status_karyawan == 1)     
+                            <td class="text-right">@php
+                                            $jabatan = 0.05;
+                                            $gajiPokok = $get_listing_karyawan->gaji_pokok;
+                                            $biaya_jabatan = $gajiPokok * $jabatan;
+                                                    
+                                            echo   number_format($biaya_jabatan);
+                                            @endphp</td>
+                            @endif
+                            @if($get_listing_karyawan->status_karyawan == 0)     
+                            <td class="text-right"> - </td>
+                            @endif
                             
+
                             <td class="text-right ">
                             @php
                                                 // Perhitungan potongan pajak PPh 21
-                                                $gajiPokok = $get_listing_karyawan->gaji_pokok;
-                                                $jumlahHariKerja = $get_listing_karyawan->jumlah_hari;
+                                                    $gajiPokok = $get_listing_karyawan->gaji_pokok;
+                                                    $jumlahHariKerja =$get_listing_karyawan->jumlah_hari;
+                                                    $total = $gajiPokok;
+                                                    $sub_total = $total + $total_upah_lembur + $get_listing_karyawan->nominal_rembes + $get_listing_karyawan->nominal_transport;
 
-                                                // Periksa status pernikahan
-                                                $statusPernikahan = $get_listing_karyawan->karyawan->status_pernikahan;
-                                                $tarifPPh = 0.05; // Default tarif PPh 21: 5%
+                                                    // Penghasilan Tidak Kena Pajak (PTKP)
+                                                    $ptkp = 54000000;
+                                                    $statusPernikahan = $get_listing_karyawan->karyawan->status_pernikahan; 
 
-                                                if ($gajiPokok <= 4500000) {
-                                                    $tarifPPh = 0; // Tidak kena pajak jika gaji pokok di bawah 4500000
-                                                } elseif ($statusPernikahan === 'k') {
-                                                    $tarifPPh = 0.1; // Tarif PPh 21 untuk karyawan kawin: 10%
-                                                }
+                                                    if ($statusPernikahan == 'tk') {
+                                                        // Tidak kawin, jadi tidak ada tambahan PTKP
+                                                    } elseif ($statusPernikahan == 'k0') {
+                                                        // Kawin tetapi tidak memiliki anak, jadi menambahkan PTKP untuk kawin saja
+                                                        $ptkp += 4500000;
+                                                    } elseif ($statusPernikahan == 'k1') {
+                                                        // Kawin dan memiliki 1 anak
+                                                        $ptkp += 4500000; // untuk kawin
+                                                        $ptkp += 4500000 * 1; // untuk 1 anak
+                                                    } elseif ($statusPernikahan == 'k2') {
+                                                        // Kawin dan memiliki 1 anak
+                                                        $ptkp += 4500000; // untuk kawin
+                                                        $ptkp += 4500000 * 2; // untuk 2 anak
+                                                    }elseif ($statusPernikahan == 'k3') {
+                                                        // Kawin dan memiliki 3 anak atau lebih
+                                                        $ptkp += 4500000; // untuk kawin
+                                                        $ptkp += 4500000 * min(3, substr($statusPernikahan, 1, 1)); // untuk anak, maksimal 3 tanggungan
+                                                    }
+                                                    $jabatan = 0.05;
+                                                    $gajiPokok = $get_listing_karyawan->gaji_pokok;
+                                                    $biaya_jabatan = $gajiPokok * $jabatan;
+                                                    $gaji_total_bulan = $sub_total - $hutangPerKaryawan[$get_listing_karyawan->id_karyawan] - $biaya_jabatan;
+                                            
+                                            
+                                                    $gajiSetahun = $gaji_total_bulan * 12;
 
-                                                // Perhitungan upah lembur
-                                                $upahPerJam = $gajiPokok * (1 / 173);
-                                                $uangLemburJamPertama = 1.5 * $upahPerJam;
-                                                $uangLemburJamSelanjutnya = 2 * $upahPerJam;
-                                                $jumlahLembur = $get_listing_karyawan->jumlah_lembur;
+                                                    $penghasilanKenaPajak = $gajiSetahun > $ptkp ? $gajiSetahun - $ptkp : 0;
 
-                                                if ($jumlahLembur > 0) {
-                                                    $totalUpahLembur = $uangLemburJamPertama + ($uangLemburJamSelanjutnya * ($jumlahLembur - 1));
-                                                } else {
-                                                    $totalUpahLembur = 0;
-                                                }
+                                                    // Perhitungan Pajak Penghasilan
+                                                    $batas1 = 60000000;
+                                                    $batas2 = 250000000;
+                                                    $batas3 = 500000000;
 
-                                                // Total gaji kotor, termasuk hasil lembur
-                                                $gajiKotor = ($gajiPokok * $jumlahHariKerja) + $totalUpahLembur;
+                                                    $potonganPPh = 0;
 
-                                                $potonganPPh = $gajiKotor * $tarifPPh;
+                                                    if ($penghasilanKenaPajak <= $batas1) {
+                                                        $potonganPPh = 0.05 * $penghasilanKenaPajak;
+                                                    } else if ($penghasilanKenaPajak <= $batas2) {
+                                                        $potonganPPh = (0.05 * $batas1) + (0.15 * ($penghasilanKenaPajak - $batas1));
+                                                    } else if ($penghasilanKenaPajak <= $batas3) {
+                                                        $potonganPPh = (0.05 * $batas1) + (0.15 * ($batas2 - $batas1)) + (0.25 * ($penghasilanKenaPajak - $batas2));
+                                                    } else {
+                                                        $potonganPPh = (0.05 * $batas1) + (0.15 * ($batas2 - $batas1)) + (0.25 * ($batas3 - $batas2)) + (0.30 * ($penghasilanKenaPajak - $batas3));
+                                                    }
 
-                                                echo 'Rp. ' . number_format($potonganPPh, 0, ',', '.');
+                                                    $potonganPPhBulanan = $potonganPPh / 12;
+
+                                                    echo  number_format($potonganPPhBulanan, 0, ',', '.');
+
                                                 @endphp
 
+
                             </td>
-                            <td class="text-right">
+                            <td class="text-right total">
                             @if($get_listing_karyawan->status_karyawan == 1)   
                             @php 
                                     $gaji_pokok = $get_listing_karyawan->gaji_pokok;
@@ -146,7 +188,7 @@
                                     $total = $gaji_pokok;
 
                                     $sub_total = $total + $total_upah_lembur + $get_listing_karyawan->nominal_rembes + $get_listing_karyawan->nominal_transport;
-                                    echo 'Rp.' . number_format($sub_total - $get_listing_karyawan->nominal_hutang - $potonganPPh)
+                                    echo  number_format($gaji_total_bulan  - $potonganPPhBulanan)
                                 @endphp
                                 @endif
                                 @if($get_listing_karyawan->status_karyawan == 0)   
@@ -157,7 +199,7 @@
                                     $total = $gaji_pokok * $jumlah_hari;
 
                                     $sub_total = $total + $total_lembur + $get_listing_karyawan->nominal_rembes + $get_listing_karyawan->nominal_transport;
-                                    echo 'Rp.' . number_format($sub_total - $get_listing_karyawan->nominal_hutang)
+                                    echo  number_format($sub_total - $hutangPerKaryawan[$get_listing_karyawan->id_karyawan])
                                 @endphp
                                 @endif
                             </td>
@@ -170,7 +212,7 @@
                                     $total = $gaji_pokok * $jumlah_hari;
 
                                     $sub_total = $total + $total_lembur + $get_listing_karyawan->nominal_rembes + $get_listing_karyawan->nominal_transport;
-                                    echo $sub_total - $get_listing_karyawan->nominal_hutang -$potonganPPh;
+                                    echo $sub_total - $hutangPerKaryawan[$get_listing_karyawan->id_karyawan];
                             @endphp
                             @endif
                             @if($get_listing_karyawan->status_karyawan == 1)
@@ -178,9 +220,9 @@
                                     $gaji_pokok = $get_listing_karyawan->gaji_pokok;
                                     $jumlah_hari = $get_listing_karyawan->jumlah_hari;
 
-                                    $total = $gaji_pokok * $jumlah_hari;
+                                    $total = $gaji_pokok;
                                     $sub_total = $total + $total_upah_lembur + $get_listing_karyawan->nominal_rembes + $get_listing_karyawan->nominal_transport;
-                                    echo $sub_total - $get_listing_karyawan->nominal_hutang - $potonganPPh;
+                                    echo $sub_total - $hutangPerKaryawan[$get_listing_karyawan->id_karyawan] - $potonganPPhBulanan - $biaya_jabatan;
                             @endphp
                             
                              @endif
@@ -202,7 +244,9 @@
                             <td></td>
                             <td class="text-right"></td>
                             <td colspan="2" class="text-center fw-bold">TOTAL</td>
-                            <td class="text-right fw-bold" id="grand_total"> </td>
+                            <td class="text-right fw-bold" id="grand_total" >
+                          
+                            </td>
                         </tr>
                     </tbody>
                 </table>

@@ -46,6 +46,7 @@
                                     <th>Tanggal Pulang</th>
                                     <th>Lembur</th>
                                     <th>Lokasi</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -64,6 +65,11 @@
                                         <td>
                                             <a href="{{ url('/presensi/'.$get_presensi->id.'/lokasi') }}" target="_blank" class="btn btn-info">Lihat Lokasi</a>
                                         </td>
+                                        <td>
+                                             <a href="#"  onclick=" return batalkanAbsen({{ $get_presensi->id }}, {{ $id_karyawan}});" class="btn btn-danger">Batalkan Absen</a>
+
+                                        </td>
+
                                     </tr>
                                     @endforeach
                                 @endif
@@ -76,3 +82,15 @@
     </div>
 </section>
 @endsection
+<script>
+    function batalkanAbsen(id, id_karyawan) {
+        var kataKunci = prompt("Untuk membatalkan absen, silakan ketik 'batalkan absen'.");
+        console.log(id)
+        if (kataKunci === "batalkan absen") {
+            
+            window.location.href = '{{ url("/presensi/") }}' + '/' + id + '/batalkan/'+id_karyawan  ;
+        } else {
+            alert("Kata kunci salah. Absen tidak dibatalkan.");
+        }
+    }
+</script>

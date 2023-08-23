@@ -14,6 +14,8 @@ use App\Models\Karyawan;
 
 use App\Models\Presensi;
 
+use App\Models\Hutang;
+
 use Dompdf\Dompdf;
 
 use Dompdf\Options;
@@ -37,6 +39,7 @@ class DataGajiKaryawan extends Controller
             foreach ($listing_karyawan as $karyawan) {
                 $jumlahAbsen = Presensi::where('id_karyawan', $karyawan->id_karyawan)->count();
                 $absensi_pegawai[$karyawan->id_karyawan] = $jumlahAbsen;
+                $hutangPerKaryawan[$karyawan->id_karyawan] = Hutang::where('id_karyawan', $karyawan->id_karyawan)->sum('nominal_hutang');
             }
 
         }
@@ -46,6 +49,7 @@ class DataGajiKaryawan extends Controller
             "halaman" => "Home",
             "sub_hal" => "Data Karyawan",
             "listing_karyawan" => $result_array,
+            'hutangPerKaryawan' => $hutangPerKaryawan,
 
             "pengajuan_penggajian" => $pengajuan_penggajian->first()
         ]);
@@ -70,13 +74,14 @@ class DataGajiKaryawan extends Controller
             foreach ($listing_karyawan as $karyawan) {
                 $jumlahAbsen = Presensi::where('id_karyawan', $karyawan->id_karyawan)->count();
                 $absensi_pegawai[$karyawan->id_karyawan] = $jumlahAbsen;
+                $hutangPerKaryawan[$karyawan->id_karyawan] = Hutang::where('id_karyawan', $karyawan->id_karyawan)->sum('nominal_hutang');
             }
 
 
 
         }
 
-        $html = view('gaji.pdf', compact('pengajuan_penggajian', 'listing_karyawan', 'pengajuan_penggajians', 'absensi_pegawai'))->render();
+        $html = view('gaji.pdf', compact('pengajuan_penggajian', 'listing_karyawan', 'hutangPerKaryawan', 'pengajuan_penggajians', 'absensi_pegawai'))->render();
         $options = new Options();
         $options->setIsHtml5ParserEnabled(true);
         $options->setIsRemoteEnabled(true);
